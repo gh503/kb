@@ -153,6 +153,10 @@ nav:
       - 日常/index.md
       - 生活:
           - 日常/生活/index.md
+          - 钱:
+              - 日常/钱/index.md
+          - 健康:
+              - 日常/健康/index.md
       - 娱乐:
           - 日常/娱乐/index.md
   - 订阅: 订阅/index.md

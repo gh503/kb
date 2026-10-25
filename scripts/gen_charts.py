@@ -382,6 +382,19 @@ def chart_pagecache():
     inner.append(text(0, 290, "同一个 8 MB：buffered 8.91 ms ｜ fsync 14,820 ms ｜ 差 1,663 倍", size=12, weight="700", color=WARN))
     return wrap(inner, "write 的三个落点：页缓存 → 回写 → 磁盘确认")
 
+def chart_db_index():
+    return _bar_chart("同一张 20 万行的表，三种读法（本机 SQLite）",
+                      ["全表扫描 SCAN", "走索引 + 回表（命中 2168 行）", "覆盖索引（只读索引）"],
+                      [16.337, 5.373, 0.127], "ms",
+                      note="对数刻度。中间那条虽然用了索引，但命中行太多，回表把收益吃掉了。")
+
+
+def chart_db_txn():
+    return _bar_chart("插 5000 行：逐条提交 vs 一个事务（本机 SQLite）",
+                      ["一个事务", "逐条自动提交"],
+                      [30.1, 33570.4], "ms",
+                      note="对数刻度。差别不在 SQL，在于 5000 次 fsync 与 1 次 fsync。")
+
 CHARTS = {
     "growth": chart_growth,
     "sort": chart_sort,
@@ -397,6 +410,8 @@ CHARTS = {
     "fork": chart_fork,
     "fsync": chart_fsync,
     "pagecache": chart_pagecache,
+    "db_index": chart_db_index,
+    "db_txn": chart_db_txn,
 }
 
 

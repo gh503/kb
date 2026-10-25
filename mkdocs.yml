@@ -67,7 +67,7 @@ markdown_extensions:
 not_in_nav: |
   /订阅/2*.md
   /自然/*/*.md
-  /自然/*/*.md
+  /人文/*/*.md
 
 # 页面没进 nav 时报 WARN；配合 CI 的 --strict 就是硬错误，页面不会悄悄消失。
 validation:
@@ -120,6 +120,7 @@ nav:
           - 商业/项目管理/index.md
   - 人文:
       - 人文/index.md
+      - 读法: 人文/读法.md
       - 历史:
           - 人文/历史/index.md
       - 政治:

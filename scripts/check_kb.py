@@ -56,10 +56,10 @@ def main():
         problems.append(f"断链: {f} -> {t}")
 
     chains = defaultdict(list)
-    for subject in ("历史", "政治", "哲学", "文化", "运营", "单位经济", "项目管理", "产品的", "钱", "健康", "事务"):
+    for subject in ("历史", "政治", "哲学", "文化", "运营", "单位经济", "项目管理", "产品的", "钱", "健康", "事务", "家"):
         if subject in ("运营", "单位经济", "项目管理", "产品的"):
             d = DOCS / "商业" / subject
-        elif subject in ("钱", "健康", "事务"):
+        elif subject in ("钱", "健康", "事务", "家"):
             d = DOCS / "日常" / subject
         else:
             d = DOCS / "人文" / subject
@@ -101,7 +101,7 @@ def main():
         levels = [lv for lv, _ in pages]
         if len(pages) < 3:
             problems.append(f"链 {subject}/{name}: 只有 {len(pages)} 页")
-        if subject in ("运营", "单位经济", "项目管理", "产品的", "钱", "健康", "事务"):
+        if subject in ("运营", "单位经济", "项目管理", "产品的", "钱", "健康", "事务", "家"):
             # 商业与日常域按深度分层，不按学段；只检查深度是否齐全
             missing_d = [d for d in ("入门", "实操", "取舍") if d not in levels]
             if missing_d:

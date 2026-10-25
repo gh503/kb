@@ -106,6 +106,7 @@ nav:
       - 运维:
           - 工程/运维/index.md
   - 智能:
+      - 速查: 智能/速查.md
       - 智能/index.md
       - AI:
           - 智能/AI/index.md

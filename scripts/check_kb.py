@@ -75,6 +75,14 @@ def main():
             elif "> **深度" in txt:
                 if "## 证据强度" not in txt:
                     problems.append(f"{subject}/{e.name}: 缺证据强度小节")
+                if "## 数字与阈值" not in txt:
+                    problems.append(f"{subject}/{e.name}: 缺数字与阈值小节")
+                ev = re.search(r"## 证据强度\n(.*?)(?=\n## |\Z)", txt, flags=re.S)
+                if ev and not re.search(
+                    r"\*\*(实测|公开经验|公开研究|推断|未验证|公式|方法|会计口径|经验区间|经验建议|框架|建议值)\*\*",
+                    ev.group(1),
+                ):
+                    problems.append(f"{subject}/{e.name}: 证据强度没有标签")
             else:
                 problems.append(f"{subject}/{e.name}: 缺表头（学段或深度）")
             if rows and e.name not in linked:

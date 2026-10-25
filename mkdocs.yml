@@ -150,6 +150,8 @@ nav:
           - 网络/网络通信/index.md
       - TCP/IP:
           - 网络/TCP-IP/index.md
+      - 软件安全:
+          - 网络/软件安全/index.md
       - 安全:
           - 网络/安全/index.md
   - 商业:

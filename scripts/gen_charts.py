@@ -520,6 +520,17 @@ def chart_gd():
     inner.append(text(PAD_L, H - 10, "特征值 1 与 10 → 收敛上界 2/10 = 0.2；边界值正好振荡不下降", size=11, color=MUTED))
     return wrap(inner, "步长 0.19 收敛、0.2 振荡、0.21 发散、0.3 五步爆到 1e6")
 
+def chart_deps():
+    return _bar_chart("你审过的代码 vs 实际运行的代码（本机 pip list）",
+                      ["直接依赖（requirements.txt）", "虚拟环境实际安装"], [2, 187], "个",
+                      note="94 倍。攻击面按「实际装进来的包」算，不按你写了几个 import 算。")
+
+
+def chart_strings():
+    return _bar_chart("同一个程序：调试信息会留下多少可读字符串（本机 strings）",
+                      ["-O2 无调试信息", "-O0 -g 带调试信息"], [59, 112], "条",
+                      note="带 -g 时几乎翻倍，源码路径、变量名、断言文本全部留在产物里。")
+
 CHARTS = {
     "growth": chart_growth,
     "sort": chart_sort,
@@ -542,6 +553,8 @@ CHARTS = {
     "numdiff": chart_numdiff,
     "integration": chart_integration,
     "gd": chart_gd,
+    "deps": chart_deps,
+    "strings": chart_strings,
     "mc_error": chart_mc_error,
     "clt": chart_clt,
     "ci_coverage": chart_ci_coverage,

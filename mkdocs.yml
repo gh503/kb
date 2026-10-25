@@ -87,6 +87,7 @@ validation:
 nav:
   - 首页: index.md
   - 基础:
+      - 速查: 基础/速查.md
       - 基础/index.md
       - 通用基础:
           - 基础/通用基础/index.md

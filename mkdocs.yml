@@ -1,6 +1,6 @@
 # 站点配置。换名字/换地址只改 site_name、site_url、repo_url 三行。
 site_name: 知识库
-site_description: 一个可搜索、可持续迭代的个人知识库
+site_description: 按学科组织的、可搜索的个人知识库
 site_url: https://gh503.github.io/kb/
 repo_url: https://github.com/gh503/kb
 repo_name: gh503/kb
@@ -26,11 +26,14 @@ theme:
         icon: material/brightness-4
         name: 切换到浅色模式
   features:
+    - navigation.tabs
+    - navigation.indexes
     - navigation.tracking
-    - navigation.sections
     - navigation.top
+    - navigation.footer
     - search.suggest
     - search.highlight
+    - search.share
     - content.code.copy
     - content.action.edit
     - toc.follow
@@ -50,15 +53,80 @@ markdown_extensions:
   - pymdownx.superfences
   - pymdownx.tabbed:
       alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - toc:
       permalink: true
+      # 中文标题也能生成稳定锚点（默认 slugify 会丢掉非 ASCII 字符）
+      slugify: !!python/object/apply:pymdownx.slugs.slugify
+        kwds:
+          case: lower
+
+# 页面没进 nav 时报 WARN；配合 CI 的 --strict 就是硬错误，页面不会悄悄消失。
+validation:
+  nav:
+    omitted_files: warn
+  links:
+    not_found: warn
+    anchors: warn
+    unrecognized_links: warn
 
 nav:
   - 首页: index.md
-  - 使用指南:
-      - 快速开始: guide/getting-started.md
-      - 写作规范: guide/writing.md
-  - 知识条目:
-      - 示例条目: notes/example.md
+  - 基础:
+      - 基础/index.md
+      - 通用基础:
+          - 基础/通用基础/index.md
+      - 数学:
+          - 基础/数学/index.md
+      - 逻辑:
+          - 基础/逻辑/index.md
+  - 工程:
+      - 工程/index.md
+      - 设计:
+          - 工程/设计/index.md
+      - 开发:
+          - 工程/开发/index.md
+      - 测试:
+          - 工程/测试/index.md
+      - 运维:
+          - 工程/运维/index.md
+  - 商业:
+      - 商业/index.md
+      - 运营:
+          - 商业/运营/index.md
+      - 项目管理:
+          - 商业/项目管理/index.md
+  - 人文:
+      - 人文/index.md
+      - 历史:
+          - 人文/历史/index.md
+      - 政治:
+          - 人文/政治/index.md
+      - 文化:
+          - 人文/文化/index.md
+      - 哲学:
+          - 人文/哲学/index.md
+  - 自然:
+      - 自然/index.md
+      - 物理:
+          - 自然/物理/index.md
+      - 化学:
+          - 自然/化学/index.md
+      - 生物:
+          - 自然/生物/index.md
+      - 地理:
+          - 自然/地理/index.md
+  - 日常:
+      - 日常/index.md
+      - 生活:
+          - 日常/生活/index.md
+      - 娱乐:
+          - 日常/娱乐/index.md
   - 关于:
-      - 更新日志: about/changelog.md
+      - 关于/index.md
+      - 快速开始: 关于/快速开始.md
+      - 写作规范: 关于/写作规范.md
+      - 条目示例: 关于/条目示例.md
+      - 更新日志: 关于/更新日志.md

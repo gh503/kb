@@ -1,21 +1,67 @@
 # 知识库
 
-> 这里只放**以后还会再用的结论**：能直接照着做的东西，不是收藏夹，也不是日记。
+> 按学科组织的个人知识库。每条都问一句：**下次遇到同样的事，这页能省我多少时间？**
 
-## 三个入口
+<div class="grid cards" markdown>
 
-| 想干什么 | 去哪 |
-| --- | --- |
-| 第一次用，把站点跑起来 | [快速开始](guide/getting-started.md) |
-| 新写一页，照格式来 | [写作规范](guide/writing.md) |
-| 看一页完整示例 | [示例条目](notes/example.md) |
+-   :material-shape-outline:{ .lg .middle } **基础**
 
-## 搜索
+    ---
 
-左上角的搜索框对**标题和正文**做全文检索，中文可用，边输入边给建议。
-搜不到时换一个更短的词，比换一个更长的句子有效。
+    检索、写作、数学、逻辑。不解决具体问题，但所有事都要用。
 
-## 更新
+    [:octicons-arrow-right-24: 进入](基础/index.md)
 
-每页右上角的「编辑此页」直接跳到 GitHub 上这一页的源码。
-改动推到 `main` 之后，线上站点会在几分钟内自动重建——不需要手动发布。
+-   :material-wrench-outline:{ .lg .middle } **工程**
+
+    ---
+
+    设计、开发、测试、运维。把东西做出来，并让它持续跑。
+
+    [:octicons-arrow-right-24: 进入](工程/index.md)
+
+-   :material-chart-line:{ .lg .middle } **商业**
+
+    ---
+
+    运营、项目管理。让人用上，把事推完。
+
+    [:octicons-arrow-right-24: 进入](商业/index.md)
+
+-   :material-book-open-variant:{ .lg .middle } **人文**
+
+    ---
+
+    历史、政治、文化、哲学。社会怎么变成现在这样。
+
+    [:octicons-arrow-right-24: 进入](人文/index.md)
+
+-   :material-atom:{ .lg .middle } **自然**
+
+    ---
+
+    物理、化学、生物、地理。世界本身怎么运转。
+
+    [:octicons-arrow-right-24: 进入](自然/index.md)
+
+-   :material-home-outline:{ .lg .middle } **日常**
+
+    ---
+
+    生活、娱乐。不为了产出，为了过日子。
+
+    [:octicons-arrow-right-24: 进入](日常/index.md)
+
+</div>
+
+## 两个轴
+
+- **按学科**：六个入口 → 学科页（写清收什么、不收什么）→ 条目。适合「我知道该去哪找」的时候。
+- **按关键词**：页面顶部的搜索框对标题和正文做全文检索，中文可用。适合「只记得一个词」的时候。
+
+## 一条规矩
+
+写不写，只看一条：**同样的处境再来一次，这页能不能省掉重新摸索的时间。**
+省不掉就不写。收藏夹不是知识库。
+
+具体写法见[写作规范](关于/写作规范.md)。

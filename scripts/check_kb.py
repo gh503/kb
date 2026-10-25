@@ -50,6 +50,24 @@ def index_rows(index_path: pathlib.Path):
     return re.findall(r"^\| \[([^\]]+)\]\(([^)]+\.md)\)", m.group(1), flags=re.M)
 
 
+def check_nav():
+    """每个学科的 index.md 必须出现在 mkdocs.yml 的 nav 里，否则线上没有侧栏入口。"""
+    nav = (ROOT / "mkdocs.yml").read_text(encoding="utf-8")
+    nav_paths = set(re.findall(r"-\s+(\S+\.md)", nav))
+    missing = []
+    for idx in DOCS.rglob("index.md"):
+        rel = idx.relative_to(DOCS).as_posix()
+        if rel == "index.md":          # 首页在 nav 里写作 index.md
+            continue
+        if "/" not in rel:             # 域首页（基础/index.md 等）也要求进 nav
+            pass
+        if rel.startswith("关于/") or rel.startswith("订阅/"):
+            continue
+        if rel not in nav_paths:
+            missing.append(rel)
+    return missing
+
+
 def main():
     problems = []
 
@@ -57,6 +75,11 @@ def main():
     print(f"内部链接 {total} 条，断链 {len(bad)} 条")
     for f, t in bad:
         problems.append(f"断链: {f} -> {t}")
+
+    missing_nav = check_nav()
+    print(f"nav 未收录的 index: {len(missing_nav)} 个")
+    for m in missing_nav:
+        problems.append(f"nav 缺入口: {m}")
 
     chains = defaultdict(list)
     for subject in (

@@ -444,6 +444,29 @@ def chart_ci_coverage():
     inner.append(text(PAD_L, H - 10, "n=5 时只有 88.7%：偏态数据下 t 区间太窄，会让人误以为结论很确定", size=11, color=MUTED))
     return wrap(inner, "小样本 + 偏态：置信区间系统性低估不确定性")
 
+def chart_matmul():
+    return _bar_chart("同一对 512×512 矩阵，三种写法（本机 C，-O2）",
+                      ["朴素 ijk", "换序 ikj", "分块 64"], [331.3, 115.7, 95.5], "ms",
+                      note="横向为对数刻度。数学完全等价，差别只在最内层循环是否连续访问内存。")
+
+
+def chart_cond():
+    conds = [1e2, 1e8, 1e12]
+    ne = [8.68e-13, 4.62e-1, 4.68e-1]
+    qr = [2.16e-15, 3.05e-10, 4.52e-5]
+    inner = frame("条件数变大时，两种解法的误差（本机 numpy）", "矩阵条件数（对数）", "系数相对误差（对数）")
+    ax, sx, sy = axes(50, 2e12, 1e-16, 1.0, [1e2, 1e8, 1e12], [1e-15, 1e-10, 1e-5, 1e-1],
+                      xfmt=lambda v: f"{v:.0e}", yfmt=lambda v: f"{v:.0e}", logy=True)
+    inner += ax
+    inner += polyline([(sx(c), sy(e)) for c, e in zip(conds, ne)], WARN)
+    inner += polyline([(sx(c), sy(e)) for c, e in zip(conds, qr)], ACCENT)
+    inner += legend([("正规方程 XᵀXβ=Xᵀy", WARN, None), ("QR / lstsq", ACCENT, None)],
+                    x=W - PAD_R + 14, y=PAD_T + 14)
+    inner.append(text(sx(1e8) - 6, sy(4.62e-1) - 12, "46% 误差", size=11, anchor="end", color=WARN, weight="700"))
+    inner.append(text(sx(1e8) + 8, sy(3.05e-10) + 16, "3e-10", size=11, color=ACCENT, weight="700"))
+    inner.append(text(PAD_L, H - 10, "正规方程的误差按 κ² 放大，条件数 1e8 时系数已经错了近一半", size=11, color=MUTED))
+    return wrap(inner, "条件数 1e8：正规方程误差 46%，QR 仍有 1e-10 精度")
+
 CHARTS = {
     "growth": chart_growth,
     "sort": chart_sort,
@@ -461,6 +484,8 @@ CHARTS = {
     "pagecache": chart_pagecache,
     "db_index": chart_db_index,
     "db_txn": chart_db_txn,
+    "matmul": chart_matmul,
+    "cond": chart_cond,
     "mc_error": chart_mc_error,
     "clt": chart_clt,
     "ci_coverage": chart_ci_coverage,

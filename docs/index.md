@@ -20,6 +20,22 @@
 
     [:octicons-arrow-right-24: 进入](工程/index.md)
 
+-   :material-robot-outline:{ .lg .middle } **智能**
+
+    ---
+
+    AI、机器人。让机器感知、判断、行动。
+
+    [:octicons-arrow-right-24: 进入](智能/index.md)
+
+-   :material-lan-connect:{ .lg .middle } **网络**
+
+    ---
+
+    网络通信、TCP/IP、安全。怎么连上，连上之后怎么不被打穿。
+
+    [:octicons-arrow-right-24: 进入](网络/index.md)
+
 -   :material-chart-line:{ .lg .middle } **商业**
 
     ---
@@ -56,7 +72,7 @@
 
 ## 两个轴
 
-- **按学科**：六个入口 → 学科页（写清收什么、不收什么）→ 条目。适合「我知道该去哪找」的时候。
+- **按学科**：八个入口 → 学科页（写清收什么、不收什么）→ 条目。适合「我知道该去哪找」的时候。
 - **按关键词**：页面顶部的搜索框对标题和正文做全文检索，中文可用。适合「只记得一个词」的时候。
 
 ## 一条规矩

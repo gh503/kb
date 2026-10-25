@@ -92,6 +92,20 @@ nav:
           - 工程/测试/index.md
       - 运维:
           - 工程/运维/index.md
+  - 智能:
+      - 智能/index.md
+      - AI:
+          - 智能/AI/index.md
+      - 机器人:
+          - 智能/机器人/index.md
+  - 网络:
+      - 网络/index.md
+      - 网络通信:
+          - 网络/网络通信/index.md
+      - TCP/IP:
+          - 网络/TCP-IP/index.md
+      - 安全:
+          - 网络/安全/index.md
   - 商业:
       - 商业/index.md
       - 运营:

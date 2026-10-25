@@ -467,6 +467,59 @@ def chart_cond():
     inner.append(text(PAD_L, H - 10, "正规方程的误差按 κ² 放大，条件数 1e8 时系数已经错了近一半", size=11, color=MUTED))
     return wrap(inner, "条件数 1e8：正规方程误差 46%，QR 仍有 1e-10 精度")
 
+def chart_numdiff():
+    hs = [1e-1, 1e-2, 1e-3, 1e-4, 1e-6, 1e-8, 1e-10, 1e-12, 1e-15]
+    fwd = [4.294e-02, 4.216e-03, 4.208e-04, 4.207e-05, 4.207e-07, 2.970e-09, 5.848e-08, 4.324e-05, 1.481e-02]
+    ctr = [9.001e-04, 9.005e-06, 9.005e-08, 9.004e-10, 2.772e-11, 2.581e-09, 5.848e-08, 1.227e-05, 1.481e-02]
+    inner = frame("数值微分的误差是 U 形：h 太小反而更差", "步长 h（对数，向左更小）", "绝对误差（对数）")
+    ax, sx, sy = axes(1e-16, 1.0, 1e-12, 1e-1, [1e-15, 1e-12, 1e-9, 1e-6, 1e-3, 1e-1],
+                      [1e-11, 1e-8, 1e-5, 1e-2], xfmt=lambda v: f"{v:.0e}", yfmt=lambda v: f"{v:.0e}", logy=True)
+    inner += ax
+    inner += polyline([(sx(h), sy(e)) for h, e in zip(hs, fwd)], WARN)
+    inner += polyline([(sx(h), sy(e)) for h, e in zip(hs, ctr)], ACCENT)
+    inner += legend([("前向差分 ∝ h", WARN, None), ("中心差分 ∝ h²", ACCENT, None)],
+                    x=W - PAD_R + 14, y=PAD_T + 14)
+    inner.append(text(sx(1e-6), sy(2.772e-11) - 12, "中心差分最优 2.8e-11", size=11, anchor="middle", color=ACCENT, weight="700"))
+    inner.append(text(sx(1e-15) + 6, sy(1.481e-02) - 10, "h=1e-15 全是噪声", size=11, color=WARN, weight="700"))
+    return wrap(inner, "截断误差与舍入误差的平衡点：中心差分约在 h=1e-6")
+
+
+def chart_integration():
+    ns = [10, 20, 40, 80, 160]
+    trap = [1.648e-02, 4.114e-03, 1.028e-03, 2.570e-04, 6.426e-05]
+    simp = [1.095e-04, 6.784e-06, 4.231e-07, 2.643e-08, 1.652e-09]
+    inner = frame("n 翻倍时误差怎么降：梯形 /4，辛普森 /16", "分段数 n（对数）", "绝对误差（对数）")
+    ax, sx, sy = axes(8, 200, 1e-10, 1e-1, ns, [1e-9, 1e-7, 1e-5, 1e-3, 1e-1],
+                      xfmt=lambda v: str(int(v)), yfmt=lambda v: f"{v:.0e}", logy=True)
+    inner += ax
+    inner += polyline([(sx(n), sy(e)) for n, e in zip(ns, trap)], WARN)
+    inner += polyline([(sx(n), sy(e)) for n, e in zip(ns, simp)], ACCENT)
+    inner += legend([("梯形 O(h²)，倍率 4.00", WARN, None), ("辛普森 O(h⁴)，倍率 16.00", ACCENT, None)],
+                    x=W - PAD_R + 14, y=PAD_T + 14)
+    inner.append(text(sx(160) - 6, sy(6.426e-05) - 12, "6.4e-5", size=11, anchor="end", color=WARN, weight="700"))
+    inner.append(text(sx(160) - 6, sy(1.652e-09) - 12, "1.7e-9", size=11, anchor="end", color=ACCENT, weight="700"))
+    return wrap(inner, "同样 160 段：梯形误差 6.4e-5，辛普森 1.7e-9（差 39,000 倍）")
+
+
+def chart_gd():
+    inner = frame("步长从 0.19 到 0.3：收敛、振荡、发散（本机实测）", "迭代步数", "‖x‖（对数）")
+    ax, sx, sy = axes(0, 20, 1e-3, 1e6, [0, 5, 10, 15, 20], [1e-2, 1, 100, 1e4, 1e6],
+                      xfmt=lambda v: str(int(v)), yfmt=lambda v: f"{v:g}", logy=True)
+    inner += ax
+    curves = {
+        "lr=0.19": ([9.69e-01, 3.69e-01, 1.15e-01, 3.4e-02, 8e-03], ACCENT),
+        "lr=0.2": ([1.0, 1.0, 1.0, 1.0, 1.0], MUTED),
+        "lr=0.21": ([1.35, 2.6, 5.0, 9.6, 1.17e2], WARN),
+        "lr=0.3": ([2.12, 1.02e3, 1.05e6, 1.05e6, 1.05e6], WARN),
+    }
+    for label, (vals, color) in curves.items():
+        pts = [(sx(i * 5), sy(v)) for i, v in enumerate(vals)]
+        inner += polyline(pts, color, dash="5 4" if label == "lr=0.2" else None)
+    inner += legend([(k, c, "5 4" if k == "lr=0.2" else None) for k, (v, c) in curves.items()],
+                    x=W - PAD_R + 14, y=PAD_T + 14)
+    inner.append(text(PAD_L, H - 10, "特征值 1 与 10 → 收敛上界 2/10 = 0.2；边界值正好振荡不下降", size=11, color=MUTED))
+    return wrap(inner, "步长 0.19 收敛、0.2 振荡、0.21 发散、0.3 五步爆到 1e6")
+
 CHARTS = {
     "growth": chart_growth,
     "sort": chart_sort,
@@ -486,6 +539,9 @@ CHARTS = {
     "db_txn": chart_db_txn,
     "matmul": chart_matmul,
     "cond": chart_cond,
+    "numdiff": chart_numdiff,
+    "integration": chart_integration,
+    "gd": chart_gd,
     "mc_error": chart_mc_error,
     "clt": chart_clt,
     "ci_coverage": chart_ci_coverage,

@@ -157,6 +157,8 @@ nav:
               - 日常/钱/index.md
           - 健康:
               - 日常/健康/index.md
+          - 事务:
+              - 日常/事务/index.md
       - 娱乐:
           - 日常/娱乐/index.md
   - 订阅: 订阅/index.md

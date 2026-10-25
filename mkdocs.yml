@@ -107,6 +107,8 @@ nav:
       - 基础/index.md
       - 通用基础:
           - 基础/通用基础/index.md
+      - 概率论:
+          - 基础/概率论/index.md
       - 数学:
           - 基础/数学/index.md
       - 逻辑:

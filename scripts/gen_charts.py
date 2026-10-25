@@ -395,6 +395,55 @@ def chart_db_txn():
                       [30.1, 33570.4], "ms",
                       note="对数刻度。差别不在 SQL，在于 5000 次 fsync 与 1 次 fsync。")
 
+def chart_mc_error():
+    ns = [10**3, 10**4, 10**5, 10**6]
+    err = [0.04060, 0.01004, 0.00333, 0.00109]
+    inner = frame("蒙特卡洛估 π：误差随样本量怎么降（本机实测）", "样本量 n（对数）", "绝对误差（对数）")
+    ax, sx, sy = axes(500, 2_000_000, 0.0005, 0.2, ns, [0.001, 0.003, 0.01, 0.03, 0.1],
+                      xfmt=lambda v: f"{int(v/1000)}k" if v < 1_000_000 else "1M",
+                      yfmt=lambda v: f"{v:g}", logy=True)
+    inner += ax
+    inner += polyline([(sx(n), sy(e)) for n, e in zip(ns, err)], ACCENT)
+    # 1/√n 参考线
+    ref = [(sx(n), sy(1.0 / math.sqrt(n))) for n in (10**3, 10**6)]
+    inner += polyline(ref, MUTED, width=1.6, dash="5 4", dots=False)
+    inner += legend([("实测误差", ACCENT, None), ("1/√n 参考", MUTED, "5 4")],
+                    x=W - PAD_R + 14, y=PAD_T + 14)
+    inner.append(text(sx(1000) + 6, sy(0.0406) - 12, "0.041", size=11, color=ACCENT, weight="700"))
+    inner.append(text(sx(1_000_000) - 8, sy(0.00109) - 12, "0.0011", size=11, anchor="end", color=ACCENT, weight="700"))
+    inner.append(text(sx(1000) + 4, sy(0.0406) + 24, "样本 ×1000，误差只降 37 倍", size=11, color=MUTED))
+    return wrap(inner, "误差与 1/√n 几乎平行：算力换精度是平方关系")
+
+
+def chart_clt():
+    ns = [10, 100, 1000, 10000]
+    sd = [0.31035, 0.10028, 0.03135, 0.00994]
+    inner = frame("样本均值的标准差 ≈ σ/√n（总体是指数分布，偏态）", "样本量 n（对数）", "均值标准差（对数）")
+    ax, sx, sy = axes(8, 15000, 0.008, 0.4, ns, [0.01, 0.03, 0.1, 0.3],
+                      xfmt=lambda v: f"{int(v)}", yfmt=lambda v: f"{v:g}", logy=True)
+    inner += ax
+    inner += polyline([(sx(n), sy(x)) for n, x in zip(ns, sd)], ACCENT)
+    inner += polyline([(sx(n), sy(1/math.sqrt(n))) for n in (10, 10000)], MUTED, width=1.6, dash="5 4", dots=False)
+    inner += legend([("模拟值", ACCENT, None), ("1/√n", MUTED, "5 4")], x=W - PAD_R + 14, y=PAD_T + 14)
+    inner.append(text(sx(10) + 4, sy(0.31035) - 12, "0.310", size=11, color=ACCENT, weight="700"))
+    inner.append(text(sx(10000) - 6, sy(0.00994) - 12, "0.0099", size=11, anchor="end", color=ACCENT, weight="700"))
+    return wrap(inner, "n 涨 1000 倍，均值波动缩小约 31 倍（√1000 ≈ 31.6）")
+
+
+def chart_ci_coverage():
+    inner = frame("标称 95% 的置信区间，实际覆盖多少（3000 次重复）", "样本量 n", "覆盖率 %")
+    ax, sx, sy = axes(0, 230, 80, 100, [5, 30, 200], [80, 85, 90, 95, 100], xfmt=lambda v: str(int(v)), yfmt=lambda v: f"{v}%")
+    inner += ax
+    # 95% 目标线
+    inner.append(f'<line x1="{PAD_L}" y1="{sy(95):.1f}" x2="{W-PAD_R}" y2="{sy(95):.1f}" stroke="{WARN}" stroke-width="1.6" stroke-dasharray="5 4"/>')
+    inner.append(text(W - PAD_R - 4, sy(95) - 8, "标称 95%", size=11, anchor="end", color=WARN))
+    for n, cov in ((5, 88.7), (30, 93.2), (200, 94.5)):
+        x = sx(n)
+        inner.append(f'<rect x="{x-26}" y="{sy(cov):.1f}" width="52" height="{sy(80)-sy(cov):.1f}" rx="4" fill="{ACCENT}" opacity="0.8"/>')
+        inner.append(text(x, sy(cov) - 8, f"{cov}%", size=12, anchor="middle", weight="700"))
+    inner.append(text(PAD_L, H - 10, "n=5 时只有 88.7%：偏态数据下 t 区间太窄，会让人误以为结论很确定", size=11, color=MUTED))
+    return wrap(inner, "小样本 + 偏态：置信区间系统性低估不确定性")
+
 CHARTS = {
     "growth": chart_growth,
     "sort": chart_sort,
@@ -412,6 +461,9 @@ CHARTS = {
     "pagecache": chart_pagecache,
     "db_index": chart_db_index,
     "db_txn": chart_db_txn,
+    "mc_error": chart_mc_error,
+    "clt": chart_clt,
+    "ci_coverage": chart_ci_coverage,
 }
 
 

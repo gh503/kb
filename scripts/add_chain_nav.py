@@ -11,7 +11,8 @@ import re
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 DOCS = ROOT / "docs"
 DOMAINS = ["工程", "网络", "智能", "基础"]
-MARK = "> **本链四页**"
+MARK = '<div class="kb-chain">'
+LABEL = '<span class="kb-chain__label">本链四页</span>'
 
 
 def chains_of(idx: pathlib.Path):
@@ -41,10 +42,22 @@ def build(names, current: str) -> str:
     parts = []
     for label, target in names:
         if target == current:
-            parts.append(f"**{label}**（当前页）")
+            parts.append(f'<span class="kb-chain__now">{label}</span>')
         else:
-            parts.append(f"[{label}]({target})")
-    return MARK + "：" + " · ".join(parts)
+            parts.append(f'<a href="{target}">{label}</a>')
+    return MARK + LABEL + '<span class="kb-chain__sep">/</span>' + '<span class="kb-chain__sep">·</span>'.join(parts) + "</div>"
+
+
+def clean(text: str) -> str:
+    """去掉任意一种旧导航：引用行版本与 div 版本。"""
+    text = re.sub(r"(?m)^> \*\*本链四页\*\*.*\n", "", text)
+    # 旧格式残留的孤立引用符号
+    text = re.sub(r"(?m)^>\s*\n(?=\n?<div class=\"kb-chain\">)", "", text)
+    text = re.sub(r"(?m)^>\s*\n(?=\n## )", "", text)
+    text = re.sub(r"(?m)^>\s*\n(?=\n*$)", "", text)
+    text = re.sub(r"(?ms)^>\s*\n(?=<div class=\"kb-chain\">)", "", text)
+    text = re.sub(r"(?s)<div class=\"kb-chain\">.*?</div>\n?", "", text)
+    return text
 
 
 def main():
@@ -61,22 +74,18 @@ def main():
                     page = sub / target
                     if not page.exists():
                         continue
-                    text = page.read_text(encoding="utf-8")
+                    text = clean(page.read_text(encoding="utf-8"))
                     block = build(names, target)
-                    if MARK in text:
-                        text = re.sub(rf"^{re.escape(MARK)}.*$", block, text, count=1, flags=re.M)
-                    else:
-                        lines = text.split("\n")
-                        hdr = next(
-                            (i for i, ln in enumerate(lines) if ln.startswith("> **深度**")),
-                            None,
-                        )
-                        if hdr is None:
-                            continue
-                        lines.insert(hdr + 1, ">")
-                        lines.insert(hdr + 2, block)
-                        text = "\n".join(lines)
-                    page.write_text(text, encoding="utf-8")
+                    lines = text.split("\n")
+                    hdr = next(
+                        (i for i, ln in enumerate(lines) if ln.startswith("> **深度**")),
+                        None,
+                    )
+                    if hdr is None:
+                        continue
+                    lines.insert(hdr + 1, "")
+                    lines.insert(hdr + 2, block)
+                    page.write_text("\n".join(lines), encoding="utf-8")
                     touched += 1
     print(f"处理 {touched} 个条目页")
     return 0

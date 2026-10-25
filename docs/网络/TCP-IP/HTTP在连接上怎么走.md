@@ -1,8 +1,11 @@
 # HTTP 在连接上怎么走
 
 > **深度** 实操 ｜ **类型** 方法 ｜ **链** 一次请求经过了什么
->
-> **本链四页**：[域名怎么变成 IP](域名怎么变成IP.md) · [TCP 握手到底几次](TCP握手到底几次.md) · [TLS 在握手里做什么](TLS在握手里做什么.md) · **HTTP 在连接上怎么走**（当前页）
+
+<div class="kb-chain"><span class="kb-chain__label">本链四页</span><span class="kb-chain__sep">/</span><a href="域名怎么变成IP.md">域名怎么变成 IP</a><span class="kb-chain__sep">·</span><a href="TCP握手到底几次.md">TCP 握手到底几次</a><span class="kb-chain__sep">·</span><a href="TLS在握手里做什么.md">TLS 在握手里做什么</a><span class="kb-chain__sep">·</span><span class="kb-chain__now">HTTP 在连接上怎么走</span></div>
+
+
+
 
 ## 结论
 
@@ -70,6 +73,41 @@ curl -o /dev/null -w 'dns=%{time_namelookup} tcp=%{time_connect} tls=%{time_appc
 ```bash
 curl -o /dev/null -w '%{remote_ip}:%{remote_port}\n' https://example.com/
 ```
+
+<figure class="kb-figure">
+<svg viewBox="0 0 720 340" role="img" aria-label="首屏之前的四个往返：DNS、TCP、TLS、HTTP 各一次" xmlns="http://www.w3.org/2000/svg">
+<rect x="0" y="0" width="720" height="340" fill="none"/>
+<text x="0.0" y="14.0" font-size="13" text-anchor="start" fill="currentColor" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">第一次访问一个网站，要等几个往返</text>
+<text x="150.0" y="48.0" font-size="12" text-anchor="middle" fill="currentColor" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">客户端</text>
+<text x="560.0" y="48.0" font-size="12" text-anchor="middle" fill="currentColor" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">服务器</text>
+<line x1="150" y1="56" x2="150" y2="300" stroke="var(--kb-line)" stroke-width="1.4"/>
+<line x1="560" y1="56" x2="560" y2="300" stroke="var(--kb-line)" stroke-width="1.4"/>
+<text x="16.0" y="86.0" font-size="12" text-anchor="start" fill="var(--kb-accent)" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">1. DNS 解析</text>
+<text x="16.0" y="102.0" font-size="10.5" text-anchor="start" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">查域名 → 拿 IP</text>
+<line x1="150" y1="82" x2="560" y2="82" stroke="var(--kb-accent)" stroke-width="1.8"/>
+<path d="M552 78 L560 82 L552 86" fill="var(--kb-accent)"/>
+<text x="355.0" y="74.0" font-size="10.5" text-anchor="middle" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">1 RTT</text>
+<text x="16.0" y="148.0" font-size="12" text-anchor="start" fill="var(--kb-accent)" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">2. TCP 握手</text>
+<text x="16.0" y="164.0" font-size="10.5" text-anchor="start" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">SYN → SYN-ACK → ACK</text>
+<line x1="150" y1="144" x2="560" y2="144" stroke="var(--kb-accent)" stroke-width="1.8"/>
+<path d="M552 140 L560 144 L552 148" fill="var(--kb-accent)"/>
+<text x="355.0" y="136.0" font-size="10.5" text-anchor="middle" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">1 RTT</text>
+<text x="16.0" y="210.0" font-size="12" text-anchor="start" fill="var(--kb-accent)" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">3. TLS 握手</text>
+<text x="16.0" y="226.0" font-size="10.5" text-anchor="start" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">TLS 1.3 一个往返；1.2 两个</text>
+<line x1="150" y1="206" x2="560" y2="206" stroke="var(--kb-accent)" stroke-width="1.8"/>
+<path d="M552 202 L560 206 L552 210" fill="var(--kb-accent)"/>
+<text x="355.0" y="198.0" font-size="10.5" text-anchor="middle" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">1 RTT</text>
+<text x="16.0" y="272.0" font-size="12" text-anchor="start" fill="var(--kb-warn)" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">4. HTTP 请求</text>
+<text x="16.0" y="288.0" font-size="10.5" text-anchor="start" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">请求 → 响应</text>
+<line x1="150" y1="268" x2="560" y2="268" stroke="var(--kb-warn)" stroke-width="1.8"/>
+<path d="M552 264 L560 268 L552 272" fill="var(--kb-warn)"/>
+<text x="355.0" y="260.0" font-size="10.5" text-anchor="middle" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">1 RTT</text>
+<text x="16.0" y="318.0" font-size="11" text-anchor="start" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">TLS 1.3 之后，前三次往返总共 3 RTT；首次访问常见 4 RTT 起（含 DNS 与连接建立）。</text>
+<text x="16.0" y="334.0" font-size="11" text-anchor="start" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">连接复用起来之后，后续请求只剩 HTTP 那一个往返。</text>
+</svg>
+<figcaption>首屏之前的四个往返：DNS、TCP、TLS、HTTP 各一次</figcaption>
+</figure>
+
 
 ## 数字与阈值（经验判断）
 

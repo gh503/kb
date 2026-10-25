@@ -1,8 +1,11 @@
 # RTT 是什么为什么它决定一切
 
 > **深度** 入门 ｜ **类型** 量级 ｜ **链** 为什么慢
->
-> **本链四页**：**RTT 是什么为什么它决定一切**（当前页） · [带宽延迟积是什么](带宽延迟积是什么.md) · [队头阻塞](队头阻塞.md) · [重传与拥塞控制](重传与拥塞控制.md)
+
+<div class="kb-chain"><span class="kb-chain__label">本链四页</span><span class="kb-chain__sep">/</span><span class="kb-chain__now">RTT 是什么为什么它决定一切</span><span class="kb-chain__sep">·</span><a href="带宽延迟积是什么.md">带宽延迟积是什么</a><span class="kb-chain__sep">·</span><a href="队头阻塞.md">队头阻塞</a><span class="kb-chain__sep">·</span><a href="重传与拥塞控制.md">重传与拥塞控制</a></div>
+
+
+
 
 ## 结论
 

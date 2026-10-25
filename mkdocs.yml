@@ -25,8 +25,13 @@ theme:
       toggle:
         icon: material/brightness-4
         name: 切换到浅色模式
+  font:
+    text: null
+    code: null
   features:
     - navigation.tabs
+    - navigation.instant
+    - navigation.instant.progress
     - navigation.indexes
     - navigation.tracking
     - navigation.top
@@ -36,7 +41,14 @@ theme:
     - search.share
     - content.code.copy
     - content.action.edit
+    - content.tooltips
     - toc.follow
+
+extra_css:
+  - stylesheets/reading.css
+
+extra_javascript:
+  - javascripts/reading.js
 
 plugins:
   - search:
@@ -50,7 +62,11 @@ markdown_extensions:
   - attr_list
   - md_in_html
   - pymdownx.details
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.tabbed:
       alternate_style: true
   - pymdownx.emoji:

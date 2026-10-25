@@ -1,8 +1,11 @@
 # HSTS 解决什么
 
 > **深度** 实操 ｜ **类型** 边界 ｜ **链** HTTPS 保护了什么
->
-> **本链四页**：[证书链怎么验](证书链怎么验.md) · [中间人怎么发生的](中间人怎么发生的.md) · **HSTS 解决什么**（当前页） · [关于 HTTPS 的四个误解](关于HTTPS的四个误解.md)
+
+<div class="kb-chain"><span class="kb-chain__label">本链四页</span><span class="kb-chain__sep">/</span><a href="证书链怎么验.md">证书链怎么验</a><span class="kb-chain__sep">·</span><a href="中间人怎么发生的.md">中间人怎么发生的</a><span class="kb-chain__sep">·</span><span class="kb-chain__now">HSTS 解决什么</span><span class="kb-chain__sep">·</span><a href="关于HTTPS的四个误解.md">关于 HTTPS 的四个误解</a></div>
+
+
+
 
 ## 结论
 

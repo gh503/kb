@@ -1,0 +1,447 @@
+/* ==========================================================================
+   阅读样式：目标只有一个——让人能连续读下去，而不是"浏览表格"。
+   三条约束：
+     1. 中文正文每行 30–40 字（约 44–47rem 宽），行高 1.9
+     2. 结论、数字、正文、边角信息四层视觉权重，一眼分得开
+     3. 表格与代码可以横向滚动，但不撑破正文栏
+   ========================================================================== */
+
+:root {
+  --kb-measure: 700px;            /* 正文栏宽：中文约 38–40 字/行 */
+  --kb-radius: 10px;
+  --kb-ink: #1c2128;
+  --kb-ink-soft: #4a5560;
+  --kb-ink-mute: #5d6875;
+  --kb-paper: #fbfaf7;
+  --kb-panel: #ffffff;
+  --kb-line: #e6e2d8;
+  --kb-line-soft: #efece4;
+  --kb-accent: #0f766e;
+  --kb-accent-soft: rgba(15, 118, 110, 0.07);
+  --kb-warn: #b45309;
+  --kb-warn-soft: rgba(180, 83, 9, 0.08);
+  --kb-code-bg: #f6f4ee;
+}
+
+[data-md-color-scheme="slate"] {
+  --kb-ink: #dde3ea;
+  --kb-ink-soft: #aab4c0;
+  --kb-ink-mute: #909bab;
+  --kb-paper: #11141a;
+  --kb-panel: #181c24;
+  --kb-line: #262c36;
+  --kb-line-soft: #1e242d;
+  --kb-accent: #4fd1c5;
+  --kb-accent-soft: rgba(79, 209, 197, 0.09);
+  --kb-warn: #f0a05a;
+  --kb-warn-soft: rgba(240, 160, 90, 0.1);
+  --kb-code-bg: #171b22;
+}
+
+/* ---------- 页面底色与正文栏 ---------- */
+
+body {
+  background: var(--kb-paper);
+}
+
+.md-grid {
+  max-width: 84rem;
+}
+
+.md-content__inner {
+  max-width: var(--kb-measure);
+  margin-inline: auto;
+  padding-bottom: 4rem;
+}
+
+.md-typeset {
+  font-size: 17px;
+  line-height: 1.9;
+  color: var(--kb-ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "palt" 1;
+}
+
+/* 中文标点挤压一点点，段落更紧实 */
+.md-typeset p {
+  margin: 0.95em 0;
+  line-height: 1.9;
+  color: var(--kb-ink);
+}
+
+.md-typeset li {
+  line-height: 1.85;
+  margin: 0.35em 0;
+}
+
+.md-typeset strong {
+  color: var(--kb-ink);
+  font-weight: 700;
+}
+
+/* ---------- 标题：靠间距建立层级，不靠字号堆叠 ---------- */
+
+.md-typeset h1 {
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  margin: 0 0 1.2rem;
+  color: var(--kb-ink);
+}
+
+.md-typeset h2 {
+  font-size: 21px;
+  font-weight: 700;
+  margin: 2.6rem 0 0.9rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid var(--kb-line);
+  color: var(--kb-ink);
+}
+
+.md-typeset h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 1.8rem 0 0.6rem;
+  color: var(--kb-ink);
+}
+
+.md-typeset h4 {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 1.4rem 0 0.4rem;
+  color: var(--kb-ink-soft);
+}
+
+.md-typeset h2 .headerlink,
+.md-typeset h3 .headerlink {
+  opacity: 0.25;
+}
+
+/* 锚点跳转不要被顶部栏挡住 */
+.md-typeset :is(h1, h2, h3, h4) {
+  scroll-margin-top: 4.5rem;
+}
+
+/* ---------- 结论：整页最亮的一块 ---------- */
+
+.md-typeset h2#结论 + p,
+.md-typeset h2#结论 + blockquote {
+  font-size: 18px;
+  line-height: 1.85;
+  font-weight: 600;
+  color: var(--kb-ink);
+  background: var(--kb-accent-soft);
+  border-left: 4px solid var(--kb-accent);
+  border-radius: 0 var(--kb-radius) var(--kb-radius) 0;
+  padding: 1rem 1.15rem;
+  margin: 0.8rem 0 1.6rem;
+}
+
+.md-typeset h2#结论 + p + p {
+  margin-top: -0.4rem;
+}
+
+/* ---------- 结论与数字：正经内容优先 ---------- */
+
+.md-typeset h2[id^="结论"],
+.md-typeset h2[id^="数字与阈值"] {
+  border-bottom-color: var(--kb-accent);
+}
+
+.md-typeset h2[id^="数字与阈值"] + pre,
+.md-typeset h2[id^="数字与阈值"] + p + pre {
+  border-left: 3px solid var(--kb-accent);
+}
+
+/* 证据强度/不适用/常见错法/往下追/相关：读作"页脚注"，不要跟正文抢注意力 */
+.md-typeset :is(h2#证据强度, h2#不适用的情况, h2#常见错法, h2#往下追, h2#相关) {
+  font-size: 15px;
+  color: var(--kb-ink-mute);
+  border-bottom: none;
+  margin-top: 2.4rem;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.03em;
+}
+
+.md-typeset :is(h2#证据强度, h2#不适用的情况, h2#常见错法) ~ p,
+.md-typeset :is(h2#证据强度, h2#不适用的情况, h2#常见错法) ~ ul {
+  font-size: 16px;
+  line-height: 1.85;
+}
+
+/* ---------- 段落里的引用与提示 ---------- */
+
+.md-typeset blockquote {
+  border-left: 3px solid var(--kb-line);
+  background: transparent;
+  color: var(--kb-ink-soft);
+  margin: 1.2rem 0;
+  padding: 0.2rem 0 0.2rem 1.1rem;
+  font-style: normal;
+}
+
+.md-typeset blockquote p {
+  margin: 0.4em 0;
+}
+
+/* ---------- 表格：能扫读，但不喧宾夺主 ---------- */
+
+.md-typeset table:not([class]) {
+  display: table;
+  width: 100%;
+  font-size: 15px;
+  border-radius: var(--kb-radius);
+  overflow: hidden;
+  box-shadow: none;
+  border: 1px solid var(--kb-line);
+  margin: 1.1rem 0;
+}
+
+.md-typeset table:not([class]) th {
+  background: var(--kb-line-soft);
+  color: var(--kb-ink-soft);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  padding: 0.55rem 0.7rem;
+  border-bottom: 1px solid var(--kb-line);
+}
+
+.md-typeset table:not([class]) td {
+  padding: 0.55rem 0.7rem;
+  border-top: 1px solid var(--kb-line-soft);
+  vertical-align: top;
+  line-height: 1.75;
+}
+
+.md-typeset table:not([class]) tr:nth-child(even) td {
+  background: color-mix(in srgb, var(--kb-line-soft) 45%, transparent);
+}
+
+/* 表格窄屏时允许横向滚动，不挤压字号 */
+.md-typeset__scrollwrap {
+  margin: 1.1rem 0;
+}
+
+/* ---------- 代码 ---------- */
+
+.md-typeset pre {
+  border-radius: var(--kb-radius);
+  background: var(--kb-code-bg);
+  border: 1px solid var(--kb-line);
+  margin: 1.1rem 0;
+  line-height: 1.7;
+}
+
+.md-typeset pre > code {
+  font-size: 14px;
+  padding: 0.9rem 1rem;
+  line-height: 1.7;
+  color: var(--kb-ink);
+}
+
+.md-typeset code {
+  font-size: 0.78em;
+  background: color-mix(in srgb, var(--kb-accent) 9%, transparent);
+  color: var(--kb-ink);
+  border-radius: 4px;
+  padding: 0.1em 0.35em;
+}
+
+.md-typeset pre code {
+  background: none;
+  padding: 0;
+}
+
+/* ---------- 列表：数字清单要能一眼数清 ---------- */
+
+.md-typeset ul,
+.md-typeset ol {
+  margin: 0.8rem 0 1rem;
+  padding-left: 1.35rem;
+}
+
+.md-typeset ul li::marker {
+  color: var(--kb-accent);
+}
+
+.md-typeset ol li::marker {
+  color: var(--kb-accent);
+  font-weight: 700;
+}
+
+/* ---------- 本链四页：一条链的页间跳转，做成条状导航 ---------- */
+
+.kb-chain {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.5rem;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--kb-ink-mute);
+  background: var(--kb-panel);
+  border: 1px solid var(--kb-line);
+  border-radius: 999px;
+  padding: 0.55rem 0.95rem;
+  margin: 0.2rem 0 1.6rem;
+}
+
+.kb-chain__label {
+  font-weight: 700;
+  color: var(--kb-ink-soft);
+  letter-spacing: 0.02em;
+}
+
+.kb-chain a {
+  color: var(--kb-accent);
+  text-decoration: none;
+}
+
+.kb-chain a:hover {
+  text-decoration: underline;
+}
+
+.kb-chain__sep {
+  color: var(--kb-line);
+}
+
+.kb-chain__now {
+  font-weight: 700;
+  color: var(--kb-ink);
+  background: var(--kb-accent-soft);
+  border-radius: 999px;
+  padding: 0.1rem 0.55rem;
+}
+
+/* ---------- 头部的深度/类型/链：弱化成"元信息" ---------- */
+
+.md-typeset h1 + blockquote p {
+  font-size: 14px;
+  color: var(--kb-ink-mute);
+  letter-spacing: 0.01em;
+}
+
+/* ---------- 图：SVG 与 mermaid ---------- */
+
+.md-typeset svg,
+.md-typeset .mermaid {
+  display: block;
+  margin: 1.4rem auto;
+  max-width: 100%;
+}
+
+.md-typeset .kb-figure {
+  display: block;
+  margin: 1.8rem 0 2.2rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.md-typeset .kb-figure svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  border: 1px solid var(--kb-line);
+  border-radius: var(--kb-radius);
+  background: var(--kb-panel);
+  padding: 0.6rem 0.5rem;
+  box-sizing: border-box;
+}
+
+.md-typeset .kb-figure figcaption {
+  font-size: 0.72rem;
+  color: var(--kb-ink-mute);
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+.mermaid {
+  text-align: center;
+}
+
+/* mermaid 在深色模式下用浅色文字 */
+[data-md-color-scheme="slate"] .mermaid {
+  filter: none;
+}
+
+/* ---------- 阅读进度条 ---------- */
+
+#kb-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0;
+  background: var(--kb-accent);
+  z-index: 100;
+  transition: width 0.08s linear;
+  pointer-events: none;
+}
+
+/* ---------- 目录：加一条竖线，读的时候能定位 ---------- */
+
+.md-nav--secondary .md-nav__list {
+  border-left: 1px solid var(--kb-line);
+  padding-left: 0.7rem;
+}
+
+.md-nav--secondary .md-nav__link--active {
+  color: var(--kb-accent);
+  font-weight: 700;
+}
+
+/* ---------- 搜索结果的摘要更易扫读 ---------- */
+
+.md-search-result__teaser {
+  line-height: 1.7;
+}
+
+/* ---------- 打印：去掉一切干扰 ---------- */
+
+@media print {
+  #kb-progress,
+  .md-header,
+  .md-sidebar,
+  .md-footer,
+  .kb-chain {
+    display: none !important;
+  }
+
+  .md-content__inner {
+    max-width: none;
+  }
+
+  .md-typeset {
+    font-size: 11pt;
+  }
+
+  .md-typeset h2 {
+    page-break-after: avoid;
+  }
+}
+
+/* ---------- 窄屏：留白收紧，字号略升 ---------- */
+
+@media screen and (max-width: 44.9375em) {
+  .md-content__inner {
+    max-width: 100%;
+    padding-inline: 1rem;
+  }
+
+  .md-typeset {
+    font-size: 17px;
+    line-height: 1.85;
+  }
+
+  .md-typeset h2#结论 + p {
+    font-size: 17px;
+  }
+
+  .kb-chain {
+    border-radius: var(--kb-radius);
+  }
+}

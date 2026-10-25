@@ -353,6 +353,35 @@ def chart_cert_chain():
     return wrap(inner, "证书链三段：站点证书 → 中间 CA → 根 CA（信任锚）")
 
 
+def chart_fork():
+    return _bar_chart("造一个执行单元要多少时间（本机实测）",
+                      ["同进程 pipe 往返", "创建线程", "fork 复制进程", "fork + exec 换程序"],
+                      [7.40, 131.12, 357.63, 1599.85], "µs",
+                      note="横向为对数刻度；fork 只复制页表，exec 还要读 ELF 与加载动态库。")
+
+
+def chart_fsync():
+    return _bar_chart("同一份 8 MB 数据，三种写法差三个数量级（本机实测）",
+                      ["O_DIRECT 写入", "buffered 写入", "每条 write 后 fdatasync"],
+                      [117.57, 8.91, 14820.18], "ms",
+                      note="对数刻度。中间那条最快，是因为它只写了内存；最慢那条每次都在等磁盘确认。")
+
+
+def chart_pagecache():
+    inner = frame("一次 write 之后，数据在哪", "时间", "")
+    inner.append(text(0, 44, "write() 返回成功", size=12, weight="700", color=ACCENT))
+    inner.append(text(0, 62, "数据在 page cache（内核内存），此时进程崩溃不丢", size=11, color=MUTED))
+    inner.append(f'<line x1="0" y1="78" x2="{W-20}" y2="78" stroke="{GRID}" stroke-width="1"/>')
+    inner.append(text(0, 104, "↓  脏页积累到 dirty_ratio（本机 20%）或被回收", size=11, color=MUTED))
+    inner.append(text(0, 140, "内核 writeback 线程回写磁盘", size=12, weight="700", color=WARN))
+    inner.append(text(0, 158, "此时断电才会丢；fsync 强行把这一步提前并等它完成", size=11, color=MUTED))
+    inner.append(f'<line x1="0" y1="174" x2="{W-20}" y2="174" stroke="{GRID}" stroke-width="1"/>')
+    inner.append(text(0, 200, "↓  块设备确认", size=11, color=MUTED))
+    inner.append(text(0, 236, "数据真正在盘上", size=12, weight="700", color=ACCENT))
+    inner.append(text(0, 254, "本机 O_DIRECT 直写只有 69.7 MB/s，这才是这块盘的速度", size=11, color=MUTED))
+    inner.append(text(0, 290, "同一个 8 MB：buffered 8.91 ms ｜ fsync 14,820 ms ｜ 差 1,663 倍", size=12, weight="700", color=WARN))
+    return wrap(inner, "write 的三个落点：页缓存 → 回写 → 磁盘确认")
+
 CHARTS = {
     "growth": chart_growth,
     "sort": chart_sort,
@@ -365,6 +394,9 @@ CHARTS = {
     "pipeline": chart_pipeline,
     "tcp_timeline": chart_tcp_timeline,
     "cert_chain": chart_cert_chain,
+    "fork": chart_fork,
+    "fsync": chart_fsync,
+    "pagecache": chart_pagecache,
 }
 
 

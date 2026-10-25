@@ -23,12 +23,15 @@ def check_links():
     total = 0
     for f in DOCS.rglob("*.md"):
         txt = strip_code(f.read_text(encoding="utf-8"))
-        for m in re.finditer(r"\]\(([^)]+)\)", txt):
-            target = m.group(1).split("#")[0].strip()
-            if not target or target.startswith(("http", "mailto:")):
+        targets = [m.group(1) for m in re.finditer(r"\]\(([^)]+)\)", txt)]
+        # kb-chain 用 HTML 锚点，markdown 正则看不到，单独抓一遍
+        targets += [m.group(1) for m in re.finditer(r'<a href="([^"]+)"', txt)]
+        for raw in targets:
+            target = raw.split("#")[0].strip()
+            if not target or target.startswith(("http", "mailto:", "/")):
                 continue
             total += 1
-            p = DOCS / target.lstrip("/") if target.startswith("/") else f.parent / target
+            p = f.parent / target
             if not p.exists():
                 bad.append((str(f.relative_to(ROOT)), target))
     return total, bad
@@ -60,7 +63,7 @@ def main():
         "历史", "政治", "哲学", "文化",
         "运营", "单位经济", "项目管理", "产品的",
         "钱", "健康", "事务", "家", "娱乐",
-        "开发", "测试", "运维", "设计", "计算机", "算法与数据结构",
+        "开发", "测试", "运维", "设计", "计算机", "算法与数据结构", "操作系统",
         "TCP-IP", "网络通信", "安全",
         "AI", "机器人",
         "通用基础", "数学", "逻辑",
@@ -69,7 +72,7 @@ def main():
             d = DOCS / "商业" / subject
         elif subject in ("钱", "健康", "事务", "家", "娱乐"):
             d = DOCS / "日常" / subject
-        elif subject in ("开发", "测试", "运维", "设计", "计算机", "算法与数据结构"):
+        elif subject in ("开发", "测试", "运维", "设计", "计算机", "算法与数据结构", "操作系统"):
             d = DOCS / "工程" / subject
         elif subject in ("TCP-IP", "网络通信", "安全"):
             d = DOCS / "网络" / subject
@@ -127,7 +130,7 @@ def main():
         if subject in (
             "运营", "单位经济", "项目管理", "产品的",
             "钱", "健康", "事务", "家", "娱乐",
-            "开发", "测试", "运维", "设计", "计算机", "算法与数据结构",
+            "开发", "测试", "运维", "设计", "计算机", "算法与数据结构", "操作系统",
             "TCP-IP", "网络通信", "安全", "AI", "机器人",
             "通用基础", "数学", "逻辑",
         ):
@@ -142,7 +145,7 @@ def main():
 
     # 新四域：每学科 2–3 条链，每链恰好 4 页
     TECH_SUBJECTS = (
-        "开发", "测试", "运维", "设计", "计算机", "算法与数据结构",
+        "开发", "测试", "运维", "设计", "计算机", "算法与数据结构", "操作系统",
         "TCP-IP", "网络通信", "安全", "AI", "机器人",
         "通用基础", "数学", "逻辑",
     )

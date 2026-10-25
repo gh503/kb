@@ -96,6 +96,7 @@ nav:
           - 基础/逻辑/index.md
   - 工程:
       - 工程/index.md
+      - 速查: 工程/速查.md
       - 设计:
           - 工程/设计/index.md
       - 开发:

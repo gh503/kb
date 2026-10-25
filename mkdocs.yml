@@ -1,0 +1,63 @@
+# 站点配置。换名字/换地址只改 site_name、site_url、repo_url 三行。
+site_name: 知识库
+site_description: 一个可搜索、可持续迭代的个人知识库
+site_url: https://gh503.github.io/kb/
+repo_url: https://github.com/gh503/kb
+repo_name: gh503/kb
+edit_uri: edit/main/docs/
+copyright: 内容持续修订中
+
+theme:
+  name: material
+  language: zh
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: 切换到深色模式
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: 切换到浅色模式
+  features:
+    - navigation.tracking
+    - navigation.sections
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - toc.follow
+
+plugins:
+  - search:
+      lang:
+        - zh
+        - en
+
+markdown_extensions:
+  - admonition
+  - tables
+  - attr_list
+  - md_in_html
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - toc:
+      permalink: true
+
+nav:
+  - 首页: index.md
+  - 使用指南:
+      - 快速开始: guide/getting-started.md
+      - 写作规范: guide/writing.md
+  - 知识条目:
+      - 示例条目: notes/example.md
+  - 关于:
+      - 更新日志: about/changelog.md

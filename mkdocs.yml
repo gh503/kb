@@ -32,6 +32,7 @@ theme:
     - search.suggest
     - search.highlight
     - content.code.copy
+    - content.action.edit
     - toc.follow
 
 plugins:

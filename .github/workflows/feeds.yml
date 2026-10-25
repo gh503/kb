@@ -1,0 +1,43 @@
+name: 抓取订阅
+
+on:
+  schedule:
+    - cron: "0 23 * * *"   # UTC 23:00 = 北京时间 07:00
+  workflow_dispatch:
+    inputs:
+      backfill:
+        description: 回填各源当前保留的全部条目
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: feeds
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 抓取
+        run: python scripts/fetch_feeds.py ${{ inputs.backfill && '--backfill' || '' }}
+
+      - name: 提交
+        run: |
+          git add docs/订阅
+          if git diff --cached --quiet; then
+            echo "没有新条目，不提交"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "订阅：$(TZ=Asia/Shanghai date +%F) 抓取"
+          git push

@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='utf-8'?>
+<opml version="2.0">
+  <head>
+    <title>信息源（7 类 / sources.yaml）</title>
+    <ownerName>gh503</ownerName>
+  </head>
+  <body>
+    <outline text="世界与格局" title="世界与格局">
+      <outline type="rss" text="BBC World" title="BBC World" xmlUrl="https://feeds.bbci.co.uk/news/world/rss.xml" />
+      <outline type="rss" text="BBC 中文" title="BBC 中文" xmlUrl="https://feeds.bbci.co.uk/zhongwen/simp/rss.xml" />
+      <outline type="rss" text="Guardian World" title="Guardian World" xmlUrl="https://www.theguardian.com/world/rss" />
+      <outline type="rss" text="Al Jazeera" title="Al Jazeera" xmlUrl="https://www.aljazeera.com/xml/rss/all.xml" />
+      <outline type="rss" text="France24" title="France24" xmlUrl="https://www.france24.com/en/rss" />
+      <outline type="rss" text="联合国新闻中文" title="联合国新闻中文" xmlUrl="https://news.un.org/feed/subscribe/zh/news/all/rss.xml" />
+      <outline type="rss" text="德国之声中文" title="德国之声中文" xmlUrl="https://rss.dw.com/rdf/rss-chi-all" />
+      <outline type="rss" text="NYT 中文网" title="NYT 中文网" xmlUrl="https://cn.nytimes.com/rss/" />
+      <outline type="rss" text="端传媒" title="端传媒" xmlUrl="https://theinitium.com/feed/" />
+      <outline type="rss" text="Foreign Affairs" title="Foreign Affairs" xmlUrl="https://www.foreignaffairs.com/rss.xml" />
+    </outline>
+    <outline text="政策与民生" title="政策与民生">
+      <outline type="rss" text="新华网 时政" title="新华网 时政" xmlUrl="http://www.news.cn/politics/news_politics.xml" />
+      <outline type="rss" text="人民网 时政" title="人民网 时政" xmlUrl="http://www.people.com.cn/rss/politics.xml" />
+      <outline type="rss" text="中国新闻网" title="中国新闻网" xmlUrl="https://www.chinanews.com.cn/rss/scroll-news.xml" />
+      <outline type="rss" text="界面新闻" title="界面新闻" xmlUrl="https://a.jiemian.com/index.php?m=article&amp;a=rss" />
+      <outline type="rss" text="经济观察报" title="经济观察报" xmlUrl="http://www.eeo.com.cn/rss.xml" />
+      <outline type="rss" text="统计局" title="统计局" xmlUrl="https://www.stats.gov.cn/sj/zxfb/rss.xml" />
+    </outline>
+    <outline text="科技与未来" title="科技与未来">
+      <outline type="rss" text="Ars Technica" title="Ars Technica" xmlUrl="https://feeds.arstechnica.com/arstechnica/index" />
+      <outline type="rss" text="Hacker News" title="Hacker News" xmlUrl="https://hnrss.org/frontpage" />
+      <outline type="rss" text="MIT Tech Review" title="MIT Tech Review" xmlUrl="https://www.technologyreview.com/feed/" />
+      <outline type="rss" text="Simon Willison" title="Simon Willison" xmlUrl="https://simonwillison.net/atom/everything/" />
+      <outline type="rss" text="量子位" title="量子位" xmlUrl="https://www.qbitai.com/feed" />
+      <outline type="rss" text="IT之家" title="IT之家" xmlUrl="https://www.ithome.com/rss/" />
+      <outline type="rss" text="Solidot" title="Solidot" xmlUrl="https://www.solidot.org/index.rss" />
+      <outline type="rss" text="少数派" title="少数派" xmlUrl="https://sspai.com/feed" />
+    </outline>
+    <outline text="深度与思想" title="深度与思想">
+      <outline type="rss" text="Astral Codex Ten" title="Astral Codex Ten" xmlUrl="https://www.astralcodexten.com/feed" />
+      <outline type="rss" text="Slow Boring" title="Slow Boring" xmlUrl="https://www.slowboring.com/feed" />
+      <outline type="rss" text="LessWrong" title="LessWrong" xmlUrl="https://www.lesswrong.com/feed.xml" />
+      <outline type="rss" text="Overcoming Bias" title="Overcoming Bias" xmlUrl="https://www.overcomingbias.com/feed" />
+      <outline type="rss" text="Import AI" title="Import AI" xmlUrl="https://importai.substack.com/feed" />
+      <outline type="rss" text="阮一峰周刊" title="阮一峰周刊" xmlUrl="https://www.ruanyifeng.com/blog/atom.xml" />
+    </outline>
+    <outline text="经济与生活" title="经济与生活">
+      <outline type="rss" text="Our World in Data" title="Our World in Data" xmlUrl="https://ourworldindata.org/atom.xml" />
+      <outline type="rss" text="Marginal Revolution" title="Marginal Revolution" xmlUrl="https://marginalrevolution.com/feed" />
+      <outline type="rss" text="FT" title="FT" xmlUrl="https://www.ft.com/rss/home" />
+      <outline type="rss" text="The Economist" title="The Economist" xmlUrl="https://www.economist.com/finance-and-economics/rss.xml" />
+    </outline>
+    <outline text="健康与科学" title="健康与科学">
+      <outline type="rss" text="Nature" title="Nature" xmlUrl="https://www.nature.com/nature.rss" />
+      <outline type="rss" text="Science News" title="Science News" xmlUrl="https://www.sciencenews.org/feed" />
+      <outline type="rss" text="Quanta" title="Quanta" xmlUrl="https://api.quantamagazine.org/feed/" />
+      <outline type="rss" text="Pew Research" title="Pew Research" xmlUrl="https://www.pewresearch.org/feed/" />
+    </outline>
+    <outline text="监测" title="监测">
+      <outline type="rss" text="OpenAI Blog" title="OpenAI Blog" xmlUrl="https://openai.com/blog/rss.xml" />
+      <outline type="rss" text="HuggingFace" title="HuggingFace" xmlUrl="https://huggingface.co/blog/feed.xml" />
+      <outline type="rss" text="arXiv cs.AI" title="arXiv cs.AI" xmlUrl="http://export.arxiv.org/rss/cs.AI" />
+    </outline>
+  </body>
+</opml>

@@ -63,6 +63,10 @@ markdown_extensions:
         kwds:
           case: lower
 
+# 自动生成的每日归档不进 nav（由 订阅/index.md 链接过去），但也不能触发「漏进 nav」的警告
+not_in_nav: |
+  /订阅/2*.md
+
 # 页面没进 nav 时报 WARN；配合 CI 的 --strict 就是硬错误，页面不会悄悄消失。
 validation:
   nav:
@@ -138,6 +142,7 @@ nav:
           - 日常/生活/index.md
       - 娱乐:
           - 日常/娱乐/index.md
+  - 订阅: 订阅/index.md
   - 关于:
       - 关于/index.md
       - 快速开始: 关于/快速开始.md

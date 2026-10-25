@@ -56,8 +56,8 @@ def main():
         problems.append(f"断链: {f} -> {t}")
 
     chains = defaultdict(list)
-    for subject in ("历史", "政治", "哲学", "文化"):
-        d = DOCS / "人文" / subject
+    for subject in ("历史", "政治", "哲学", "文化", "运营", "单位经济", "项目管理", "产品的"):
+        d = DOCS / "商业" / subject if subject in ("运营", "单位经济", "项目管理", "产品的") else DOCS / "人文" / subject
         if not d.exists():
             continue
         es = entries(d)
@@ -69,13 +69,17 @@ def main():
             problems.append(f"{subject}: 索引行 {len(rows)} != 条目 {len(es)}")
         for e in es:
             txt = e.read_text(encoding="utf-8")
-            if "> **学段" not in txt:
-                problems.append(f"{subject}/{e.name}: 缺学段表头")
-            if "## 事实与判断" not in txt:
-                problems.append(f"{subject}/{e.name}: 缺事实与判断小节")
+            if "> **学段" in txt:
+                if "## 事实与判断" not in txt:
+                    problems.append(f"{subject}/{e.name}: 缺事实与判断小节")
+            elif "> **深度" in txt:
+                if "## 证据强度" not in txt:
+                    problems.append(f"{subject}/{e.name}: 缺证据强度小节")
+            else:
+                problems.append(f"{subject}/{e.name}: 缺表头（学段或深度）")
             if rows and e.name not in linked:
                 problems.append(f"{subject}/{e.name}: 索引里没有这一行")
-            m = re.search(r"> \*\*学段\*\* ([^｜]+)｜.*?链\*\* (.+)", txt)
+            m = re.search(r"> \*\*(?:学段|深度)\*\* ([^｜]+)｜.*?链\*\* (.+)", txt)
             if m:
                 chains[(subject, m.group(2).strip())].append((m.group(1).strip(), e.stem))
 
@@ -84,6 +88,8 @@ def main():
         levels = [lv for lv, _ in pages]
         if len(pages) < 3:
             problems.append(f"链 {subject}/{name}: 只有 {len(pages)} 页")
+        if subject in ("运营", "单位经济", "项目管理", "产品的"):
+            continue  # 商业域按深度分层，不按学段
         missing = [lv for lv in LEVELS if lv not in levels]
         if missing:
             print(f"  {subject}/{name}: {len(pages)} 页，缺 {', '.join(missing)}")

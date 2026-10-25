@@ -68,6 +68,7 @@ not_in_nav: |
   /订阅/2*.md
   /自然/*/*.md
   /人文/*/*.md
+  /商业/*/*.md
 
 # 页面没进 nav 时报 WARN；配合 CI 的 --strict 就是硬错误，页面不会悄悄消失。
 validation:
@@ -116,6 +117,8 @@ nav:
       - 商业/index.md
       - 运营:
           - 商业/运营/index.md
+      - 单位经济:
+          - 商业/单位经济/index.md
       - 项目管理:
           - 商业/项目管理/index.md
   - 人文:

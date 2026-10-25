@@ -1,0 +1,101 @@
+#!/usr/bin/env python3
+"""KB 体检：断链、索引行、学段表头、事实与判断、链完整性。
+
+用法：python3 scripts/check_kb.py
+退出码 0 = 全部通过；1 = 有问题。
+"""
+import pathlib
+import re
+import sys
+from collections import defaultdict
+
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+DOCS = ROOT / "docs"
+LEVELS = ["小学–初中", "初中–高中", "高中–大学", "大学–研究生"]
+
+
+def strip_code(text: str) -> str:
+    return re.sub(r"```.*?```", "", text, flags=re.S)
+
+
+def check_links():
+    bad = []
+    total = 0
+    for f in DOCS.rglob("*.md"):
+        txt = strip_code(f.read_text(encoding="utf-8"))
+        for m in re.finditer(r"\]\(([^)]+)\)", txt):
+            target = m.group(1).split("#")[0].strip()
+            if not target or target.startswith(("http", "mailto:")):
+                continue
+            total += 1
+            p = DOCS / target.lstrip("/") if target.startswith("/") else f.parent / target
+            if not p.exists():
+                bad.append((str(f.relative_to(ROOT)), target))
+    return total, bad
+
+
+def entries(subject_dir: pathlib.Path):
+    return sorted(p for p in subject_dir.glob("*.md") if p.name != "index.md")
+
+
+def index_rows(index_path: pathlib.Path):
+    """只数「## 条目」到下一个同级标题之间的表格行。"""
+    txt = index_path.read_text(encoding="utf-8")
+    m = re.search(r"^## 条目\n(.*?)(?=^## |\Z)", txt, flags=re.S | re.M)
+    if not m:
+        return []
+    return re.findall(r"^\| \[([^\]]+)\]\(([^)]+\.md)\)", m.group(1), flags=re.M)
+
+
+def main():
+    problems = []
+
+    total, bad = check_links()
+    print(f"内部链接 {total} 条，断链 {len(bad)} 条")
+    for f, t in bad:
+        problems.append(f"断链: {f} -> {t}")
+
+    chains = defaultdict(list)
+    for subject in ("历史", "政治", "哲学", "文化"):
+        d = DOCS / "人文" / subject
+        if not d.exists():
+            continue
+        es = entries(d)
+        idx = d / "index.md"
+        rows = index_rows(idx) if idx.exists() else []
+        linked = {name for _, name in rows} if rows else set()
+        print(f"{subject}: 条目 {len(es)} 个，索引行 {len(rows)} 条")
+        if rows and len(rows) != len(es):
+            problems.append(f"{subject}: 索引行 {len(rows)} != 条目 {len(es)}")
+        for e in es:
+            txt = e.read_text(encoding="utf-8")
+            if "> **学段" not in txt:
+                problems.append(f"{subject}/{e.name}: 缺学段表头")
+            if "## 事实与判断" not in txt:
+                problems.append(f"{subject}/{e.name}: 缺事实与判断小节")
+            if rows and e.name not in linked:
+                problems.append(f"{subject}/{e.name}: 索引里没有这一行")
+            m = re.search(r"> \*\*学段\*\* ([^｜]+)｜.*?链\*\* (.+)", txt)
+            if m:
+                chains[(subject, m.group(2).strip())].append((m.group(1).strip(), e.stem))
+
+    print(f"\n链 {len(chains)} 条")
+    for (subject, name), pages in chains.items():
+        levels = [lv for lv, _ in pages]
+        if len(pages) < 3:
+            problems.append(f"链 {subject}/{name}: 只有 {len(pages)} 页")
+        missing = [lv for lv in LEVELS if lv not in levels]
+        if missing:
+            print(f"  {subject}/{name}: {len(pages)} 页，缺 {', '.join(missing)}")
+
+    if problems:
+        print(f"\n发现 {len(problems)} 个问题：")
+        for p in problems:
+            print("  -", p)
+        return 1
+    print("\n全部通过。")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -191,9 +191,12 @@ def _bar_chart(title, labels, values, unit, logbar=True, note=""):
     x0, x1 = 190, W - 40
     y = PAD_T + 20
     vmax = max(values)
+    positives = [v for v in values if v > 0]
+    floor = min(positives) * 0.8 if positives else 1.0
     for label, v in zip(labels, values):
-        frac = (math.log10(v) - math.log10(min(values) * 0.8)) / (
-            math.log10(vmax) - math.log10(min(values) * 0.8))
+        # 零值只用几何占位（画成 0 宽），文字仍显示真实值
+        vv = v if v > 0 else floor
+        frac = (math.log10(vv) - math.log10(floor)) / (math.log10(vmax) - math.log10(floor))
         w = frac * (x1 - x0)
         inner.append(text(x0 - 10, y + 15, label, size=12, anchor="end", color=INK))
         inner.append(f'<rect x="{x0}" y="{y}" width="{w:.1f}" height="22" rx="4" fill="{ACCENT if v == min(values) else WARN}" opacity="0.85"/>')
@@ -531,6 +534,19 @@ def chart_strings():
                       ["-O2 无调试信息", "-O0 -g 带调试信息"], [59, 112], "条",
                       note="带 -g 时几乎翻倍，源码路径、变量名、断言文本全部留在产物里。")
 
+def chart_host_surface():
+    return _bar_chart("一台笔记本的暴露面（本机盘点）",
+                      ["运行服务", "监听 socket", "其中对外", "SUID/SGID 文件"],
+                      [40, 24, 9, 23], "个",
+                      note="对外 9 个里包含 mDNS、DHCP 与两个应用自起的高位端口。")
+
+
+def chart_hw_status():
+    return _bar_chart("本机 17 项 CPU 漏洞的缓解状态（/sys 实测）",
+                      ["Mitigation（有缓解）", "Not affected（不受影响）", "Vulnerable（无缓解）"],
+                      [12, 5, 0], "项",
+                      note="12 项有缓解，其中 4 项以关闭超线程为代价；没有裸露的 Vulnerable。")
+
 CHARTS = {
     "growth": chart_growth,
     "sort": chart_sort,
@@ -555,6 +571,8 @@ CHARTS = {
     "gd": chart_gd,
     "deps": chart_deps,
     "strings": chart_strings,
+    "host_surface": chart_host_surface,
+    "hw_status": chart_hw_status,
     "mc_error": chart_mc_error,
     "clt": chart_clt,
     "ci_coverage": chart_ci_coverage,

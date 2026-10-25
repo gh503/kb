@@ -112,6 +112,13 @@ def main():
             if m:
                 chains[(subject, m.group(2).strip())].append((m.group(1).strip(), e.stem))
 
+    # 索引页不得有重复小节（曾出现两个「## 链」）
+    for idx in DOCS.rglob("index.md"):
+        heads = re.findall(r"^## (.+)$", idx.read_text(encoding="utf-8"), flags=re.M)
+        dup = {h for h in heads if heads.count(h) > 1}
+        for h in sorted(dup):
+            problems.append(f"{idx.relative_to(DOCS)}: 小节「## {h}」重复 {heads.count(h)} 次")
+
     print(f"\n链 {len(chains)} 条")
     for (subject, name), pages in chains.items():
         levels = [lv for lv, _ in pages]
@@ -132,6 +139,23 @@ def main():
         missing = [lv for lv in LEVELS if lv not in levels]
         if missing:
             print(f"  {subject}/{name}: {len(pages)} 页，缺 {', '.join(missing)}")
+
+    # 新四域：每学科 2–3 条链，每链恰好 4 页
+    TECH_SUBJECTS = (
+        "开发", "测试", "运维", "设计",
+        "TCP-IP", "网络通信", "安全", "AI", "机器人",
+        "通用基础", "数学", "逻辑",
+    )
+    by_subject = defaultdict(set)
+    for (subject, name) in chains:
+        by_subject[subject].add(name)
+    for subject in TECH_SUBJECTS:
+        n = len(by_subject.get(subject, ()))
+        if n and not 2 <= n <= 3:
+            problems.append(f"{subject}: 链 {n} 条，不在 2–3 条区间")
+    for (subject, name), pages in chains.items():
+        if subject in TECH_SUBJECTS and len(pages) != 4:
+            problems.append(f"链 {subject}/{name}: {len(pages)} 页，应为 4 页")
 
     if problems:
         print(f"\n发现 {len(problems)} 个问题：")

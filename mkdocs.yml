@@ -69,6 +69,7 @@ not_in_nav: |
   /自然/*/*.md
   /人文/*/*.md
   /商业/*/*.md
+  /日常/*/*.md
 
 # 页面没进 nav 时报 WARN；配合 CI 的 --strict 就是硬错误，页面不会悄悄消失。
 validation:

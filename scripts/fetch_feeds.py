@@ -234,7 +234,9 @@ def main() -> int:
 
     ok = len(feeds) - len(fails)
     ts = datetime.now(CN)
-    (OUT / "index.md").write_text(render_index(days, (ok, len(feeds), fails, ts)), encoding="utf-8")
+    # 没有新条目就不重写索引——否则每天的运行时间戳会造出一个空提交
+    if added or not (OUT / "index.md").exists():
+        (OUT / "index.md").write_text(render_index(days, (ok, len(feeds), fails, ts)), encoding="utf-8")
     if undated:
         print(f"跳过 {undated} 条无日期的条目（回填时不猜日期）")
     print(f"新增 {added} 条 · 归档 {len(days)} 天 · 共 {sum(len(v) for v in days.values())} 条"

@@ -943,6 +943,108 @@ def chart_collinear():
                       yticks=[0.01, 0.1, 1, 10], yfmt=lambda v: f"{v:g}")
 
 
+def chart_deriv_order():
+    hs = [1e-1, 1e-2, 1e-3, 1e-4, 1e-6]
+    fwd = [4.294e-02, 4.216e-03, 4.208e-04, 4.207e-05, 4.207e-07]
+    ctr = [9.001e-04, 9.005e-06, 9.005e-08, 9.004e-10, 2.772e-11]
+    return line_chart("同样缩 10 倍的 h：前向差 10 倍，中心差 100 倍（本机实测）", "步长 h（对数）",
+                      "绝对误差（对数）", hs,
+                      [("前向差分 ∝ h", fwd, WARN, None), ("中心差分 ∝ h²", ctr, ACCENT, None)],
+                      note="h=1e-4 时 4.2e-5 vs 9.0e-10：多算一次函数值，换来四个数量级",
+                      logx=True, logy=True,
+                      xticks=[1e-6, 1e-4, 1e-2, 1e-1], xfmt=lambda v: f"{v:g}",
+                      yticks=[1e-11, 1e-8, 1e-5, 1e-2], yfmt=lambda v: f"{v:.0e}")
+
+
+def chart_gd_steps():
+    kappas = [2, 10, 100]
+    return line_chart("条件数每涨 10 倍，梯度下降就要多走 10 倍步数（本机实测）", "条件数（对数）",
+                      "到 1e-6 的步数（对数）", kappas,
+                      [("梯度下降", [13, 71, 709], ACCENT, None)],
+                      note="牛顿法在二次函数上 1 步到位，但每步 O(n³)：总代价要乘起来算",
+                      logx=True, logy=True, xticks=kappas,
+                      xfmt=lambda v: str(int(v)),
+                      yticks=[10, 100, 1000], yfmt=lambda v: f"{v:g}")
+
+
+def chart_taylor():
+    xs = [1, 5, 10]
+    return col_chart("e^x 的泰勒展开：x 越大越不可信（本机实测，取 20 项）",
+                     ["x=1", "x=5", "x=10"],
+                     [("绝对误差", [4.44e-16, 1.20e-05, 35.0], WARN)], "",
+                     note="x=10 时取 20 项误差还有 35；收敛半径之外讨论「几项够」没有意义",
+                     logy=True)
+
+
+def chart_float_loss():
+    return hbar_chart("三种浮点事故的严重程度（本机 Python 输出）",
+                      ["0.1+0.2 与 0.3 的差", "(1e16+1) 被吃掉", "sqrt(1e16+1)−1e8 相消"],
+                      [5.55e-17, 1.0, 5.0e-9], "",
+                      note="第三项真值 5e-9 却被算成 0：改写公式后才拿得到这个数")
+
+
+def chart_riemann():
+    ns = [10, 40, 160]
+    trap = [1.648e-02, 1.028e-03, 6.426e-05]
+    simp = [1.095e-04, 4.231e-07, 1.652e-09]
+    return line_chart("段数翻 4 倍：梯形降到 1/16，辛普森降到 1/256（本机实测）", "分段数 n（对数）",
+                      "绝对误差（对数）", ns,
+                      [("梯形 O(h²)", trap, WARN, None), ("辛普森 O(h⁴)", simp, ACCENT, None)],
+                      note="同样 160 段：6.4e-5 vs 1.7e-9，差 39,000 倍",
+                      logx=True, logy=True, xticks=ns, xfmt=lambda v: str(int(v)),
+                      yticks=[1e-9, 1e-7, 1e-5, 1e-3], yfmt=lambda v: f"{v:.0e}")
+
+
+def chart_hardening():
+    return strip_chart("四项基线加固各挡什么（本机编译产物实测）",
+                       ["挡固定地址", "挡栈溢出", "挡 GOT 改写", "挡栈上执行"],
+                       [("PIE", [3, 1, 1, 1], ""),
+                        ("栈保护", [1, 3, 1, 1], ""),
+                        ("full RELRO", [1, 1, 3, 1], ""),
+                        ("NX", [1, 1, 1, 3], "")],
+                       note="3=该项主要作用。四项齐全只算基线，不是「安全」。")
+
+
+def chart_hardening_cost():
+    return col_chart("加固的代价：体积几乎不变（本机实测）",
+                     ["无加固", "PIE + canary + RELRO"],
+                     [("字节", [15936, 16056], ACCENT)], "B",
+                     note="只多 120 字节（0.75%）；性能影响 1%–3%，属于「几乎免费必须做」")
+
+
+def chart_aslr_entropy():
+    return col_chart("ASLR 关掉之后，栈地址完全固定（本机实测）",
+                     ["开 ASLR 三次", "关 ASLR 三次"],
+                     [("不同地址数", [3, 1], WARN)], "个",
+                     note="setarch -R 三次都是 7ffffffdd000：随机化一旦关闭，写死地址就成立",
+                     yticks=[0, 1, 2, 3])
+
+
+def chart_sec_tradeoff():
+    return strip_chart("四条常见安全措施各收什么税",
+                       ["延迟", "操作步骤", "排障难度", "兼容性"],
+                       [("全链路加密", [3, 1, 1, 2], ""),
+                        ("多因子认证", [1, 3, 1, 1], ""),
+                        ("最小权限", [1, 2, 3, 1], ""),
+                        ("严格输入校验", [1, 1, 2, 3], "")],
+                       note="3=代价大。排障难度最少被计入，却常是最大的一笔。")
+
+
+def chart_injection():
+    return col_chart("同一句输入，两种写法两种结果（本机 sqlite3）",
+                     ["拼接字符串", "参数化查询"],
+                     [("返回行数", [1, 0], WARN)], "行",
+                     note="本机表只有 1 行；换成 100 万行的表，拼接那条就是 100 万行泄漏",
+                     yticks=[0, 1])
+
+
+def chart_log_leak():
+    return col_chart("一次报错能带出多少结构信息（本机实测）",
+                     ["绝对路径", "世界可写文件", "监听 socket"],
+                     [("数量", [1, 0, 24], ACCENT)], "个",
+                     note="路径泄漏是 1 处，但它给的是目录结构；监听 24 个是最需要盘的暴露面")
+
+
 CHARTS = {
     "growth": chart_growth,
     "sort": chart_sort,
@@ -996,6 +1098,17 @@ CHARTS = {
     "power_iter": chart_power_iter,
     "matmul_cost": chart_matmul_cost,
     "collinear": chart_collinear,
+    "deriv_order": chart_deriv_order,
+    "gd_steps": chart_gd_steps,
+    "taylor": chart_taylor,
+    "float_loss": chart_float_loss,
+    "riemann": chart_riemann,
+    "hardening": chart_hardening,
+    "hardening_cost": chart_hardening_cost,
+    "aslr_entropy": chart_aslr_entropy,
+    "sec_tradeoff": chart_sec_tradeoff,
+    "injection": chart_injection,
+    "log_leak": chart_log_leak,
     "host_surface": chart_host_surface,
     "hw_status": chart_hw_status,
     "mc_error": chart_mc_error,

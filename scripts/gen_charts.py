@@ -1763,6 +1763,121 @@ SPECS = {
         series=[("95% 区间半宽（百分点）", [24.8, 7.8, 2.5, 0.8], ACCENT)], unit="pp",
         note="观察成功率 80%；样本涨 1000 倍，精度只涨 31 倍")),
 
+    "dep_float": ("col", dict(
+        title="声明 2 个依赖，实际装进 40 个：38 个浮动（本机实测）",
+        labels=["声明（==）", "实际安装", "浮动传递依赖"],
+        series=[("包数", [2, 40, 38], ACCENT)], unit="个",
+        note="lock 文件把这个差值钉死；没有它，一次 pip install 就可能换掉大版本")),
+    "race_loss": ("col", dict(
+        title="无锁丢更新 73.4%，加锁后 0 丢失（本机实测）",
+        labels=["无锁 实际值", "加锁 实际值"],
+        series=[("期望 80,000 时实际写入", [21255, 80000], WARN)], unit="次",
+        note="4 线程各 2 万次，中间插入让出点；丢掉的 58,745 次是静默的")),
+    "lock_cost": ("col", dict(
+        title="锁的代价：123 ms → 283 ms（2.3 倍，4 线程）",
+        labels=["无锁", "加锁"],
+        series=[("毫秒", [123, 283], ACCENT)], unit="ms",
+        note="正确性买到了，吞吐打了折；粒度按共享变量而不是按函数划分")),
+    "commit_size": ("col", dict(
+        title="216 次提交：平均 12.3 个文件，最大一次 312 个（本仓库实测）",
+        labels=["平均", "最大", "建议上限"],
+        series=[("文件数/次", [12.3, 312, 10], ACCENT)], unit="个",
+        note="回滚粒度 = 提交粒度；312 文件那次只能整体回滚", logy=True)),
+
+    "sysctl_knobs": ("col", dict(
+        title="能调的旋钮有 1320 个，改之前先量（本机实测）",
+        labels=["可调文件", "常用参数", "改前有对照"],
+        series=[("个数", [1320, 5, 0], WARN)], unit="个",
+        note="本机常用五个：swappiness 10、dirty 20/10、overcommit 0、somaxconn 4096")),
+    "cache_speed": ("col", dict(
+        title="页缓存命中后 7,000 MB/s：写进内存不等于落盘（本机实测）",
+        labels=["首次读", "第二次", "第三次"],
+        series=[("64 MB 读耗时 ms", [13, 9, 17], ACCENT)], unit="ms",
+        note="写 256 MB 后 Dirty 68→324 MB，一次 sync 2,170 ms（约 118 MB/s）")),
+    "fsync_pct": ("col", dict(
+        title="fsync 的分布比平均值有用：p50 3.76、p95 5.69、max 6.05 ms（本机实测）",
+        labels=["p50", "p95", "max"],
+        series=[("毫秒", [3.76, 5.69, 6.05], ACCENT)], unit="ms",
+        note="PSI io some avg300 = 26.55%：三成时间有进程在等 IO")),
+    "mem_headroom": ("col", dict(
+        title="24.5 GB 内存：可用 18.6 GB、页缓存 14.3 GB、swap 已用 3.6 GB（本机实测）",
+        labels=["总量", "可用", "页缓存", "swap 已用"],
+        series=[("GB", [24.5, 18.6, 14.3, 3.6], ACCENT)], unit="GB",
+        note="free 列小是正常的：页缓存可回收，看 available 与 PSI")),
+    "pool_curve": ("line", dict(
+        title="连接数到 4 就到顶：17,343 → 38,115 → 20,551 → 25,791 q/s（本机实测）",
+        xlab="并发连接数", ylab="查询/秒",
+        xs=[1, 4, 16, 32],
+        series=[("q/s", [17343, 38115, 20551, 25791], ACCENT, None)],
+        note="拐点在 4 附近（≈核数量级）；再往上加连接是自损")),
+    "index_gap": ("col", dict(
+        title="同一份数据两种写法差 24 倍：62.80 ms vs 2.61 ms（本机实测）",
+        labels=["LIKE 前缀", "范围查询", "热表范围"],
+        series=[("毫秒", [62.8, 2.61, 0.61], WARN)], unit="ms",
+        note="60 万行、d 上有索引；LIKE 默认不区分大小写，用不上 B 树", logy=True)),
+    "lag_resolution": ("col", dict(
+        title="心跳间隔就是延迟的分辨率：1 s 只能看清 1 s（本机计算）",
+        labels=["心跳 0.1 s", "心跳 1 s", "心跳 5 s"],
+        series=[("可分辨延迟 ms", [100, 1000, 5000], ACCENT)], unit="ms",
+        note="日写入 864k / 86.4k / 17.3k 行：精度是用写负载换的", logy=True)),
+
+    "tlb_steps": ("col", dict(
+        title="工作集越大越慢：64 KB 102 ns → 1 GB 231 ns（本机实测）",
+        labels=["64 KB", "4 MB", "32 MB", "256 MB", "1 GB"],
+        series=[("ns/次", [102, 154, 195, 193, 231], ACCENT)], unit="ns",
+        note="随机访问；台阶来自 TLB 与缓存未命中，2 MB 大页可放大 512 倍覆盖")),
+    "lockfree_gap": ("col", dict(
+        title="SPSC 无锁 31 ms vs 加锁 71 ms（10 万条，本机实测）",
+        labels=["deque 无锁", "加锁"],
+        series=[("毫秒", [31, 71], ACCENT)], unit="ms",
+        note="无锁的前提是两端各只有一个写者；MPMC 收益往往归零")),
+    "vdso_gap": ("col", dict(
+        title="vDSO 123 ns vs 系统调用 771 ns vs read 1,064 ns（本机实测）",
+        labels=["time.time (vDSO)", "getpid", "read(/dev/null)"],
+        series=[("ns/次", [123, 771, 1064], WARN)], unit="ns",
+        note="特权级切换是主要成本；批量系统调用能摊薄它")),
+    "prof_overhead": ("col", dict(
+        title="剖析不是免费的：0.33 s → 0.55 s（1.7 倍，本机实测）",
+        labels=["普通运行", "带 cProfile"],
+        series=[("秒", [0.33, 0.55], ACCENT)], unit="s",
+        note="check_links 占 62%、read_text 2,902 次调用占 30%")),
+    "algo_lookup": ("col", dict(
+        title="20 万条有序数组：查 1.22 µs，插 0.085 ms（慢 70 倍，本机实测）",
+        labels=["bisect 查找", "中间插入"],
+        series=[("微秒", [1.22, 85], WARN)], unit="µs",
+        note="插入要搬移 O(n)；跳表/平衡树就是为改而存在", logy=True)),
+    "bloom_bits": ("col", dict(
+        title="布隆过滤器：1% 误判约 1.2 字节/元素，实测误判对得上公式（本机实测）",
+        labels=["1 万元素 p=1%", "10 万元素 p=1%", "1 万元素 p=10%"],
+        series=[("位数组 KB", [11.7, 117, 5.85], ACCENT)], unit="KB",
+        note="实测误判 1.00% / 1.12% / 9.97%；误判每降一个量级约多 1.4 倍空间")),
+    "extsort_cost": ("col", dict(
+        title="200 万整数：内存 1,057 ms vs 外部归并 3,058 ms（2.9 倍，本机实测）",
+        labels=["内存排序", "外部归并(10 块)"],
+        series=[("毫秒", [1057, 3058], WARN)], unit="ms",
+        note="结果完全一致；块越大归并路数越少，但每块要能进内存")),
+
+    "form_rtt": ("col", dict(
+        title="提交才报错：3 轮 × 80 ms RTT ≈ 240 ms 白等（计算）",
+        labels=["blur 即时提示", "提交才报错(3 轮)"],
+        series=[("额外等待 ms", [0, 240], WARN)], unit="ms",
+        note="本机 RTT 0.3–2.8 ms 有代理；跨地域按 80 ms 估")),
+    "index_weight": ("col", dict(
+        title="索引页 903 条：HTML 342 KB，搜索索引 5.7 MB（gzip 1.1 MB，本机实测）",
+        labels=["HTML", "搜索索引", "搜索索引 gzip"],
+        series=[("KB", [342, 5725, 1095], ACCENT)], unit="KB",
+        note="手机页高 97,514 px ≈ 108 屏；默认视图比筛选器更决定可用性", logy=True)),
+    "viewport_gap": ("col", dict(
+        title="同一篇文章：手机每行 35 字、桌面 49 字；索引页多滚 71%（本机实测）",
+        labels=["手机 390 页高", "桌面 1440 页高", "手机每行字数", "桌面每行字数"],
+        series=[("页高(百 px) / 每行字数", [975, 569, 35, 49], ACCENT)], unit="",
+        note="正文宽 390 vs 956 px；手指 44 px 与鼠标 1 px 是另一层差异")),
+    "a11y_pass": ("col", dict(
+        title="六项硬检查过了五项；正文链接 17/20 不足 24 px（本机实测）",
+        labels=["语言/标题/alt/层级/缩放", "键盘焦点", "点击高度 ≥24px"],
+        series=[("通过项数", [5, 11, 3], ACCENT)], unit="项",
+        note="对比度 15.51/7.29/5.43/5.24 全过 4.5:1；搜索框 outline 为 none")),
+
 }
 
 

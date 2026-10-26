@@ -2116,6 +2116,47 @@ SPECS = {
         series=[("ms", [18, 6, 12], ACCENT)], unit="ms",
         note="n=8，均值 0.360 s；误差棒必须标注是哪一种")),
 
+    "cost_tokens": ("col", dict(
+        title="整站 166 万 token，单页中位只有 616 token：检索替代全文是最大杠杆（本机实测）",
+        labels=["整站全文", "单页中位", "一次问答(3 段)"],
+        series=[("token", [1663036, 616, 1850], ACCENT)], unit="token",
+        note="1,214 页 / 266 万字符，按 1.6 字符/token 估", logy=True)),
+    "inject_recall": ("col", dict(
+        title="关键词过滤：原样召回 100%，加个空格掉到 82%（本机模拟）",
+        labels=["原样", "加空格改写", "误报"],
+        series=[("%", [100, 82, 0], WARN)], unit="%",
+        note="400 条合成样本；检测只能当加分项，不能当防线")),
+    "stream_time": ("col", dict(
+        title="流式的两个时间：首 token 570 ms，总时长 8,090 ms（本机模拟）",
+        labels=["TTFT", "总时长"],
+        series=[("ms", [570, 8090], ACCENT)], unit="ms",
+        note="5 s 总超时会砍掉 88% 的正常请求；超时按空闲计", logy=True)),
+    "route_cost": ("col", dict(
+        title="70/30 路由把成本压到 35%，准确率从 97% 掉到 92.1%（本机模拟）",
+        labels=["全用大模型", "70/30 路由"],
+        series=[("相对成本", [0.006, 0.0021], ACCENT)], unit="",
+        note="省下的成本确定，掉的 5 个点落在哪些请求上不确定")),
+    "grasp_force": ("col", dict(
+        title="摩擦决定夹紧力：0.5 kg 在 μ=0.5 时 4.91 N，μ=0.2 时要 12.26 N（计算）",
+        labels=["0.5kg μ0.5", "0.5kg μ0.2", "2.0kg μ0.5"],
+        series=[("单指最小力 N", [4.91, 12.26, 19.62], ACCENT)], unit="N",
+        note="两指平行夹持 F=mg/(2μ)；再加 1.5–2 倍安全系数")),
+    "battery_hours": ("col", dict(
+        title="50.2 Wh 的电池：20 W 撑 2.0 h，50 W 只有 0.8 h（本机实测）",
+        labels=["20 W", "50 W", "100 W"],
+        series=[("可用续航 h", [2.0, 0.8, 0.4], ACCENT)], unit="h",
+        note="按 80% 可用算；待机 2–8 W 也要计入平均功率")),
+    "queue_growth": ("col", dict(
+        title="加机器不是线性变快：N=20 时平均排队 80.6 台（本机模拟）",
+        labels=["N=2", "N=5", "N=10", "N=20"],
+        series=[("平均排队台数", [0.1, 1.0, 7.0, 80.6], WARN)], unit="台",
+        note="每台占用 0.8 s；ρ>0.8 后排队非线性上升", logy=True)),
+    "debug_cover": ("col", dict(
+        title="自动体检 0.36 s 覆盖 1,214 页，人工抽查一次要按小时计（本机实测）",
+        labels=["自动体检", "人工抽查(推断)"],
+        series=[("秒", [0.36, 1800], ACCENT)], unit="s",
+        note="自动检查能覆盖整片区域，人工只能抽样 —— 现场先跑脚本", logy=True)),
+
 }
 
 

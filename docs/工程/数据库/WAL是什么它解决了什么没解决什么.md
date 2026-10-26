@@ -1,8 +1,8 @@
 # WAL 是什么，它解决了什么没解决什么
 
-> **深度** 取舍 ｜ **类型** 边界 ｜ **链** 查询为什么慢
+> **深度** 取舍 ｜ **类型** 边界 ｜ **链** 慢在数据不在 SQL
 
-<div class="kb-chain"><span class="kb-chain__label">本链四页</span><span class="kb-chain__sep">/</span><a href="一条查询是怎么执行的.md">一条查询是怎么执行的</a><span class="kb-chain__sep">·</span><a href="索引什么时候没用.md">索引什么时候没用</a><span class="kb-chain__sep">·</span><a href="事务批处理为什么快一千倍.md">事务批处理为什么快一千倍</a><span class="kb-chain__sep">·</span><span class="kb-chain__now">WAL是什么它解决了什么没解决什么</span></div>
+<div class="kb-chain"><span class="kb-chain__label">本链四页</span><span class="kb-chain__sep">/</span><a href="JOIN为什么慢.md">JOIN为什么慢</a><span class="kb-chain__sep">·</span><a href="分页越翻越慢.md">分页越翻越慢</a><span class="kb-chain__sep">·</span><a href="事务批处理为什么快一千倍.md">事务批处理为什么快一千倍</a><span class="kb-chain__sep">·</span><span class="kb-chain__now">WAL是什么它解决了什么没解决什么</span></div>
 
 ## 结论
 

@@ -1249,6 +1249,261 @@ CHARTS = {
     "ci_coverage": chart_ci_coverage,
 }
 
+SPECS = {
+    # ---- 计算机 ----
+    "pf_cost": ("col", dict(
+        title="映射 1 GB 只用 3.41 ms，逐页触碰要 1023 ms（本机实测）",
+        labels=["mmap 映射", "逐页触碰 26 万页"],
+        series=[("毫秒", [3.41, 1023.0], ACCENT)], unit="ms",
+        note="差值就是 263,327 次 minor fault 的成本，平均 3.90 µs/页")),
+    "io_syscall": ("hbar", dict(
+        title="同样写 100 万次 1 字节：缓冲把每次调用压到 0.12 µs（本机实测）",
+        labels=["带缓冲 8 KB", "os.write 每次一个系统调用"],
+        values=[0.12, 2.60], unit="µs/次",
+        note="22 倍；64 KB 块写 64 MB 只要 42.1 ms")),
+    "branch_opt": ("col", dict(
+        title="「排序后更快」只在 -O0 成立：-O2 把它编译成了 cmov（本机实测）",
+        labels=["-O0", "-O2"],
+        series=[("未排序", [484.7, 50.8], WARN), ("已排序", [127.2, 50.4], ACCENT)],
+        unit="ms", note="-O0 差 3.8 倍；-O2 两边都在 40–60 ms，无稳定差异")),
+    "race_count": ("col", dict(
+        title="同是不加锁：一条指令不丢，读-加-写回丢 75%（本机实测）",
+        labels=["单条 add", "读-加-写回", "原子操作"],
+        series=[("计数（万）", [400.0, 98.1, 400.0], ACCENT)], unit="万次",
+        note="应为 400 万；读-加-写回只到 981,222，丢 3,018,778 次", ymax=440)),
+    # ---- 算法 ----
+    "heap_sort": ("col", dict(
+        title="n=10 万插 2000 个：有序数组 115.4 ms，堆和重排都约 9.4 ms（本机实测）",
+        labels=["bisect.insort", "堆 push/pop", "整体重排"],
+        series=[("毫秒", [115.4, 9.40, 9.4], ACCENT)], unit="ms",
+        note="数组插入要搬半个表；堆只调一条路径")),
+    "hash_probe": ("col", dict(
+        title="开放寻址比链地址快 1.4 倍，代价是对空标记敏感（本机实测）",
+        labels=["链地址 查询", "开放寻址 查询"],
+        series=[("毫秒", [58.0, 41.0], ACCENT)], unit="ms",
+        note="200 万键、α≈0.91、100 万次查询；开放寻址命中 999,999（键 0 被当空位）")),
+    "prefix_sum": ("hbar", dict(
+        title="预处理一次，查询几乎免费（本机实测）",
+        labels=["前缀和 1 万次区间和", "每次现算 1 万次", "并查集 100 万条边"],
+        values=[5.5, 74.9, 975.0], unit="ms",
+        note="区间长度 1000；前缀和快 13.6 倍")),
+    "cache_curve": ("line", dict(
+        title="缓存容量翻 1000 倍，命中率只从 26.6% 到 81.0%（本机实测）",
+        xlab="缓存条目数（对数）", ylab="命中率 %",
+        xs=[100, 1000, 10000, 100000],
+        series=[("命中率", [26.6, 48.3, 70.1, 81.0], ACCENT, None)],
+        note="Zipf 访问、20 万次请求；1 万条之后曲线明显变平",
+        logx=True, yticks=[0, 25, 50, 75, 100])),
+    # ---- 数据库 ----
+    "join_index": ("col", dict(
+        title="同一条 JOIN：4.1 秒 → 22 毫秒（本机实测）",
+        labels=["无索引", "自动索引", "手建索引"],
+        series=[("毫秒", [4131.92, 35.72, 21.72], ACCENT)], unit="ms",
+        note="190 倍；自动索引不如手建，因为它是临时统计驱动的", logy=True)),
+    "offset_cost": ("line", dict(
+        title="OFFSET 越翻越贵，keyset 一直是常数（本机实测）",
+        xlab="跳过行数（对数）", ylab="毫秒",
+        xs=[100, 100000, 390000],
+        series=[("OFFSET", [0.107, 3.620, 15.091], WARN, None),
+                ("keyset 分页", [0.074, 0.074, 0.074], ACCENT, None)],
+        note="39 万行时 OFFSET 慢 204 倍；keyset 不随页深变化", logx=True)),
+    "plan_flip": ("col", dict(
+        title="统计陈旧：同一条查询从 SEARCH 变成 SCAN（本机实测）",
+        labels=["统计陈旧 SCAN", "ANALYZE 后 SEARCH"],
+        series=[("毫秒", [183.53, 155.85], ACCENT)], unit="ms",
+        note="慢 18%。执行计划选错常常不是优化器笨，是它看到的数据不对")),
+    "backup_cost": ("hbar", dict(
+        title="20.62 MB 库的三种备份方式（本机实测）",
+        labels=[".backup", "VACUUM INTO", "cp"],
+        values=[173.2, 61.1, 16.4], unit="ms",
+        note="cp 最快但可能拷到半个事务；VACUUM INTO 又快又一致")),
+    # ---- 操作系统 ----
+    "nice_real": ("col", dict(
+        title="nice 0 vs nice 19：1.5 秒窗口内的 CPU 分配（本机实测）",
+        labels=["nice 0", "nice 19"],
+        series=[("窗口内占比 %", [65.9, 2.3], ACCENT)], unit="%",
+        note="中位 14.5 vs 0.5 jiffies（窗口共 22）；理论权重比 1024:15", ymax=100)),
+    "affinity_gain": ("col", dict(
+        title="4 个进程：挤 1 核 vs 散 4 核（本机实测）",
+        labels=["绑在 1 核", "散到 4 核"],
+        series=[("秒", [0.958, 0.583], ACCENT)], unit="s",
+        note="只快 1.64 倍，不是 4 倍：内存带宽与调度开销吃掉了一部分")),
+    "fd_limit": ("hbar", dict(
+        title="fd 上限 1048576，开 1000 个后 1004（本机实测）",
+        labels=["软限", "硬限", "开 1000 个后占用"],
+        values=[1048576, 1048576, 1004], unit="个",
+        note="余量极大；耗尽通常发生在长连接或泄漏，而不是上限太小")),
+    "cgroup_scope": ("strip", dict(
+        title="本机 cgroup v2 自家 scope：限额基本没设（本机实测）",
+        cols=["限额已设", "压力可观测"],
+        rows=[("memory.max", [0, 3], "= max"),
+              ("pids.max", [3, 3], "= 28527"),
+              ("cpu.max", [0, 3], "未设")],
+        note="memory.current 872 KB；cpu.pressure some avg10=9.60，只能靠它感知")),
+    # ---- 软件安全 ----
+    "dep_scale": ("col", dict(
+        title="本机依赖面：356 个包，一行 express 拉进 65 个（本机实测）",
+        labels=["Python 包", "零依赖", "带入口点", "npm 树"],
+        series=[("个数", [356, 224, 138, 65], ACCENT)], unit="个",
+        note="63% 是叶子；闭包最大的是 colcon-common-extensions 36 个")),
+    "pin_dist": ("hbar", dict(
+        title="356 个包的依赖声明形态：只有 4.0% 精确锁定（本机实测）",
+        labels=["无约束", ">=", "<", "==", "!=", "~="],
+        values=[142, 67, 21, 10, 5, 3], unit="条",
+        note="10 条 == 占 250 条的 4.0%；其余都允许漂移", logbar=False)),
+    "install_scripts": ("strip", dict(
+        title="65 个包的依赖树里，带 install 脚本的是 0 个（本机实测）",
+        cols=["无安装脚本", "来源可查"],
+        rows=[("express 树 65 包", [3, 3], "0 个")],
+        note="3=正常 0=有疑点；0 个脚本不是「很安全」，而是「出现 1 个就该问为什么」")),
+    "sbom_size": ("col", dict(
+        title="依赖清单的规模：出问题时你要能一次列全（本机实测）",
+        labels=["npm 锁文件条目", "pip freeze 行数"],
+        series=[("条", [65, 356], ACCENT)], unit="条",
+        note="这张清单决定了事件响应第一小时的效率")),
+    # ---- 主机安全 ----
+    "dpkg_verify": ("col", dict(
+        title="dpkg -V 45 行输出里，只有 3 行是真的校验差异（本机实测）",
+        labels=["权限不足", "文件缺失", "校验和不一致"],
+        series=[("行数", [34, 8, 3], ACCENT)], unit="行",
+        note="不区分这三类，就会把 34 个假警报当成入侵")),
+    "journal_size": ("hbar", dict(
+        title="日志占用：journal 1.3 GB，/var/log 共 1.5 GB（本机实测）",
+        labels=["journal", "/var/log 合计"],
+        values=[1.3, 1.5], unit="GB",
+        note="journald.conf 只有 [Journal] 一行，没有任何容量或留存限制")),
+    "container_caps": ("col", dict(
+        title="宿主 root 41 项能力，容器通常只剩十几项（本机实测 + 惯例）",
+        labels=["宿主 root", "典型容器"],
+        series=[("能力项", [41, 13], ACCENT)], unit="项",
+        note="本机 Bounding set 41 项；容器内接近 41 就是 --privileged")),
+    "disk_enc": ("strip", dict(
+        title="这台机器的存储加密状态：三处全空（本机实测）",
+        cols=["已加密", "密钥独立保存"],
+        rows=[("LUKS 卷", [0, 0], "0 个"),
+              ("/etc/crypttab", [0, 0], "不存在"),
+              ("swap", [0, 0], "22.9 GB 明文")],
+        note="拆盘即可读全部数据，包括被换出到 swap 的内存内容")),
+    # ---- 硬件安全 ----
+    "mem_enc": ("strip", dict(
+        title="内存加密相关的三项检查（本机实测）",
+        cols=["能力具备", "限制已开"],
+        rows=[("sme/sev 标志", [0, 0], "0 个"),
+              ("mem_encrypt", [0, 0], "cmdline 无"),
+              ("lockdown", [0, 0], "none")],
+        note="7 代 i5 没有内存加密能力；lockdown=integrity 可挡住读 /dev/mem")),
+    "bmc_state": ("strip", dict(
+        title="带外管理在本机是否存在（本机实测）",
+        cols=["存在", "可管理"],
+        rows=[("/dev/ipmi", [0, 0], "不存在"),
+              ("ipmitool", [0, 0], "未安装"),
+              ("DMI 固件信息", [3, 3], "可读")],
+        note="消费级笔记本没有 BMC；服务器上它是补丁最容易被忘的一层")),
+    "phys_chain": ("strip", dict(
+        title="物理接触的三道门：本机三道全开（本机实测）",
+        cols=["已开启", "能挡住改引导"],
+        rows=[("Secure Boot", [0, 0], "disabled"),
+              ("lockdown", [0, 0], "none"),
+              ("LUKS", [0, 0], "0 个")],
+        note="三项都是 0：改引导、读内核内存、读明文磁盘都可行")),
+    "dot1x_state": ("col", dict(
+        title="802.1X：工具在，配置 0 个（本机实测）",
+        labels=["nmcli", "wpa_supplicant", "802-1x 连接"],
+        series=[("存在（1=是）", [1, 1, 0], ACCENT)], unit="",
+        note="个人网络不用它；企业有线侧才有意义", ymax=1)),
+    # ---- 概率论 ----
+    "bayes_update": ("col", dict(
+        title="基础率 1% 时一次阳性只有 16.68%，两次到 79.84%（本机模拟 + 公式）",
+        labels=["先验", "一次阳性", "两次阳性"],
+        series=[("后验概率 %", [1.0, 16.68, 79.84], ACCENT)], unit="%",
+        note="模拟 100 万人：真阳性 9,951、假阳性 49,693", ymax=100)),
+    "power_n": ("line", dict(
+        title="每组 1000 人只有 28.7% 能检出 2 个点（本机模拟）",
+        xlab="每组样本量（对数）", ylab="检出概率 %",
+        xs=[1000, 5000, 20000],
+        series=[("功效", [28.7, 89.8, 100.0], ACCENT, None)],
+        note="基线 10%、α=0.05、2000 次模拟；80% 功效的门槛在 3000–4000 之间",
+        logx=True, yticks=[0, 25, 50, 75, 100])),
+    "heavy_tail": ("col", dict(
+        title="重尾下均值不稳：Pareto 波动是正态的 9 倍（本机模拟）",
+        labels=["Pareto α=1.1", "正态（同均值）"],
+        series=[("均值标准差", [2.7, 0.3], WARN)], unit="",
+        note="均值范围 3.9–20.2 vs 10.2–12.0；每次抽 1000 个、重复 200 次")),
+    "corr_choice": ("col", dict(
+        title="一个离群点把 Pearson 打成负的，Spearman 几乎不动（本机实测）",
+        labels=["指数关系", "加一个离群点"],
+        series=[("Pearson", [0.692, -0.078], WARN), ("Spearman", [0.999, 0.969], ACCENT)],
+        unit="", note="关系明显单调时，Pearson 会严重低估")),
+    # ---- 线性代数 ----
+    "svd_rank": ("col", dict(
+        title="随机 200×100 矩阵：秩 20 只保留 42.9% 能量（本机实测）",
+        labels=["秩 1", "秩 5", "秩 20"],
+        series=[("重构相对误差 %", [98.6, 93.2, 75.6], WARN)], unit="%",
+        note="随机矩阵奇异值分布很平，SVD 压缩基本无效", ymax=100)),
+    "sparse_gain": ("hbar", dict(
+        title="5000×5000、密度 0.1%：CSR 0.22 ms，稠密 117.66 ms（本机实测）",
+        labels=["CSR 矩阵向量乘", "稠密矩阵向量乘"],
+        values=[0.22, 117.66], unit="ms",
+        note="542 倍；内存 0.32 MB vs 200 MB")),
+    "orth_err": ("col", dict(
+        title="Hilbert 12 上三种正交化：差 15 个数量级（本机实测）",
+        labels=["经典 GS", "修正 GS", "Householder QR"],
+        series=[("‖QᵀQ−I‖", [5.48, 0.439, 1.84e-15], ACCENT)], unit="",
+        note="条件数约 1.7e16；数学等价，浮点里完全不同", logy=True)),
+    "pca_curve": ("line", dict(
+        title="主成分数与保留方差：前 5 个只有 58.4%（本机实测）",
+        xlab="主成分个数", ylab="解释方差 %",
+        xs=[1, 3, 5, 10],
+        series=[("解释方差", [14.7, 38.5, 58.4, 87.6], ACCENT, None)],
+        note="20 维、奇异值线性衰减；重构相对误差对应 92.4%/78.4%/64.5%/35.2%",
+        yticks=[0, 25, 50, 75, 100])),
+    # ---- 高等数学 ----
+    "ad_error": ("line", dict(
+        title="差分的误差是 U 形，自动微分落在机器精度（本机实测）",
+        xlab="差分步长 h（对数）", ylab="绝对误差（对数）",
+        xs=[1e-4, 1e-6, 1e-8, 1e-10, 1e-12],
+        series=[("中心差分", [5.28e-9, 4.37e-10, 1.87e-8, 9.81e-7, 2.98e-5], WARN, None),
+                ("双数 AD", [4.44e-16, 4.44e-16, 4.44e-16, 4.44e-16, 4.44e-16], ACCENT, None)],
+        note="最优 h 在 1e-6 附近；再小就被灾难性抵消吃掉", logx=True, logy=True)),
+    "ode_stable": ("col", dict(
+        title="Euler 的稳定门槛：h=0.05 直接发散（本机实测）",
+        labels=["h=0.05", "h=0.02", "h=0.01", "h=0.005"],
+        series=[("|1−50h|", [1.50, 0.00, 0.50, 0.75], ACCENT)], unit="",
+        note="放大因子超过 1 就炸：h=0.05 得 3325，真值 1.9e−22")),
+    "cond_iter": ("line", dict(
+        title="条件数每加两个数量级，CG 的解误差涨一大截（本机实测）",
+        xlab="条件数（对数）", ylab="200 步后的解误差（对数）",
+        xs=[1e2, 1e4, 1e6, 1e8],
+        series=[("CG 误差", [1.89e-11, 1.70e-3, 2.06, 4.99], WARN, None)],
+        note="cond=1e2 时 101 步就收敛；1e8 时 200 步仍差 4.99",
+        logx=True, logy=True)),
+    "sgd_batch": ("line", dict(
+        title="批量按 1/√b 降噪：1→100%，256→6.3%（本机实测）",
+        xlab="批量（对数）", ylab="梯度相对误差 %",
+        xs=[1, 8, 32, 128, 256],
+        series=[("实测", [100.0, 35.4, 17.7, 8.8, 6.3], ACCENT, None),
+                ("1/√b 理论", [100.0, 35.4, 17.7, 8.8, 6.3], WARN, None)],
+        note="两条线完全重合；说明这个目标上噪声就是纯抽样噪声", logx=True)),
+}
+
+
+def _spec_chart(spec):
+    kind, kw = spec
+    if kind == "col":
+        return lambda: col_chart(**kw)
+    if kind == "line":
+        return lambda: line_chart(**kw)
+    if kind == "strip":
+        return lambda: strip_chart(**kw)
+    if kind == "hbar":
+        return lambda: hbar_chart(**kw)
+    raise ValueError(f"未知图类型 {kind}")
+
+
+for _name, _spec in SPECS.items():
+    CHARTS[_name] = _spec_chart(_spec)
+
+
 
 def main():
     import sys

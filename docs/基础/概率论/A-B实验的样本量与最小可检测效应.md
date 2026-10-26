@@ -62,6 +62,38 @@ p=0.10、MDE=0.01 → 14400/组
 
 **"效应减半，样本量翻四倍"**：MDE 与 n 是平方关系，这是实验设计里最贵的一条。
 
+<!-- kb-chart:power_n -->
+
+<figure class="kb-figure">
+<svg viewBox="0 0 720 340" role="img" aria-label="基线 10%、α=0.05、2000 次模拟；80% 功效的门槛在 3000–4000 之间" xmlns="http://www.w3.org/2000/svg">
+<rect x="0" y="0" width="720" height="340" fill="none"/>
+<text x="0.0" y="14.0" font-size="13" text-anchor="start" fill="currentColor" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">每组 1000 人只有 28.7% 能检出 2 个点（本机模拟）</text>
+<text x="716.0" y="332.0" font-size="11" text-anchor="end" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">每组样本量（对数）</text>
+<text x="10.0" y="22.0" font-size="11" text-anchor="start" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">检出概率 %</text>
+<line x1="62" y1="294.0" x2="624" y2="294.0" stroke="var(--kb-line)" stroke-width="1"/>
+<text x="54.0" y="298.0" font-size="11" text-anchor="end" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">0</text>
+<line x1="62" y1="237.5" x2="624" y2="237.5" stroke="var(--kb-line)" stroke-width="1"/>
+<text x="54.0" y="241.5" font-size="11" text-anchor="end" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">25</text>
+<line x1="62" y1="181.0" x2="624" y2="181.0" stroke="var(--kb-line)" stroke-width="1"/>
+<text x="54.0" y="185.0" font-size="11" text-anchor="end" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">50</text>
+<line x1="62" y1="124.4" x2="624" y2="124.4" stroke="var(--kb-line)" stroke-width="1"/>
+<text x="54.0" y="128.4" font-size="11" text-anchor="end" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">75</text>
+<line x1="62" y1="67.9" x2="624" y2="67.9" stroke="var(--kb-line)" stroke-width="1"/>
+<text x="54.0" y="71.9" font-size="11" text-anchor="end" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">100</text>
+<line x1="62" y1="34" x2="62" y2="294" stroke="var(--kb-line)" stroke-width="1"/>
+<text x="68.4" y="312.0" font-size="11" text-anchor="middle" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">1000</text>
+<text x="145.0" y="312.0" font-size="11" text-anchor="middle" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">5000</text>
+<text x="432.4" y="312.0" font-size="11" text-anchor="middle" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">20000</text>
+<polyline points="68.4,229.1 145.0,91.0 432.4,67.9" fill="none" stroke="var(--kb-accent)" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="68.4" cy="229.1" r="3.2" fill="var(--kb-accent)"/>
+<circle cx="145.0" cy="91.0" r="3.2" fill="var(--kb-accent)"/>
+<circle cx="432.4" cy="67.9" r="3.2" fill="var(--kb-accent)"/>
+<text x="62.0" y="332.0" font-size="11" text-anchor="start" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">基线 10%、α=0.05、2000 次模拟；80% 功效的门槛在 3000–4000 之间</text>
+</svg>
+<figcaption>基线 10%、α=0.05、2000 次模拟；80% 功效的门槛在 3000–4000 之间</figcaption>
+</figure>
+
+
 ## 数字与阈值（本机实测）
 
 ```text

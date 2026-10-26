@@ -61,6 +61,34 @@ swap 明文 = 这些内容以明文落在盘上
 
 **"TPM 自动解锁"把威胁模型从'拆盘'变成'整机被拿走'"**：这时要配 Secure Boot + PCR 绑定才有意义。
 
+<!-- kb-chart:disk_enc -->
+
+<figure class="kb-figure">
+<svg viewBox="0 0 720 340" role="img" aria-label="拆盘即可读全部数据，包括被换出到 swap 的内存内容" xmlns="http://www.w3.org/2000/svg">
+<rect x="0" y="0" width="720" height="340" fill="none"/>
+<text x="0.0" y="14.0" font-size="13" text-anchor="start" fill="currentColor" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">这台机器的存储加密状态：三处全空（本机实测）</text>
+<text x="716.0" y="332.0" font-size="11" text-anchor="end" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif"></text>
+<text x="10.0" y="22.0" font-size="11" text-anchor="start" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif"></text>
+<text x="268.5" y="46.0" font-size="11" text-anchor="middle" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">已加密</text>
+<text x="505.5" y="46.0" font-size="11" text-anchor="middle" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">密钥独立保存</text>
+<text x="140.0" y="76.0" font-size="12" text-anchor="end" fill="currentColor" font-weight="600" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">LUKS 卷</text>
+<rect x="156.0" y="60" width="225.0" height="22" rx="4" fill="var(--kb-line)" opacity="0.25"/>
+<rect x="393.0" y="60" width="225.0" height="22" rx="4" fill="var(--kb-line)" opacity="0.25"/>
+<text x="628.0" y="75.0" font-size="10" text-anchor="start" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">0 个</text>
+<text x="140.0" y="106.0" font-size="12" text-anchor="end" fill="currentColor" font-weight="600" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">/etc/crypttab</text>
+<rect x="156.0" y="90" width="225.0" height="22" rx="4" fill="var(--kb-line)" opacity="0.25"/>
+<rect x="393.0" y="90" width="225.0" height="22" rx="4" fill="var(--kb-line)" opacity="0.25"/>
+<text x="628.0" y="105.0" font-size="10" text-anchor="start" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">不存在</text>
+<text x="140.0" y="136.0" font-size="12" text-anchor="end" fill="currentColor" font-weight="600" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">swap</text>
+<rect x="156.0" y="120" width="225.0" height="22" rx="4" fill="var(--kb-line)" opacity="0.25"/>
+<rect x="393.0" y="120" width="225.0" height="22" rx="4" fill="var(--kb-line)" opacity="0.25"/>
+<text x="628.0" y="135.0" font-size="10" text-anchor="start" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">22.9 GB 明文</text>
+<text x="62.0" y="332.0" font-size="11" text-anchor="start" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">拆盘即可读全部数据，包括被换出到 swap 的内存内容</text>
+</svg>
+<figcaption>拆盘即可读全部数据，包括被换出到 swap 的内存内容</figcaption>
+</figure>
+
+
 ## 数字与阈值（本机实测）
 
 ```text

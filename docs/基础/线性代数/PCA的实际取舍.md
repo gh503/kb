@@ -65,6 +65,40 @@ PY
 
 **"忘了标准化"** 是 PCA 最常见的错误：结果只是"选了单位最大的那几列"。
 
+<!-- kb-chart:pca_curve -->
+
+<figure class="kb-figure">
+<svg viewBox="0 0 720 340" role="img" aria-label="20 维、奇异值线性衰减；重构相对误差对应 92.4%/78.4%/64.5%/35.2%" xmlns="http://www.w3.org/2000/svg">
+<rect x="0" y="0" width="720" height="340" fill="none"/>
+<text x="0.0" y="14.0" font-size="13" text-anchor="start" fill="currentColor" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">主成分数与保留方差：前 5 个只有 58.4%（本机实测）</text>
+<text x="716.0" y="332.0" font-size="11" text-anchor="end" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">主成分个数</text>
+<text x="10.0" y="22.0" font-size="11" text-anchor="start" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">解释方差 %</text>
+<line x1="62" y1="294.0" x2="624" y2="294.0" stroke="var(--kb-line)" stroke-width="1"/>
+<text x="54.0" y="298.0" font-size="11" text-anchor="end" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">0</text>
+<line x1="62" y1="229.5" x2="624" y2="229.5" stroke="var(--kb-line)" stroke-width="1"/>
+<text x="54.0" y="233.5" font-size="11" text-anchor="end" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">25</text>
+<line x1="62" y1="165.0" x2="624" y2="165.0" stroke="var(--kb-line)" stroke-width="1"/>
+<text x="54.0" y="169.0" font-size="11" text-anchor="end" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">50</text>
+<line x1="62" y1="100.4" x2="624" y2="100.4" stroke="var(--kb-line)" stroke-width="1"/>
+<text x="54.0" y="104.4" font-size="11" text-anchor="end" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">75</text>
+<line x1="62" y1="35.9" x2="624" y2="35.9" stroke="var(--kb-line)" stroke-width="1"/>
+<text x="54.0" y="39.9" font-size="11" text-anchor="end" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">100</text>
+<line x1="62" y1="34" x2="62" y2="294" stroke="var(--kb-line)" stroke-width="1"/>
+<text x="62.0" y="312.0" font-size="11" text-anchor="middle" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">1</text>
+<text x="186.9" y="312.0" font-size="11" text-anchor="middle" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">3</text>
+<text x="311.8" y="312.0" font-size="11" text-anchor="middle" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">5</text>
+<text x="624.0" y="312.0" font-size="11" text-anchor="middle" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">10</text>
+<polyline points="62.0,256.1 186.9,194.6 311.8,143.3 624.0,67.9" fill="none" stroke="var(--kb-accent)" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="62.0" cy="256.1" r="3.2" fill="var(--kb-accent)"/>
+<circle cx="186.9" cy="194.6" r="3.2" fill="var(--kb-accent)"/>
+<circle cx="311.8" cy="143.3" r="3.2" fill="var(--kb-accent)"/>
+<circle cx="624.0" cy="67.9" r="3.2" fill="var(--kb-accent)"/>
+<text x="62.0" y="332.0" font-size="11" text-anchor="start" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">20 维、奇异值线性衰减；重构相对误差对应 92.4%/78.4%/64.5%/35.2%</text>
+</svg>
+<figcaption>20 维、奇异值线性衰减；重构相对误差对应 92.4%/78.4%/64.5%/35.2%</figcaption>
+</figure>
+
+
 ## 数字与阈值（本机实测）
 
 ```text

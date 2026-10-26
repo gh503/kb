@@ -76,6 +76,26 @@ fsync（真正落盘）：433.3 ms      ← 8.5 倍
 
 **"批量提交"是数据库与日志系统提速的第一手段**，本质就是把 N 次 fsync 合成 1 次。
 
+<!-- kb-chart:io_syscall -->
+
+<figure class="kb-figure">
+<svg viewBox="0 0 720 340" role="img" aria-label="22 倍；64 KB 块写 64 MB 只要 42.1 ms" xmlns="http://www.w3.org/2000/svg">
+<rect x="0" y="0" width="720" height="340" fill="none"/>
+<text x="0.0" y="14.0" font-size="13" text-anchor="start" fill="currentColor" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">同样写 100 万次 1 字节：缓冲把每次调用压到 0.12 µs（本机实测）</text>
+<text x="716.0" y="332.0" font-size="11" text-anchor="end" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">µs/次</text>
+<text x="10.0" y="22.0" font-size="11" text-anchor="start" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif"></text>
+<text x="190.0" y="67.0" font-size="12" text-anchor="end" fill="currentColor" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">带缓冲 8 KB</text>
+<rect x="200" y="52" width="32.2" height="22" rx="4" fill="var(--kb-warn)" opacity="0.85"/>
+<text x="240.2" y="67.0" font-size="12" text-anchor="start" fill="currentColor" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">0.12 µs/次</text>
+<text x="190.0" y="109.0" font-size="12" text-anchor="end" fill="currentColor" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">os.write 每次一个系统调用</text>
+<rect x="200" y="94" width="476.0" height="22" rx="4" fill="var(--kb-accent)" opacity="0.85"/>
+<text x="668.0" y="109.0" font-size="12" text-anchor="end" fill="var(--kb-paper)" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">2.6 µs/次</text>
+<text x="200.0" y="142.0" font-size="11" text-anchor="start" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">22 倍；64 KB 块写 64 MB 只要 42.1 ms</text>
+</svg>
+<figcaption>22 倍；64 KB 块写 64 MB 只要 42.1 ms</figcaption>
+</figure>
+
+
 ## 数字与阈值（本机实测）
 
 ```text

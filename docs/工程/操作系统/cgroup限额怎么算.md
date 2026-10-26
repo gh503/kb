@@ -70,6 +70,38 @@ memory.pressure 全 0：内存没有出现过等待
 
 **"看 PSI 不看利用率"**：利用率 60% 可能是健康的，PSI 9.6% 说明确实有人在排队。
 
+<!-- kb-chart:cgroup_scope -->
+
+<figure class="kb-figure">
+<svg viewBox="0 0 720 340" role="img" aria-label="memory.current 872 KB；cpu.pressure some avg10=9.60，只能靠它感知" xmlns="http://www.w3.org/2000/svg">
+<rect x="0" y="0" width="720" height="340" fill="none"/>
+<text x="0.0" y="14.0" font-size="13" text-anchor="start" fill="currentColor" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">本机 cgroup v2 自家 scope：限额基本没设（本机实测）</text>
+<text x="716.0" y="332.0" font-size="11" text-anchor="end" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif"></text>
+<text x="10.0" y="22.0" font-size="11" text-anchor="start" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif"></text>
+<text x="268.5" y="46.0" font-size="11" text-anchor="middle" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">限额已设</text>
+<text x="505.5" y="46.0" font-size="11" text-anchor="middle" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">压力可观测</text>
+<text x="140.0" y="76.0" font-size="12" text-anchor="end" fill="currentColor" font-weight="600" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">memory.max</text>
+<rect x="156.0" y="60" width="225.0" height="22" rx="4" fill="var(--kb-line)" opacity="0.25"/>
+<rect x="393.0" y="60" width="225.0" height="22" rx="4" fill="var(--kb-accent)" opacity="0.9"/>
+<text x="505.5" y="75.0" font-size="10" text-anchor="middle" fill="var(--kb-paper)" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">好</text>
+<text x="628.0" y="75.0" font-size="10" text-anchor="start" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">= max</text>
+<text x="140.0" y="106.0" font-size="12" text-anchor="end" fill="currentColor" font-weight="600" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">pids.max</text>
+<rect x="156.0" y="90" width="225.0" height="22" rx="4" fill="var(--kb-accent)" opacity="0.9"/>
+<text x="268.5" y="105.0" font-size="10" text-anchor="middle" fill="var(--kb-paper)" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">好</text>
+<rect x="393.0" y="90" width="225.0" height="22" rx="4" fill="var(--kb-accent)" opacity="0.9"/>
+<text x="505.5" y="105.0" font-size="10" text-anchor="middle" fill="var(--kb-paper)" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">好</text>
+<text x="628.0" y="105.0" font-size="10" text-anchor="start" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">= 28527</text>
+<text x="140.0" y="136.0" font-size="12" text-anchor="end" fill="currentColor" font-weight="600" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">cpu.max</text>
+<rect x="156.0" y="120" width="225.0" height="22" rx="4" fill="var(--kb-line)" opacity="0.25"/>
+<rect x="393.0" y="120" width="225.0" height="22" rx="4" fill="var(--kb-accent)" opacity="0.9"/>
+<text x="505.5" y="135.0" font-size="10" text-anchor="middle" fill="var(--kb-paper)" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">好</text>
+<text x="628.0" y="135.0" font-size="10" text-anchor="start" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">未设</text>
+<text x="62.0" y="332.0" font-size="11" text-anchor="start" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">memory.current 872 KB；cpu.pressure some avg10=9.60，只能靠它感知</text>
+</svg>
+<figcaption>memory.current 872 KB；cpu.pressure some avg10=9.60，只能靠它感知</figcaption>
+</figure>
+
+
 ## 数字与阈值（本机实测）
 
 ```text

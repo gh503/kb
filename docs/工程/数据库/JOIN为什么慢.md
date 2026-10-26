@@ -83,6 +83,40 @@ PY
 
 **反范式是用写代价换读代价**：维表更新时要同步冗余列，这是新的 bug 面。
 
+<!-- kb-chart:join_index -->
+
+<figure class="kb-figure">
+<svg viewBox="0 0 720 340" role="img" aria-label="190 倍；自动索引不如手建，因为它是临时统计驱动的" xmlns="http://www.w3.org/2000/svg">
+<rect x="0" y="0" width="720" height="340" fill="none"/>
+<text x="0.0" y="14.0" font-size="13" text-anchor="start" fill="currentColor" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">同一条 JOIN：4.1 秒 → 22 毫秒（本机实测）</text>
+<text x="716.0" y="332.0" font-size="11" text-anchor="end" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif"></text>
+<text x="10.0" y="22.0" font-size="11" text-anchor="start" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">ms</text>
+<line x1="62" y1="294.0" x2="624" y2="294.0" stroke="var(--kb-line)" stroke-width="1"/>
+<text x="54.0" y="298.0" font-size="11" text-anchor="end" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">10.86</text>
+<line x1="62" y1="266.8" x2="624" y2="266.8" stroke="var(--kb-line)" stroke-width="1"/>
+<text x="54.0" y="270.8" font-size="11" text-anchor="end" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">21.72</text>
+<line x1="62" y1="239.7" x2="624" y2="239.7" stroke="var(--kb-line)" stroke-width="1"/>
+<text x="54.0" y="243.7" font-size="11" text-anchor="end" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">43.44</text>
+<line x1="62" y1="212.5" x2="624" y2="212.5" stroke="var(--kb-line)" stroke-width="1"/>
+<text x="54.0" y="216.5" font-size="11" text-anchor="end" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">86.88</text>
+<line x1="62" y1="185.3" x2="624" y2="185.3" stroke="var(--kb-line)" stroke-width="1"/>
+<text x="54.0" y="189.3" font-size="11" text-anchor="end" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">173.76</text>
+<line x1="62" y1="34" x2="62" y2="294" stroke="var(--kb-line)" stroke-width="1"/>
+<rect x="132.7" y="61.2" width="43.0" height="232.8" rx="3" fill="var(--kb-accent)" opacity="0.85"/>
+<text x="154.2" y="55.2" font-size="10" text-anchor="middle" fill="var(--kb-accent)" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">4,132</text>
+<rect x="320.0" y="247.3" width="43.0" height="46.7" rx="3" fill="var(--kb-accent)" opacity="0.85"/>
+<text x="341.5" y="241.3" font-size="10" text-anchor="middle" fill="var(--kb-accent)" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">35.72</text>
+<rect x="507.3" y="266.8" width="43.0" height="27.2" rx="3" fill="var(--kb-accent)" opacity="0.85"/>
+<text x="528.8" y="260.8" font-size="10" text-anchor="middle" fill="var(--kb-accent)" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">21.72</text>
+<text x="155.7" y="310.0" font-size="11" text-anchor="middle" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">无索引</text>
+<text x="343.0" y="310.0" font-size="11" text-anchor="middle" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">自动索引</text>
+<text x="530.3" y="310.0" font-size="11" text-anchor="middle" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">手建索引</text>
+<text x="62.0" y="332.0" font-size="11" text-anchor="start" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">190 倍；自动索引不如手建，因为它是临时统计驱动的</text>
+</svg>
+<figcaption>190 倍；自动索引不如手建，因为它是临时统计驱动的</figcaption>
+</figure>
+
+
 ## 数字与阈值（本机实测）
 
 ```text

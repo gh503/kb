@@ -6,9 +6,24 @@
 """
 from __future__ import annotations
 
+import difflib
 import pathlib
 import re
 import sys
+
+# 换了说法、或者已经被别的学科写掉的选题，显式登记在这里，
+# 免得模糊匹配把「看起来像」的条目误删。
+ALIASES = {
+    ("事务", "租房到期押金不退怎么办"): "租房押金不退怎么办",
+    ("事务", "身份证丢了要马上做什么"): "身份证丢了先做什么",
+    ("家", "空调外机与晾衣架的固定"): "空调外机与晾衣架怎么固定",
+    ("机器人", "多机协同时的冲突处理"): "多机协同的冲突处理",
+    ("数学", "指数增长与复利"): "增长率与复利",
+    ("逻辑", "量词与范围（所有/有些/没有）"): "量词的顺序",
+    ("逻辑", "论证的强度分级"): "论证强度怎么比",
+    ("高等数学", "约束优化的 KKT 条件"): "约束优化与KKT条件",
+    ("软件安全", "密钥与凭据怎么管"): "见 ../安全/密钥管理 与 ../主机安全/密钥与凭据放在哪",
+}
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent / "docs"
 
@@ -33,8 +48,14 @@ def main() -> int:
         for line in m.group(1).splitlines():
             b = re.match(r"^- (.+)$", line.strip())
             if b:
-                t = norm(b.group(1))
+                raw = b.group(1)
+                t = norm(raw)
+                if (subj.name, raw) in ALIASES:
+                    removed += 1
+                    continue
                 hit = [s for s in stems if t == s or (len(t) >= 4 and (t in s or s in t))]
+                if not hit and len(t) >= 5:
+                    hit = difflib.get_close_matches(t, stems, n=1, cutoff=0.75)
                 if hit:
                     removed += 1
                     continue

@@ -32,10 +32,16 @@ def main():
     if f"| [{rows[0][0]}]({rows[0][0]}.md) | " in seg:
         print("条目表已有，跳过")
     else:
-        head, rest = s.split("## 条目", 1)
-        body, tail = rest.split("## 链上还没写的", 1)
-        body = body.rstrip("\n")
-        s = head + "## 条目" + body + "\n" + entries + "\n\n## 链上还没写的" + tail
+        # 直接插到「条目」表的最后一行之后；不能按章节切，
+        # 否则中间若有「## 提醒」之类的段落，行会掉进正文里。
+        lines = s.splitlines()
+        start = next(i for i, l in enumerate(lines) if l.strip() == "## 条目")
+        t0 = next(i for i in range(start + 1, len(lines)) if lines[i].startswith("|"))
+        t1 = t0
+        while t1 + 1 < len(lines) and lines[t1 + 1].startswith("|"):
+            t1 += 1
+        lines = lines[: t1 + 1] + entries.splitlines() + lines[t1 + 1 :]
+        s = "\n".join(lines) + "\n"
 
     # 清掉表内空行（曾导致表格被截成两张）
     for marker in ("## 链", "## 条目"):

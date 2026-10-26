@@ -15,7 +15,9 @@ LEVELS = ["小学–初中", "初中–高中", "高中–大学", "大学–研
 
 
 def strip_code(text: str) -> str:
-    return re.sub(r"```.*?```", "", text, flags=re.S)
+    """去掉围栏代码块与行内代码：示例里的链接不该被当成真链接。"""
+    text = re.sub(r"```.*?```", "", text, flags=re.S)
+    return re.sub(r"`[^`\n]*`", "", text)
 
 
 def check_links():

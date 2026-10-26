@@ -1659,6 +1659,27 @@ SPECS = {
         series=[("GB", [43.2, 302.4, 1296.0, 15768.0], WARN)], unit="GB",
         note="1000 条/秒 × 500 字节；留存翻倍，磁盘就翻倍", logy=True)),
 
+    "crack_rate": ("col", dict(
+        title="同一台机器：快哈希 66 万次/秒，慢哈希 2 次/秒（本机实测）",
+        labels=["sha256", "PBKDF2 10 万", "PBKDF2 60 万"],
+        series=[("次/秒", [660968, 11, 2], ACCENT)], unit="次/秒",
+        note="5 个数量级的差距；慢哈希把「5 天」变成「600 年」", logy=True)),
+    "token_revoke": ("col", dict(
+        title="验签不是成本，撤销才是：6.15 µs 与一张 44 MB 的黑名单（本机实测）",
+        labels=["HMAC 验签", "查一次黑名单", "查一次数据库"],
+        series=[("毫秒", [0.00615, 0.1, 1.0], ACCENT)], unit="ms",
+        note="黑名单按未过期条目存，100 万条约 44 MB；查表延迟是经验值", logy=True)),
+    "audit_volume": ("col", dict(
+        title="审计日志体积：1000 请求/秒一天就是 13.82 GB（本机实测 + 计算）",
+        labels=["100 req/s", "1000 req/s", "10000 req/s"],
+        series=[("GB/天", [1.38, 13.82, 138.24], WARN)], unit="GB/天",
+        note="单行 160 字节；本机写入 80 万行/秒、129.3 MB/s，写不是瓶颈", logy=True)),
+    "exposure": ("col", dict(
+        title="本机 19 个 TCP 监听里，只有 3 个对外（本机实测）",
+        labels=["对外 0.0.0.0", "仅回环", "UDP 监听"],
+        series=[("个数", [3, 16, 9], ACCENT)], unit="个",
+        note="对外每多一个端口，就多一份认证与日志的责任")),
+
 }
 
 

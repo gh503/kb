@@ -248,9 +248,16 @@ def main() -> int:
 
     ok = len(feeds) - len(fails)
     ts = datetime.now(CN)
-    # 没有新条目就不重写索引——否则每天的运行时间戳会造出一个空提交
-    if added or not (OUT / "index.md").exists():
-        (OUT / "index.md").write_text(render_index(days, (ok, len(feeds), fails, ts)), encoding="utf-8")
+    # 没有新条目就不重写索引——否则每天的运行时间戳会造出一个空提交。
+    # 但"源健康度"变了必须重写：否则修好一个源、索引里还挂着旧的失败警告。
+    idx = OUT / "index.md"
+    prev_health = ""
+    if idx.exists():
+        m = re.search(r"（(\d+)/(\d+) 源成功）", idx.read_text(encoding="utf-8"))
+        prev_health = m.group(0) if m else ""
+    health = f"（{ok}/{len(feeds)} 源成功）"
+    if added or not idx.exists() or health != prev_health:
+        idx.write_text(render_index(days, (ok, len(feeds), fails, ts)), encoding="utf-8")
     if undated:
         print(f"跳过 {undated} 条无日期的条目（回填时不猜日期）")
     print(f"新增 {added} 条 · 归档 {len(days)} 天 · 共 {sum(len(v) for v in days.values())} 条"

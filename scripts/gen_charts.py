@@ -837,6 +837,112 @@ def chart_index_cost():
                      note="1.8 倍。索引在写入路径上一直收税，读得少就别建")
 
 
+def chart_p_false():
+    return col_chart("p<0.05 到底有多容易碰巧出现（本机模拟）",
+                     ["单次检验「显著」", "20 次检验至少一次"],
+                     [("比例 %", [5.5, 62.9], WARN)], "%",
+                     note="单次名义 5%、实测 5.5%；20 次检验时理论 64.2%、模拟 62.9%",
+                     yticks=[0, 20, 40, 60, 80])
+
+
+def chart_variance_add():
+    return col_chart("方差可加，但要独立（本机 20 万次模拟）",
+                     ["单个骰子", "两个独立之和", "同一个加两次"],
+                     [("方差", [2.917, 5.833, 11.667], ACCENT)], "",
+                     note="独立时 2 倍，完全相关时 4 倍：把同一个随机量加两次是在放大风险",
+                     yticks=[0, 3, 6, 9, 12])
+
+
+def chart_coin_dev():
+    ns = [10, 100, 1000, 10000]
+    return line_chart("抛硬币：频率偏离 0.5 有多快（本机 1000 次重复）", "n（对数）",
+                      "平均绝对偏差（对数）", ns,
+                      [("实测", [0.1240, 0.0406, 0.0127, 0.0038], ACCENT, None),
+                       ("1/(2√n)", [0.1581, 0.0500, 0.0158, 0.0050], MUTED, "5 4")],
+                      note="n 涨 10 倍，偏差只降到约 1/3.2；这是所有采样精度的天花板",
+                      logx=True)
+
+
+def chart_birthday():
+    ks = [10, 23, 40, 60]
+    return col_chart("生日悖论：模拟与公式几乎重合（本机 2 万次模拟）",
+                     ["10 人", "23 人", "40 人", "60 人"],
+                     [("模拟 %", [12.08, 51.62, 89.28, 99.38], ACCENT),
+                      ("公式 %", [11.69, 50.73, 89.12, 99.41], MUTED)], "%",
+                     note="23 人过半，是因为比的是 253 对，不是 23 次",
+                     yticks=[0, 25, 50, 75, 100])
+
+
+def chart_simpson():
+    return col_chart("每一组都赢，合并却输（本机构造数据集）",
+                     ["轻症", "重症", "合并"],
+                     [("A 组 %", [90.0, 50.0, 54.4], ACCENT),
+                      ("B 组 %", [80.0, 40.0, 75.6], WARN)], "%",
+                     note="A 的病人 89% 是重症，B 只有 11%：合并率是加权平均，权重变了结论就翻转",
+                     yticks=[0, 25, 50, 75, 100])
+
+
+def chart_lib_choice():
+    return hbar_chart("同一个矩阵乘法，四种写法（n=256，本机实测）",
+                      ["Python 三层循环", "C 朴素 ijk", "BLAS / numpy", "C 分块 256"],
+                      [7716.7, 36.6, 12.77, 10.9], "ms",
+                      note="Python 比 BLAS 慢 604 倍；分块 C 能追平 BLAS，但大矩阵会被反超")
+
+
+def chart_similarity():
+    return strip_chart("三种相似度各看什么（选错指标比不会算更糟）",
+                       ["看方向", "看长度", "对量纲敏感", "适合文本"],
+                       [("余弦", [3, 1, 1, 3], ""),
+                        ("欧氏距离", [1, 3, 3, 1], ""),
+                        ("点积", [2, 3, 3, 2], "")],
+                       note="3=强相关。文本长短不一时，长度是噪声，所以用余弦。")
+
+
+def chart_block_tile():
+    ns = [256, 512]
+    return line_chart("块不是越大越好：最优块取决于缓存容量（本机实测）", "矩阵规模 n",
+                      "耗时 ms（对数）", ns,
+                      [("朴素 ijk", [36.6, 331.3], WARN, None),
+                       ("分块 64", [14.6, 95.5], ACCENT, None),
+                       ("分块 256", [10.9, 99.9], ACCENT, "5 4")],
+                      note="n=256 时块 256 最快，n=512 时块 64 反超：256 的块已超出 L3",
+                      logy=True, xticks=ns, yticks=[10, 30, 100, 300],
+                      yfmt=lambda v: f"{v:g}")
+
+
+def chart_power_iter():
+    gaps = [0.5, 0.9, 0.99]
+    return line_chart("谱 gap 越小，幂迭代越慢（本机实测到 1e-10）", "次特征值 / 主特征值",
+                      "所需步数（对数）", gaps,
+                      [("实测步数", [38, 224, 2241], ACCENT, None),
+                       ("log(1e-10)/log(gap)", [33, 219, 2303], MUTED, "5 4")],
+                      note="gap 0.99 要 2241 步：这就是 PCA 与 PageRank 收敛慢的根源",
+                      logy=True, xticks=gaps, yticks=[10, 100, 1000, 3000],
+                      yfmt=lambda v: f"{v:g}")
+
+
+def chart_matmul_cost():
+    ns = [128, 256, 512, 1024]
+    return line_chart("矩阵乘法的代价按 2n³ 涨（本机计时与公式）", "n（对数）",
+                      "浮点运算次数（对数）", ns,
+                      [("2n³", [2 * n ** 3 for n in ns], ACCENT, None)],
+                      note="n=1024 时 21 亿次乘加；这个量级决定了它必须做缓存优化",
+                      logx=True, logy=True,
+                      xticks=ns, xfmt=lambda v: str(int(v)),
+                      yticks=[1e7, 1e8, 1e9, 1e10], yfmt=lambda v: f"{v:.0e}")
+
+
+def chart_collinear():
+    pert = [0.001, 0.01, 1.0]
+    return line_chart("列越接近，系数飘得越离谱（本机 200 次重复）", "列间扰动（对数）",
+                      "系数标准差（对数）", pert,
+                      [("系数标准差", [9.97, 0.98, 0.013], WARN, None)],
+                      note="扰动 1e-3 时标准差 9.97：真值 1 的系数已经完全没有信息量",
+                      logx=True, logy=True, xticks=pert,
+                      xfmt=lambda v: f"{v:g}",
+                      yticks=[0.01, 0.1, 1, 10], yfmt=lambda v: f"{v:g}")
+
+
 CHARTS = {
     "growth": chart_growth,
     "sort": chart_sort,
@@ -879,6 +985,17 @@ CHARTS = {
     "crash_rows": chart_crash_rows,
     "index_selectivity": chart_index_selectivity,
     "index_cost": chart_index_cost,
+    "p_false": chart_p_false,
+    "variance_add": chart_variance_add,
+    "coin_dev": chart_coin_dev,
+    "birthday": chart_birthday,
+    "simpson": chart_simpson,
+    "lib_choice": chart_lib_choice,
+    "similarity": chart_similarity,
+    "block_tile": chart_block_tile,
+    "power_iter": chart_power_iter,
+    "matmul_cost": chart_matmul_cost,
+    "collinear": chart_collinear,
     "host_surface": chart_host_surface,
     "hw_status": chart_hw_status,
     "mc_error": chart_mc_error,

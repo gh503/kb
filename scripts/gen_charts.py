@@ -43,7 +43,7 @@ def _est_width(s, size):
     """粗估文本宽度：中日韩按 1 em，其余按 0.55 em。"""
     w = 0.0
     for ch in s:
-        w += size * (1.0 if ord(ch) > 0x2E7F else 0.55)
+        w += size * (1.0 if ord(ch) > 0x2E7F else 0.62)
     return w
 
 
@@ -75,9 +75,12 @@ def axes(xmin, xmax, ymin, ymax, xticks, yticks, xfmt=str, yfmt=str, logy=False)
 
     for yv in yticks:
         y = sy(yv)
-        out.append(f'<line x1="{PAD_L}" y1="{y:.1f}" x2="{W-PAD_R}" y2="{y:.1f}" stroke="{GRID}" stroke-width="1"/>')
+        # 刻度可能落在绘图区之外（数据范围比刻度窄），网格线与标签都要夹进画布
+        if PAD_T - 0.5 <= y <= H - PAD_B + 0.5:
+            out.append(f'<line x1="{PAD_L}" y1="{y:.1f}" x2="{W-PAD_R}" y2="{y:.1f}" stroke="{GRID}" stroke-width="1"/>')
         lab = yfmt(yv)
         lx = PAD_L - 8
+        y = min(max(y, 11), H - PAD_B - 1)
         y += 3 if y - 9 < 0 else 0     # 顶端刻度别顶出画布
         # 左侧刻度放不下就改用左对齐，避免负坐标被画布裁掉
         if lx - _est_width(lab, 11) < 1:
@@ -414,7 +417,7 @@ def chart_array():
 def chart_memory():
     """进程内存分区示意"""
     inner = [f'<rect x="0" y="0" width="{W}" height="{H}" fill="none"/>']
-    inner.append(text(0, 14, "一个进程的内存里有什么", size=13, weight="700"))
+    inner.append(text(0, 16, "一个进程的内存里有什么", size=13, weight="700"))
     blocks = [
         ("栈 stack", "局部变量、调用帧 · 自动回收 · 常见 8 MB", ACCENT),
         ("堆 heap", "malloc/new · 手动管理 · 泄漏与碎片都在这里", WARN),
@@ -442,7 +445,7 @@ def chart_memory():
 def chart_pipeline():
     """编译链路示意"""
     inner = [f'<rect x="0" y="0" width="{W}" height="{H}" fill="none"/>']
-    inner.append(text(0, 14, "从 .c 到能跑的进程：五道手", size=13, weight="700"))
+    inner.append(text(0, 16, "从 .c 到能跑的进程：五道手", size=13, weight="700"))
     steps = [
         ("预处理", "gcc -E", "hi.i", "17,933 B"),
         ("编译", "gcc -S", "hi.s", "654 B"),
@@ -472,7 +475,7 @@ def chart_pipeline():
 def chart_tcp_timeline():
     """一次请求的四个往返：DNS → TCP → TLS → HTTP"""
     inner = [f'<rect x="0" y="0" width="{W}" height="{H}" fill="none"/>']
-    inner.append(text(0, 14, "第一次访问一个网站，要等几个往返", size=13, weight="700"))
+    inner.append(text(0, 16, "第一次访问一个网站，要等几个往返", size=13, weight="700"))
     cx, sx_ = 150, 560
     top, bottom = 56, 300
     inner.append(text(cx, top - 8, "客户端", size=12, anchor="middle", weight="700"))
@@ -503,7 +506,7 @@ def chart_tcp_timeline():
 def chart_cert_chain():
     """证书链：从站点证书走到信任锚"""
     inner = [f'<rect x="0" y="0" width="{W}" height="{H}" fill="none"/>']
-    inner.append(text(0, 14, "证书链：验证的不是「这张证书」，而是「能不能走到我信任的根」", size=13, weight="700"))
+    inner.append(text(0, 16, "证书链：验证的不是「这张证书」，而是「能不能走到我信任的根」", size=13, weight="700"))
     boxes = [
         ("站点证书", "example.com", "签名者：中间 CA", WARN),
         ("中间 CA", "Intermediate CA", "签名者：根 CA", ACCENT),
@@ -1603,6 +1606,36 @@ SPECS = {
         labels=["copy 文件", "VACUUM INTO", ".backup", "恢复校验"],
         values=[7.0, 40.3, 72.0, 33.0], unit="ms",
         note="最快的 copy 最容易拷到半个事务；校验只要 33 ms，没理由不跑")),
+
+    # ---- 网络 ----
+    "mtu_overhead": ("col", dict(
+        title="MTU 越大，头部税越低：2.67% → 0.44% → 0.06%（本机计算）",
+        labels=["1500", "9000", "65536"],
+        series=[("头部开销 %", [2.67, 0.44, 0.06], ACCENT)], unit="%",
+        note="路径 MTU 实测 1500：ping -M do -s 1472 通、1473 不通")),
+    "frag_loss": ("col", dict(
+        title="1% 丢包下，分片把整包丢失率放大到近 3 倍（本机模拟）",
+        labels=["单片包", "3 片", "10 片"],
+        series=[("整包丢失率 %", [1.0, 2.93, 9.6], WARN)], unit="%",
+        note="理论 1−0.99ⁿ：3 片 2.97%、10 片 9.56%；实测 20,000 次模拟 2.93%")),
+    "nagle_gap": ("col", dict(
+        title="Nagle 与延迟 ACK 撞车：p50 41.02 vs 0.35 ms（本机实测）",
+        labels=["Nagle 开", "TCP_NODELAY"],
+        series=[("p50 ms", [41.02, 0.35], ACCENT)], unit="ms",
+        note="117 倍；Nagle 那条在并发 1→16 几乎不变，是固定 40 ms 等待", logy=True)),
+    "backlog_ok": ("col", dict(
+        title="backlog 决定并发连接能排多长：2 / 9 / 100（本机实测）",
+        labels=["listen(1)", "listen(8)", "listen(128)"],
+        series=[("100 个并发里成功数", [2, 9, 100], ACCENT)], unit="个",
+        note="其余全部超时（不是拒绝）；somaxconn 本机 4096")),
+
+    "bdp_lines": ("line", dict(
+        title="同一个 4 MB 窗口，RTT 从 20 到 400 ms：吞吐从 200 掉到 10 MB/s（计算）",
+        xlab="RTT（ms，对数）", ylab="单连接吞吐（MB/s，对数）",
+        xs=[20, 40, 100, 200, 400],
+        series=[("tcp_wmem 4 MB", [200.0, 100.0, 40.0, 20.0, 10.0], ACCENT, None),
+                ("tcp_rmem 6 MB", [300.0, 150.0, 60.0, 30.0, 15.0], WARN, None)],
+        note="窗口 / RTT 的直接除法；本机内核上限就是这两个数", logx=True, logy=True)),
 
 }
 

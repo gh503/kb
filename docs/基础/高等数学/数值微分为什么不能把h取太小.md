@@ -109,10 +109,10 @@ f(x+h) 与 f(x-h) 的差 ≈ 2h·f'(x) ≈ 2e-15
 <circle cx="62.0" cy="181.3" r="3.2" fill="var(--kb-accent)"/>
 <circle cx="62.0" cy="126.4" r="3.2" fill="var(--kb-accent)"/>
 <circle cx="62.0" cy="53.6" r="3.2" fill="var(--kb-accent)"/>
-<line x1="609.75" y1="48" x2="631.75" y2="48" stroke="var(--kb-warn)" stroke-width="2.4"/>
-<text x="639.8" y="52.0" font-size="11" text-anchor="start" fill="currentColor" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">前向差分 ∝ h</text>
-<line x1="609.75" y1="66" x2="631.75" y2="66" stroke="var(--kb-accent)" stroke-width="2.4"/>
-<text x="639.8" y="70.0" font-size="11" text-anchor="start" fill="currentColor" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">中心差分 ∝ h²</text>
+<line x1="605.9" y1="48" x2="627.9" y2="48" stroke="var(--kb-warn)" stroke-width="2.4"/>
+<text x="635.9" y="52.0" font-size="11" text-anchor="start" fill="currentColor" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">前向差分 ∝ h</text>
+<line x1="605.9" y1="66" x2="627.9" y2="66" stroke="var(--kb-accent)" stroke-width="2.4"/>
+<text x="635.9" y="70.0" font-size="11" text-anchor="start" fill="currentColor" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">中心差分 ∝ h²</text>
 <text x="62.0" y="247.9" font-size="11" text-anchor="middle" fill="var(--kb-accent)" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">中心差分最优 2.8e-11</text>
 <text x="68.0" y="43.6" font-size="11" text-anchor="start" fill="var(--kb-warn)" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">h=1e-15 全是噪声</text>
 </svg>

@@ -65,7 +65,7 @@ O(log₂n) = O(log n) 底数丢掉
 <text x="716.0" y="332.0" font-size="11" text-anchor="end" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">n（对数）</text>
 <text x="10.0" y="22.0" font-size="11" text-anchor="start" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">操作次数（对数）</text>
 <line x1="62" y1="294.0" x2="624" y2="294.0" stroke="var(--kb-line)" stroke-width="1"/>
-<text x="54.0" y="298.0" font-size="11" text-anchor="end" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">1</text>
+<text x="54.0" y="297.0" font-size="11" text-anchor="end" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">1</text>
 <line x1="62" y1="250.7" x2="624" y2="250.7" stroke="var(--kb-line)" stroke-width="1"/>
 <text x="54.0" y="254.7" font-size="11" text-anchor="end" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">10</text>
 <line x1="62" y1="207.3" x2="624" y2="207.3" stroke="var(--kb-line)" stroke-width="1"/>
@@ -102,16 +102,16 @@ O(log₂n) = O(log n) 底数丢掉
 <circle cx="97.4" cy="137.5" r="3.2" fill="var(--kb-warn)"/>
 <circle cx="205.5" cy="85.3" r="3.2" fill="var(--kb-warn)"/>
 <circle cx="624.0" cy="34.0" r="3.2" fill="var(--kb-warn)"/>
-<line x1="623.5" y1="48" x2="645.5" y2="48" stroke="var(--kb-ink-mute)" stroke-width="2.4" stroke-dasharray="4 4"/>
-<text x="653.5" y="52.0" font-size="11" text-anchor="start" fill="currentColor" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">O(1)</text>
-<line x1="623.5" y1="66" x2="645.5" y2="66" stroke="var(--kb-accent)" stroke-width="2.4"/>
-<text x="653.5" y="70.0" font-size="11" text-anchor="start" fill="currentColor" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">O(log n)</text>
-<line x1="623.5" y1="84" x2="645.5" y2="84" stroke="var(--kb-accent)" stroke-width="2.4"/>
-<text x="653.5" y="88.0" font-size="11" text-anchor="start" fill="currentColor" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">O(n)</text>
-<line x1="623.5" y1="102" x2="645.5" y2="102" stroke="var(--kb-warn)" stroke-width="2.4"/>
-<text x="653.5" y="106.0" font-size="11" text-anchor="start" fill="currentColor" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">O(n log n)</text>
-<line x1="623.5" y1="120" x2="645.5" y2="120" stroke="var(--kb-warn)" stroke-width="2.4" stroke-dasharray="6 4"/>
-<text x="653.5" y="124.0" font-size="11" text-anchor="start" fill="currentColor" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">O(n²)</text>
+<line x1="615.8" y1="48" x2="637.8" y2="48" stroke="var(--kb-ink-mute)" stroke-width="2.4" stroke-dasharray="4 4"/>
+<text x="645.8" y="52.0" font-size="11" text-anchor="start" fill="currentColor" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">O(1)</text>
+<line x1="615.8" y1="66" x2="637.8" y2="66" stroke="var(--kb-accent)" stroke-width="2.4"/>
+<text x="645.8" y="70.0" font-size="11" text-anchor="start" fill="currentColor" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">O(log n)</text>
+<line x1="615.8" y1="84" x2="637.8" y2="84" stroke="var(--kb-accent)" stroke-width="2.4"/>
+<text x="645.8" y="88.0" font-size="11" text-anchor="start" fill="currentColor" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">O(n)</text>
+<line x1="615.8" y1="102" x2="637.8" y2="102" stroke="var(--kb-warn)" stroke-width="2.4"/>
+<text x="645.8" y="106.0" font-size="11" text-anchor="start" fill="currentColor" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">O(n log n)</text>
+<line x1="615.8" y1="120" x2="637.8" y2="120" stroke="var(--kb-warn)" stroke-width="2.4" stroke-dasharray="6 4"/>
+<text x="645.8" y="124.0" font-size="11" text-anchor="start" fill="currentColor" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">O(n²)</text>
 <text x="618.0" y="48.0" font-size="11" text-anchor="end" fill="var(--kb-warn)" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">n=1000 时差 100 万倍</text>
 </svg>
 <figcaption>五种复杂度的增长曲线（纵轴为对数刻度）</figcaption>

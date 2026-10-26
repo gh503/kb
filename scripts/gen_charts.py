@@ -1722,6 +1722,47 @@ SPECS = {
         series=[("数字/千字", [90, 27], ACCENT)], unit="",
         note="全站中位 26/千字；密度不是质量分，是可检验性的必要条件")),
 
+    "fitts_target": ("col", dict(
+        title="目标越小点击越慢：15px → 0.91 s，48px → 0.66 s（Fitts 预测）",
+        labels=["15px", "24px", "44px", "48px"],
+        series=[("预测点击时间 s", [0.91, 0.81, 0.68, 0.66], ACCENT)], unit="s",
+        note="a=0.2 s、b=0.15 s、距离 200px；本站 36% 的链接短边 < 24px")),
+    "contrast_bars": ("col", dict(
+        title="本站调色板对比度：15.51 / 7.29 / 5.43 / 5.24（本机计算）",
+        labels=["正文", "次要", "弱化", "强调"],
+        series=[("对比度 :1", [15.51, 7.29, 5.43, 5.24], ACCENT)], unit=":1",
+        note="AA 正文门槛 4.5:1、AAA 7:1：四个色全过 AA，两个过 AAA")),
+    "load_time": ("col", dict(
+        title="首页 525 ms，文章页 1847 ms：本地 file:// 也差 3.5 倍（本机实测）",
+        labels=["首页 DCL", "首页 load", "文章 DCL", "文章 load"],
+        series=[("毫秒", [525, 526, 1847, 2099], ACCENT)], unit="ms",
+        note="没有网络开销，全部是解析与执行；真实网络还要再加 RTT")),
+    "a11y_focus": ("col", dict(
+        title="一篇文章页 188 个可聚焦元素，其中 1 个焦点不可见（本机实测）",
+        labels=["可聚焦元素", "有 1px 描边", "无描边"],
+        series=[("个数", [188, 11, 1], WARN)], unit="个",
+        note="前 12 个 Tab 站里 11 个是浏览器默认 1px；搜索框 outline 被置为 none")),
+    "enum_claims": ("col", dict(
+        title="4 元素域上 240 条全称命题，175 条不成立（本机穷举）",
+        labels=["成立", "不成立"],
+        series=[("条数", [65, 175], WARN)], unit="条",
+        note="73% 不成立；第一条反例是 B 为空集")),
+    "quantifier_gap": ("col", dict(
+        title="量词换位：512 个关系里 34% 真假不同（本机穷举）",
+        labels=["两者同真同假", "∀∃ 真而 ∃∀ 假", "反向"],
+        series=[("关系数", [338, 174, 0], ACCENT)], unit="个",
+        note="方向只有一个：统一的那个 y 能推出各自有 y，反之不行")),
+    "truth_four": ("col", dict(
+        title="四种改写里只有逆否与原命题等价（本机真值表）",
+        labels=["原命题", "逆命题", "否命题", "逆否"],
+        series=[("与 P→Q 相同的真值位数", [4, 2, 2, 4], ACCENT)], unit="/4",
+        note="逆命题与否命题真值序列相同，但都不等于原命题")),
+    "ci_width": ("col", dict(
+        title="样本 ×10，区间只缩到 1/√10：±24.8 → ±7.8 个百分点（本机计算）",
+        labels=["n=10", "n=100", "n=1000", "n=10000"],
+        series=[("95% 区间半宽（百分点）", [24.8, 7.8, 2.5, 0.8], ACCENT)], unit="pp",
+        note="观察成功率 80%；样本涨 1000 倍，精度只涨 31 倍")),
+
 }
 
 
@@ -1751,7 +1792,7 @@ def main():
     inserted = 0
     for page in DOCS.rglob("*.md"):
         text = page.read_text(encoding="utf-8")
-        marks = re.findall(r"<!--\s*kb-chart:([a-z_]+)\s*-->", text)
+        marks = re.findall(r"<!--\s*kb-chart:([a-z0-9_]+)\s*-->", text)
         if not marks:
             continue
         for name in marks:

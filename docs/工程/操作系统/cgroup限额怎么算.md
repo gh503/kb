@@ -78,7 +78,7 @@ memory.pressure 全 0：内存没有出现过等待
 <figure class="kb-figure">
 <svg viewBox="0 0 720 340" role="img" aria-label="memory.current 872 KB；cpu.pressure some avg10=9.60，只能靠它感知" xmlns="http://www.w3.org/2000/svg">
 <rect x="0" y="0" width="720" height="340" fill="none"/>
-<text x="0.0" y="14.0" font-size="13" text-anchor="start" fill="currentColor" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">本机 cgroup v2 自家 scope：限额基本没设（本机实测）</text>
+<text x="0.0" y="16.0" font-size="13" text-anchor="start" fill="currentColor" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">本机 cgroup v2 自家 scope：限额基本没设（本机实测）</text>
 <text x="716.0" y="332.0" font-size="11" text-anchor="end" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif"></text>
 <text x="10.0" y="22.0" font-size="11" text-anchor="start" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif"></text>
 <text x="268.5" y="46.0" font-size="11" text-anchor="middle" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">限额已设</text>

@@ -72,7 +72,7 @@ write+fdatasync  2000×4KB 14820.18 ms  (   0.6 MB/s)
 <figure class="kb-figure">
 <svg viewBox="0 0 720 340" role="img" aria-label="同一份 8 MB 数据，三种写法差三个数量级（本机实测）" xmlns="http://www.w3.org/2000/svg">
 <rect x="0" y="0" width="720" height="340" fill="none"/>
-<text x="0.0" y="14.0" font-size="13" text-anchor="start" fill="currentColor" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">同一份 8 MB 数据，三种写法差三个数量级（本机实测）</text>
+<text x="0.0" y="16.0" font-size="13" text-anchor="start" fill="currentColor" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">同一份 8 MB 数据，三种写法差三个数量级（本机实测）</text>
 <text x="716.0" y="332.0" font-size="11" text-anchor="end" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">ms</text>
 <text x="10.0" y="22.0" font-size="11" text-anchor="start" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif"></text>
 <text x="180.0" y="69.0" font-size="12" text-anchor="end" fill="currentColor" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">O_DIRECT 写入</text>

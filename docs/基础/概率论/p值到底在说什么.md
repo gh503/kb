@@ -69,7 +69,7 @@ p 值的中位数 0.501（均匀分布应为 0.5）
 <figure class="kb-figure">
 <svg viewBox="0 0 720 340" role="img" aria-label="单次名义 5%、实测 5.5%；20 次检验时理论 64.2%、模拟 62.9%" xmlns="http://www.w3.org/2000/svg">
 <rect x="0" y="0" width="720" height="340" fill="none"/>
-<text x="0.0" y="14.0" font-size="13" text-anchor="start" fill="currentColor" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">p&lt;0.05 到底有多容易碰巧出现（本机模拟）</text>
+<text x="0.0" y="16.0" font-size="13" text-anchor="start" fill="currentColor" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">p&lt;0.05 到底有多容易碰巧出现（本机模拟）</text>
 <text x="716.0" y="332.0" font-size="11" text-anchor="end" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif"></text>
 <text x="10.0" y="22.0" font-size="11" text-anchor="start" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">%</text>
 <line x1="62" y1="294.0" x2="624" y2="294.0" stroke="var(--kb-line)" stroke-width="1"/>
@@ -81,7 +81,7 @@ p 值的中位数 0.501（均匀分布应为 0.5）
 <line x1="62" y1="78.3" x2="624" y2="78.3" stroke="var(--kb-line)" stroke-width="1"/>
 <text x="54.0" y="82.3" font-size="11" text-anchor="end" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">60</text>
 <line x1="62" y1="6.4" x2="624" y2="6.4" stroke="var(--kb-line)" stroke-width="1"/>
-<text x="54.0" y="10.4" font-size="11" text-anchor="end" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">80</text>
+<text x="54.0" y="13.4" font-size="11" text-anchor="end" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">80</text>
 <line x1="62" y1="34" x2="62" y2="294" stroke="var(--kb-line)" stroke-width="1"/>
 <rect x="179.5" y="274.2" width="43.0" height="19.8" rx="3" fill="var(--kb-warn)" opacity="0.85"/>
 <text x="201.0" y="268.2" font-size="10" text-anchor="middle" fill="var(--kb-warn)" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">5.5</text>

@@ -39,9 +39,24 @@ def text(x, y, s, size=12, anchor="start", color=INK, weight="400", opacity=1):
     )
 
 
+def _est_width(s, size):
+    """粗估文本宽度：中日韩按 1 em，其余按 0.55 em。"""
+    w = 0.0
+    for ch in s:
+        w += size * (1.0 if ord(ch) > 0x2E7F else 0.55)
+    return w
+
+
+def fit_size(s, size, limit):
+    """标题太长就缩字号，最小 9。"""
+    while size > 9 and _est_width(s, size) > limit:
+        size -= 0.5
+    return size
+
+
 def frame(title, xlab, ylab):
     out = [f'<rect x="0" y="0" width="{W}" height="{H}" fill="none"/>']
-    out.append(text(0, 14, title, size=13, weight="700"))
+    out.append(text(0, 16, title, size=fit_size(title, 13, W - 6), weight="700"))
     out.append(text(W - 4, H - 8, xlab, size=11, anchor="end", color=MUTED))
     out.append(text(10, PAD_T - 12, ylab, size=11, color=MUTED))
     return out
@@ -61,7 +76,14 @@ def axes(xmin, xmax, ymin, ymax, xticks, yticks, xfmt=str, yfmt=str, logy=False)
     for yv in yticks:
         y = sy(yv)
         out.append(f'<line x1="{PAD_L}" y1="{y:.1f}" x2="{W-PAD_R}" y2="{y:.1f}" stroke="{GRID}" stroke-width="1"/>')
-        out.append(text(PAD_L - 8, y + 4, yfmt(yv), size=11, anchor="end", color=MUTED))
+        lab = yfmt(yv)
+        lx = PAD_L - 8
+        y += 3 if y - 9 < 0 else 0     # 顶端刻度别顶出画布
+        # 左侧刻度放不下就改用左对齐，避免负坐标被画布裁掉
+        if lx - _est_width(lab, 11) < 1:
+            out.append(text(1, y + 4, lab, size=11, color=MUTED))
+        else:
+            out.append(text(lx, y + 4, lab, size=11, anchor="end", color=MUTED))
     out.append(f'<line x1="{PAD_L}" y1="{PAD_T}" x2="{PAD_L}" y2="{H-PAD_B}" stroke="{GRID}" stroke-width="1"/>')
     for xv in xticks:
         x = sx(xv)
@@ -83,9 +105,9 @@ def legend(items, x=None, y=None):
     x = PAD_L + 8 if x is None else x
     y = PAD_T + 8 if y is None else y
     # 右对齐放不下就把整块图例往左推，避免文字被画布裁掉
-    need = max((30 + len(lbl) * 7.4 for lbl, _, _ in items), default=0)
-    if x + need > W - 2:
-        x = max(PAD_L + 4, W - 2 - need)
+    need = max((30 + _est_width(lbl, 11) for lbl, _, _ in items), default=0)
+    if x + need > W - 6:
+        x = max(PAD_L + 4, W - 6 - need)
     out = []
     for i, (label, color, dash) in enumerate(items):
         yy = y + i * 18
@@ -1530,6 +1552,57 @@ SPECS = {
         series=[("0.5 m/s", [0.5, 2.5, 5.0], ACCENT, None),
                 ("2.0 m/s", [2.0, 10.0, 20.0], WARN, None)],
         note="线性关系；低速是时间同步没做好时最有效的缓解")),
+
+    # ---- 测试 / 运维 ----
+    "lt_curve": ("line", dict(
+        title="同一服务，只改 TCP_NODELAY：p50 从 41 ms 掉到 0.35 ms（本机实测）",
+        xlab="客户端线程数（对数）", ylab="p50 延迟（对数，ms）",
+        xs=[1, 4, 16, 64],
+        series=[("Nagle 开", [41.02, 41.09, 41.63, 48.55], WARN, None),
+                ("Nagle 关", [0.35, 1.40, 8.86, 31.50], ACCENT, None)],
+        note="两条线在并发 1 时就差 117 倍；Nagle 那条几乎是常数，说明是固定等待",
+        logx=True, logy=True)),
+    "fixture_cost": ("hbar", dict(
+        title="造 10 万行数据：快照复制 7.5 ms，重建 327 ms（本机实测）",
+        labels=["拷快照", "VACUUM INTO", "逐条插入", "executemany"],
+        values=[7.5, 40.3, 490.0, 290.0], unit="ms",
+        note="库 6.3 MB；192 倍差距决定了测试写得写不下去")),
+    "contract_catch": ("col", dict(
+        title="200 条响应里 6 条真坏：状态码断言 0 命中，契约校验 6 命中（本机实测）",
+        labels=["真坏条数", "只断言状态码", "字段级契约"],
+        series=[("条数", [6, 0, 6], ACCENT)], unit="条",
+        note="契约校验开销 1.6 µs/条；便宜的检查恰好是能抓住问题的那类")),
+    "isolation_cost": ("col", dict(
+        title="隔离的代价：每个测试独立库贵 2 倍，换来的是不互相污染（本机实测）",
+        labels=["共享一个库", "每测试临时库"],
+        series=[("20 个测试总耗时 ms", [169.3, 337.8], ACCENT)], unit="ms",
+        note="共享库实测多看到 1 行脏数据（应为 0）")),
+    "release_switch": ("hbar", dict(
+        title="发布与回滚：符号链接切换比覆盖式快三个数量级（本机实测）",
+        labels=["覆盖式发布", "tar 打包+解开", "符号链接切换", "覆盖式回滚", "链接式回滚"],
+        values=[175.0, 55.0, 0.05, 110.0, 0.08], unit="ms",
+        note="300 个 4 KB 文件；覆盖式中断会出现 150 旧 + 150 新混跑", logbar=True)),
+    "capacity_gap": ("col", dict(
+        title="按单请求 CPU 算得 27,270 req/s，压测实测只有 1,506（本机实测）",
+        labels=["4 核理论", "压测实测"],
+        series=[("req/s", [27270, 1506], ACCENT)], unit="req/s",
+        note="差 18 倍：压测机自己先饱和；每请求 0.147 ms CPU", logy=True)),
+    "conn_mem": ("col", dict(
+        title="每条 keep-alive 连接约 32 KB（本机实测）",
+        labels=["100 条", "300 条", "600 条"],
+        series=[("KB/连接", [31.8, 32.6, 33.1], ACCENT)], unit="KB",
+        note="空载 RSS 17.5 MB；600 条连接时 36.9 MB")),
+    "alert_noise": ("col", dict(
+        title="一晚 1,200 条告警只来自 37 个根因（本机模拟）",
+        labels=["原始告警", "按(服务,现象)去重", "按服务去重"],
+        series=[("条数", [1200, 148, 37], WARN)], unit="条",
+        note="压掉 88% 与 97%；最吵的单根因重复 17 次", logy=True)),
+
+    "backup_three": ("hbar", dict(
+        title="三种备份方式与恢复校验的耗时（本机实测，6.3 MB 库）",
+        labels=["copy 文件", "VACUUM INTO", ".backup", "恢复校验"],
+        values=[7.0, 40.3, 72.0, 33.0], unit="ms",
+        note="最快的 copy 最容易拷到半个事务；校验只要 33 ms，没理由不跑")),
 
 }
 

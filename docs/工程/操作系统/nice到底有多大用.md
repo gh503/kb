@@ -80,7 +80,7 @@ nice 19  运行 12 jiffies ｜ 0 ｜ 0 ｜ 1
 <figure class="kb-figure">
 <svg viewBox="0 0 720 340" role="img" aria-label="中位 14.5 vs 0.5 jiffies（窗口共 22）；理论权重比 1024:15" xmlns="http://www.w3.org/2000/svg">
 <rect x="0" y="0" width="720" height="340" fill="none"/>
-<text x="0.0" y="14.0" font-size="13" text-anchor="start" fill="currentColor" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">nice 0 vs nice 19：1.5 秒窗口内的 CPU 分配（本机实测）</text>
+<text x="0.0" y="16.0" font-size="13" text-anchor="start" fill="currentColor" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">nice 0 vs nice 19：1.5 秒窗口内的 CPU 分配（本机实测）</text>
 <text x="716.0" y="332.0" font-size="11" text-anchor="end" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif"></text>
 <text x="10.0" y="22.0" font-size="11" text-anchor="start" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">%</text>
 <line x1="62" y1="294.0" x2="624" y2="294.0" stroke="var(--kb-line)" stroke-width="1"/>

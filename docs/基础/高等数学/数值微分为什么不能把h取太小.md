@@ -71,7 +71,7 @@ f(x+h) 与 f(x-h) 的差 ≈ 2h·f'(x) ≈ 2e-15
 <figure class="kb-figure">
 <svg viewBox="0 0 720 340" role="img" aria-label="截断误差与舍入误差的平衡点：中心差分约在 h=1e-6" xmlns="http://www.w3.org/2000/svg">
 <rect x="0" y="0" width="720" height="340" fill="none"/>
-<text x="0.0" y="14.0" font-size="13" text-anchor="start" fill="currentColor" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">数值微分的误差是 U 形：h 太小反而更差</text>
+<text x="0.0" y="16.0" font-size="13" text-anchor="start" fill="currentColor" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">数值微分的误差是 U 形：h 太小反而更差</text>
 <text x="716.0" y="332.0" font-size="11" text-anchor="end" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">步长 h（对数，向左更小）</text>
 <text x="10.0" y="22.0" font-size="11" text-anchor="start" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">绝对误差（对数）</text>
 <line x1="62" y1="270.4" x2="624" y2="270.4" stroke="var(--kb-line)" stroke-width="1"/>
@@ -109,10 +109,10 @@ f(x+h) 与 f(x-h) 的差 ≈ 2h·f'(x) ≈ 2e-15
 <circle cx="62.0" cy="181.3" r="3.2" fill="var(--kb-accent)"/>
 <circle cx="62.0" cy="126.4" r="3.2" fill="var(--kb-accent)"/>
 <circle cx="62.0" cy="53.6" r="3.2" fill="var(--kb-accent)"/>
-<line x1="621.4" y1="48" x2="643.4" y2="48" stroke="var(--kb-warn)" stroke-width="2.4"/>
-<text x="651.4" y="52.0" font-size="11" text-anchor="start" fill="currentColor" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">前向差分 ∝ h</text>
-<line x1="621.4" y1="66" x2="643.4" y2="66" stroke="var(--kb-accent)" stroke-width="2.4"/>
-<text x="651.4" y="70.0" font-size="11" text-anchor="start" fill="currentColor" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">中心差分 ∝ h²</text>
+<line x1="609.75" y1="48" x2="631.75" y2="48" stroke="var(--kb-warn)" stroke-width="2.4"/>
+<text x="639.8" y="52.0" font-size="11" text-anchor="start" fill="currentColor" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">前向差分 ∝ h</text>
+<line x1="609.75" y1="66" x2="631.75" y2="66" stroke="var(--kb-accent)" stroke-width="2.4"/>
+<text x="639.8" y="70.0" font-size="11" text-anchor="start" fill="currentColor" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">中心差分 ∝ h²</text>
 <text x="62.0" y="247.9" font-size="11" text-anchor="middle" fill="var(--kb-accent)" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">中心差分最优 2.8e-11</text>
 <text x="68.0" y="43.6" font-size="11" text-anchor="start" fill="var(--kb-warn)" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">h=1e-15 全是噪声</text>
 </svg>

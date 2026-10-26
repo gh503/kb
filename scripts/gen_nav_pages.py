@@ -11,7 +11,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 DOCS = ROOT / "docs"
 DOMAINS = ["自然", "人文", "商业", "日常", "工程", "网络", "智能", "基础"]
 
-ROW_LINK = re.compile(r"^\| \[([^\]]+)\]\(([^)]+\.md)\) \| (.+?) \| (.+?) \| (.+?) \|$")
+ROW_LINK = re.compile(r"^\| \[([^\]]+)\]\(([^)]+\.md)\) \| (.+?) \| (.+?) \|$")
 
 
 def section(text: str, name: str) -> str:

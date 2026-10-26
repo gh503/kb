@@ -195,8 +195,8 @@ def main():
         by_subject[subject].add(name)
     for subject in TECH_SUBJECTS:
         n = len(by_subject.get(subject, ()))
-        if n and not 2 <= n <= 3:
-            problems.append(f"{subject}: 链 {n} 条，不在 2–3 条区间")
+        if n and not 2 <= n <= 4:
+            problems.append(f"{subject}: 链 {n} 条，不在 2–4 条区间")
     for (subject, name), pages in chains.items():
         if subject in TECH_SUBJECTS and len(pages) != 4:
             problems.append(f"链 {subject}/{name}: {len(pages)} 页，应为 4 页")

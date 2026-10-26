@@ -27,7 +27,7 @@ def main():
         head = head.rstrip("\n") + "\n" + chain_row + "\n\n"
         s = head + "## 条目" + rest
 
-    entries = "\n".join(f"| [{f}]({f}.md) | {line} | {depth} | 草稿 |" for f, line, depth in rows)
+    entries = "\n".join(f"| [{f}]({f}.md) | {line} | {depth} |" for f, line, depth in rows)
     seg = s.split("## 条目")[1].split("## 链上")[0]
     if f"| [{rows[0][0]}]({rows[0][0]}.md) | " in seg:
         print("条目表已有，跳过")

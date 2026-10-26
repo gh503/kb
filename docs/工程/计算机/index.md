@@ -48,8 +48,6 @@
 | [系统调用与vDSO](系统调用与vDSO.md) | vDSO 123 ns，系统调用 771 ns，read 1,064 ns | 实操 |
 | [火焰图怎么读](火焰图怎么读.md) | 剖析开销 1.7 倍；check_links 占 62% | 取舍 |
 
-## 链上还没写的
-
 ## 相关
 
 - [工程](../index.md) · [开发](../开发/index.md) · [TCP-IP](../../网络/TCP-IP/index.md)

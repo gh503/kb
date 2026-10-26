@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""生成两个导航页：全站索引、待写清单。
+"""生成导航页：全站索引。
 
 用法：python3 scripts/gen_nav_pages.py
 幂等：重复运行只会重写这两个文件，其余内容不动。
@@ -102,69 +102,11 @@ def gen_index(data) -> str:
     return "\n".join(out).rstrip() + "\n"
 
 
-def gen_backlog(data) -> str:
-    rows = []
-    for dom, subs in data.items():
-        for name, entries, chains, backlog in subs:
-            for item in backlog:
-                rows.append((dom, name, item))
-    if rows:
-        out = [
-            "# 待写清单",
-            "",
-            f"> 各学科页「链上还没写的」汇总，共 **{len(rows)} 条**。**由 `scripts/gen_nav_pages.py` 生成，不要手改。**",
-            ">",
-            "> 这些是候选选题，不是承诺。开写前先判断：有没有可写的数字或判据？",
-            "> 没有的话，先补素材，不要先建页。",
-            "",
-        ]
-    else:
-        out = [
-            "# 待写清单",
-            "",
-            "> 共 **0 条**：所有登记过的候选选题都已经写成页面。**由 `scripts/gen_nav_pages.py` 生成，不要手改。**",
-            ">",
-            "> 清单清零不等于没事可做——它只说明「登记过的」都写完了。",
-            "",
-            "## 清零之后怎么继续",
-            "",
-            "```text",
-            "1. 想开新链：先在学科页「链上还没写的」里登记 4 个选题，再按 4 页一链写",
-            "2. 每条选题先确认：能不能给出至少 3 个可代入的数字或判据",
-            "3. 写完用 `prune_backlog.py` 清条目，用 `gen_nav_pages.py` 重生成这一页",
-            "4. 不想加新链时，优先把已有页面里的数字做旧（重跑一遍基准），而不是复制新页",
-            "```",
-            "",
-        ]
-    cur = None
-    for dom, name, item in rows:
-        if dom != cur:
-            out.append(f"## {dom}")
-            out.append("")
-            cur = dom
-        out.append(f"- **{name}**：{item}")
-    if not rows:
-        return "\n".join(out).rstrip() + "\n"
-    out.append("")
-    out.append("## 怎么用这一页")
-    out.append("")
-    out.append("```text")
-    out.append("1. 按域挑一批（同一域连着写，体例与数字风格更容易一致）")
-    out.append("2. 每条先确认：能不能给出至少 3 个可代入的数字/判据")
-    out.append("3. 能 → 按 4 页一链写；不能 → 回去补素材，别硬写")
-    out.append("4. 写完后从学科页删掉对应条目，这一页下次生成会自动少一条")
-    out.append("```")
-    return "\n".join(out).rstrip() + "\n"
-
-
 def main():
     data = collect()
     (DOCS / "关于" / "全站索引.md").write_text(gen_index(data), encoding="utf-8")
-    (DOCS / "关于" / "待写清单.md").write_text(gen_backlog(data), encoding="utf-8")
     total = sum(len(e) for subs in data.values() for _, e, _, _ in subs)
-    backlog = sum(len(b) for subs in data.values() for _, _, _, b in subs)
     print(f"全站索引: {total} 条")
-    print(f"待写清单: {backlog} 条")
     return 0
 
 

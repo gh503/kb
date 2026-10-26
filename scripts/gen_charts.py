@@ -1878,6 +1878,123 @@ SPECS = {
         series=[("通过项数", [5, 11, 3], ACCENT)], unit="项",
         note="对比度 15.51/7.29/5.43/5.24 全过 4.5:1；搜索框 outline 为 none")),
 
+    "route_scale": ("col", dict(
+        title="本机只有 4 条 IPv4、6 条 IPv6 路由：出门靠一行默认网关（本机实测）",
+        labels=["IPv4 路由", "IPv6 路由", "IPv6 临时地址"],
+        series=[("条", [4, 6, 3], ACCENT)], unit="条",
+        note="最长前缀匹配：/24 胜 default；同网段靠直连路由，不经过网关")),
+    "nat_ports": ("col", dict(
+        title="NAT 的两条硬上限：conntrack 262,144、临时端口 28,232（本机实测）",
+        labels=["conntrack 上限", "conntrack 已用", "临时端口"],
+        series=[("个", [262144, 289, 28232], ACCENT)], unit="个",
+        note="单 IP 单目的并发上限 ≈ 2.8 万；短连接被 TIME_WAIT 再压一半", logy=True)),
+    "v6_overhead": ("col", dict(
+        title="IPv6 头 40 B：1500 MTU 下有效载荷 1472 → 1452（−1.4%，计算）",
+        labels=["IPv4 有效载荷", "IPv6 有效载荷"],
+        series=[("字节", [1472, 1452], ACCENT)], unit="B",
+        note="3 个临时地址是本机实测；ICMPv6 被拦 = 邻居发现失败")),
+    "ttl_jitter": ("col", dict(
+        title="同一目标三次 ping：40.3 / 92.6 / 161.5 ms，抖动 4 倍（本机实测）",
+        labels=["min", "avg", "max"],
+        series=[("ms", [40.3, 92.6, 161.5], WARN)], unit="ms",
+        note="mdev 50.9；单次 traceroute 不能用来定位慢在哪一跳")),
+    "hmac_cost": ("col", dict(
+        title="HMAC 验签 4.58 µs（21.8 万次/秒）：有状态会话完全撑得住（本机实测）",
+        labels=["HMAC 验签", "PBKDF2 100k 迭代"],
+        series=[("单次 µs", [4.58, 94800], WARN)], unit="µs",
+        note="会话表 100 万条 × 120 B ≈ 114 MB；吊销靠有效期而不是删库", logy=True)),
+    "priv_surface": ("col", dict(
+        title="本机权限面：setuid 16 个、全局可写 0 个、私钥 600（本机实测）",
+        labels=["setuid 程序", "全局可写文件", "凭据文件"],
+        series=[("个", [16, 0, 1], ACCENT)], unit="个",
+        note="三条命令就能查完；越权事故大多发生在逐个入口校验这一层")),
+    "redact_speed": ("col", dict(
+        title="脱敏 94,445 行/秒：2 万行 212 ms，误伤 0 行（本机实测）",
+        labels=["命中行", "未命中行"],
+        series=[("行数", [15000, 5000], ACCENT)], unit="行",
+        note="正则脱敏约 10 µs/行；含 no pii 的噪声行必须保持原样")),
+    "pickle_rce": ("col", dict(
+        title="71 字节 pickle 载荷即可执行命令，48.4 ms 完成（本机实测）",
+        labels=["载荷字节", "反序列化 ms"],
+        series=[("值", [71, 48.4], WARN)], unit="",
+        note="pickle 允许描述构造什么对象，等于可执行蓝图")),
+    "ssrf_reach": ("col", dict(
+        title="服务端到内网 14.3 ms 就通，到云元数据 3,005 ms 超时（本机实测）",
+        labels=["127.0.0.1", "内网网关", "云元数据", "公网"],
+        series=[("ms", [14.3, 1036, 3005, 579], WARN)], unit="ms",
+        note="耗时差两个数量级，盲 SSRF 也能据此探测", logy=True)),
+    "fw_verify": ("col", dict(
+        title="32 MB 固件：哈希 119 ms 是瓶颈，验签 89.5 µs 可忽略（本机实测）",
+        labels=["sha256 32MB", "RSA-2048 验签"],
+        series=[("耗时", [119, 0.0895], ACCENT)], unit="ms",
+        note="哈希 269 MB/s；验签便宜到可以每次启动都做", logy=True)),
+    "proto_gap": ("col", dict(
+        title="同一份 2 万条数据：JSON 1,612 KB / 42 ms，定长二进制 469 KB / 8 ms（本机实测）",
+        labels=["JSON 体积", "二进制体积", "JSON 编码", "二进制编码"],
+        series=[("KB 或 ms", [1612, 469, 42, 8], ACCENT)], unit="",
+        note="体积 3.4 倍、编码 5 倍；链路不是瓶颈时收益接近于零")),
+    "msg_frag": ("col", dict(
+        title="消息越大越脆：1% 丢包下 1 MB 消息的整条失败率 99.9%（计算）",
+        labels=["1 KB", "100 KB", "1 MB", "10 MB"],
+        series=[("整条失败率 %", [0.99, 51, 99.9, 100], WARN)], unit="%",
+        note="MTU 1500 → MSS 1,460；1 MB 要切 718 个包")),
+    "fanout_cost": ("col", dict(
+        title="扇出 200 个订阅者只要 8 µs；10 万连接 × 4 KB ≈ 391 MB（本机实测）",
+        labels=["单次扇出 µs", "10 万连接内存 MB"],
+        series=[("值", [8, 391], ACCENT)], unit="",
+        note="成本在连接本身，不在发布；权限变更要能踢掉已建连接")),
+    "ratelimit_gap": ("col", dict(
+        title="同阈值 1,000/s：固定窗口放行 2,000，令牌桶放行 1,000（本机模拟）",
+        labels=["固定窗口", "令牌桶"],
+        series=[("放行数（3 秒 3,000 请求）", [2000, 1000], WARN)], unit="个",
+        note="固定窗口在边界会超卖一倍；桶容量决定允许的突发")),
+
+    "cred_surface": ("col", dict(
+        title="凭据面：1 个 600 的凭据文件，2 个环境变量里疑似凭据（本机实测）",
+        labels=["凭据文件", "疑似凭据的环境变量"],
+        series=[("个", [1, 2], WARN)], unit="个",
+        note="环境变量会进 /proc/<pid>/environ，且被所有子进程继承")),
+    "supply_scale": ("col", dict(
+        title="主机上的供应链边界：3,282 个包、55 个启用服务、0 条 signed-by（本机实测）",
+        labels=["已装软件包", "启用服务", "cron.d 条目"],
+        series=[("个", [3282, 55, 2], ACCENT)], unit="个",
+        note="装了什么、从哪装、装完验没验 —— 三问覆盖主机侧全部落点", logy=True)),
+    "evidence_window": ("col", dict(
+        title="证据窗口：journal 1.5 GB、登录记录约 14 天、1 小时 23 个文件变化（本机实测）",
+        labels=["journal GB", "登录保留天数", "1 小时变化文件"],
+        series=[("值", [1.5, 14, 23], ACCENT)], unit="",
+        note="内存与网络状态按分钟消失，日志按天滚动 —— 顺序不能反")),
+    "autostart_scale": ("col", dict(
+        title="五个自启入口：55 个服务、2 条 cron.d、0 个用户 crontab（本机实测）",
+        labels=["systemd 启用", "cron.d", "用户 crontab", "autostart"],
+        series=[("个", [55, 2, 0, 0], ACCENT)], unit="个",
+        note="ps 只看当前在跑；下次开机才跑的都在 enabled 里")),
+    "rbac_cost": ("col", dict(
+        title="权限判定 0.210 µs（475 万次/秒）：性能从来不是不校验的理由（本机实测）",
+        labels=["RBAC 判定", "一次日志打印"],
+        series=[("µs", [0.21, 5], ACCENT)], unit="µs",
+        note="3 角色 6 权限；贵的是每个入口都记得调用，不是判定本身")),
+    "ir_timeline": ("col", dict(
+        title="止血以分钟计，证据以小时计：15 分钟 vs 1 小时（本机实测）",
+        labels=["止血目标 分钟", "证据窗口 小时"],
+        series=[("值", [15, 60], ACCENT)], unit="",
+        note="1.5 GB journal 会滚动覆盖；先抓内存与连接，再谈查清")),
+    "disk_identity": ("col", dict(
+        title="两块盘的身份证：SSD 119 GB、HDD 931 GB；SMART 需要 root（本机实测）",
+        labels=["sda SSD", "sdb HDD"],
+        series=[("容量 GB", [119, 931], ACCENT)], unit="GB",
+        note="翻新件的破绽在计数器：通电时长、写入量、重映射扇区")),
+    "tee_crypto": ("col", dict(
+        title="密码学成本不构成上芯片会卡：RSA 89.5 µs、Ed25519 192.8 µs（本机实测）",
+        labels=["RSA-2048 验签", "Ed25519 验签", "sha256 吞吐 MB/s"],
+        series=[("µs 或 MB/s", [89.5, 192.8, 269], ACCENT)], unit="",
+        note="边界不在性能，在屏幕与输入仍归主系统管")),
+    "jtag_surface": ("col", dict(
+        title="调试面：4 个 USB 设备、0 个调试串口（本机实测）",
+        labels=["USB 设备", "调试串口"],
+        series=[("个", [4, 0], ACCENT)], unit="个",
+        note="量产设备应熔断 JTAG 或启用签名挑战；软件关调试挡不住物理接触")),
+
 }
 
 

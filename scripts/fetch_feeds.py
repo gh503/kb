@@ -13,6 +13,7 @@ from __future__ import annotations
 import argparse
 import re
 import sys
+import time
 import urllib.request
 import xml.etree.ElementTree as ET
 from concurrent.futures import ThreadPoolExecutor
@@ -64,15 +65,28 @@ def parse_dt(raw: str) -> datetime | None:
         return None
 
 
-def fetch(feed):
+def fetch(feed, attempts=3, backoff=(2, 6)):
+    """抓一个源。失败重试两次——每周一 Substack 有约 20% 概率返回 HTTPError，
+    单次失败会让那天的源整年缺一条，重试能把它吃掉。"""
     cat, name, url = feed
-    try:
-        req = urllib.request.Request(url, headers={"User-Agent": UA})
-        with urllib.request.urlopen(req, timeout=20) as r:
-            raw = r.read(8_000_000)
-        root = ET.fromstring(raw)
-    except Exception as e:
-        return [], f"{type(e).__name__}"
+    last = None
+    for i in range(attempts):
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": UA})
+            with urllib.request.urlopen(req, timeout=20) as r:
+                raw = r.read(8_000_000)
+            # 有的源无视 Accept-Encoding: identity，照样回 gzip——不解压就是 ParseError
+            if raw[:2] == b"\x1f\x8b":
+                import gzip
+                raw = gzip.decompress(raw)
+            root = ET.fromstring(raw)
+            break
+        except Exception as e:
+            last = f"{type(e).__name__}"
+            if i < attempts - 1:
+                time.sleep(backoff[min(i, len(backoff) - 1)])
+    else:
+        return [], last
     items = []
     atom = "{http://www.w3.org/2005/Atom}"
     for it in list(root.iter("item")) + list(root.iter(f"{atom}entry")):

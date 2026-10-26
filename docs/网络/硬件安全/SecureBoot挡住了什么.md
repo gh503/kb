@@ -56,6 +56,33 @@ sudo mokutil --import 模块公钥.der
 
 **"开了以后要维护签名"**：每次更新内核模块都要重新签。
 
+<!-- kb-chart:secureboot -->
+
+<figure class="kb-figure">
+<svg viewBox="0 0 720 340" role="img" aria-label="3=能挡。本机 SecureBoot disabled：这条信任链是断的。" xmlns="http://www.w3.org/2000/svg">
+<rect x="0" y="0" width="720" height="340" fill="none"/>
+<text x="0.0" y="14.0" font-size="13" text-anchor="start" fill="currentColor" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">Secure Boot 挡住什么、挡不住什么</text>
+<text x="716.0" y="332.0" font-size="11" text-anchor="end" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif"></text>
+<text x="10.0" y="22.0" font-size="11" text-anchor="start" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif"></text>
+<text x="209.2" y="46.0" font-size="11" text-anchor="middle" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">引导被改</text>
+<text x="327.8" y="46.0" font-size="11" text-anchor="middle" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">未签名内核</text>
+<text x="446.2" y="46.0" font-size="11" text-anchor="middle" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">用户态木马</text>
+<text x="564.8" y="46.0" font-size="11" text-anchor="middle" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">已签名坏驱动</text>
+<text x="140.0" y="76.0" font-size="12" text-anchor="end" fill="currentColor" font-weight="600" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">Secure Boot</text>
+<rect x="156.0" y="60" width="106.5" height="22" rx="4" fill="var(--kb-accent)" opacity="0.9"/>
+<text x="209.2" y="75.0" font-size="10" text-anchor="middle" fill="var(--kb-paper)" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">好</text>
+<rect x="274.5" y="60" width="106.5" height="22" rx="4" fill="var(--kb-accent)" opacity="0.9"/>
+<text x="327.8" y="75.0" font-size="10" text-anchor="middle" fill="var(--kb-paper)" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">好</text>
+<rect x="393.0" y="60" width="106.5" height="22" rx="4" fill="var(--kb-line)" opacity="0.6"/>
+<text x="446.2" y="75.0" font-size="10" text-anchor="middle" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">差</text>
+<rect x="511.5" y="60" width="106.5" height="22" rx="4" fill="var(--kb-line)" opacity="0.6"/>
+<text x="564.8" y="75.0" font-size="10" text-anchor="middle" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">差</text>
+<text x="62.0" y="332.0" font-size="11" text-anchor="start" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">3=能挡。本机 SecureBoot disabled：这条信任链是断的。</text>
+</svg>
+<figcaption>3=能挡。本机 SecureBoot disabled：这条信任链是断的。</figcaption>
+</figure>
+
+
 ## 数字与阈值（本机实测）
 
 ```text

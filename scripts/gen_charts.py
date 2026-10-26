@@ -1045,6 +1045,125 @@ def chart_log_leak():
                      note="路径泄漏是 1 处，但它给的是目录结构；监听 24 个是最需要盘的暴露面")
 
 
+def chart_host_grade():
+    return strip_chart("三种机器各要做到什么（按数据价值分级）",
+                       ["补丁", "磁盘加密", "最小暴露", "集中日志"],
+                       [("个人笔记本", [3, 3, 2, 1], ""),
+                        ("团队服务器", [3, 2, 3, 3], ""),
+                        ("承载他人数据", [3, 3, 3, 3], "")],
+                       note="3=必须。分水岭是「承载他人数据」：它把自家的事变成合规义务。")
+
+
+def chart_kernel_params():
+    return strip_chart("六个内核参数各挡哪一类（本机取值）",
+                       ["防信息泄漏", "防本地侦察", "默认已开"],
+                       [("kptr_restrict=1", [3, 2, 3], ""),
+                        ("dmesg_restrict=1", [3, 2, 3], ""),
+                        ("ptrace_scope=1", [1, 3, 3], ""),
+                        ("userns_clone=1", [1, 1, 1], ""),
+                        ("perf_event_paranoid=4", [2, 3, 3], "")],
+                       note="3=强。userns_clone=1 是唯一敞口：容器与沙箱需要它，它也是攻击面。")
+
+
+def chart_exposure_trim():
+    return col_chart("本机暴露面与「该留多少」（本机盘点）",
+                     ["对外监听", "桌面可接受上限", "监听总数", "运行服务"],
+                     [("个", [9, 10, 24, 40], ACCENT)], "个",
+                     note="先砍不认识的端口，再把必须留的绑回环；服务数不等于暴露面，但它是上限")
+
+
+def chart_perm_baseline():
+    return strip_chart("权限基线与本机实际（octal 值按风险看）",
+                       ["本机合规", "泄露后果"],
+                       [("/etc/passwd 644", [3, 1], ""),
+                        ("/etc/shadow 640", [3, 3], ""),
+                        ("/etc/sudoers 440", [3, 3], ""),
+                        ("umask 0002", [1, 2], "")],
+                       note="3=严重。shadow 若变 644，所有用户都能读到密码哈希。")
+
+
+def chart_audit_sources():
+    return strip_chart("三个日志来源各能回答什么（本机可用性）",
+                       ["谁进来了", "从哪来", "干了什么"],
+                       [("who / w", [3, 1, 1], ""),
+                        ("last / lastb", [3, 2, 1], ""),
+                        ("auth.log / journal", [3, 3, 3], "")],
+                       note="3=能。journal 里不只有登录，还有应用输出，线索往往更多。")
+
+
+def chart_patch_window():
+    return col_chart("补丁窗口：装了几个内核、还有几个没升（本机实测）",
+                     ["已装内核", "可升级包"],
+                     [("个", [2, 6], WARN)], "个",
+                     note="6 个待升级就是 6 个窗口；远程可利用的 24 小时内修，内核最迟一个月内重启")
+
+
+def chart_privesc_surface():
+    return col_chart("提权面有多大（本机盘点）",
+                     ["SUID/SGID", "警戒线", "当前会话"],
+                     [("个", [23, 50, 1], ACCENT)], "个",
+                     note="SUID 超过 50 就要逐个核对来源；sudo 允许 vim/find/python 等于直接给 root")
+
+
+def chart_iommu_groups():
+    return col_chart("设备被隔离成多少个 IOMMU 组（本机实测）",
+                     ["IOMMU 组", "dmar 单元"],
+                     [("个", [14, 1], ACCENT)], "个",
+                     note="组越细隔离越好；直通虚拟机要整组给，这是很多直通失败的根因")
+
+
+def chart_secureboot():
+    return strip_chart("Secure Boot 挡住什么、挡不住什么",
+                       ["引导被改", "未签名内核", "用户态木马", "已签名坏驱动"],
+                       [("Secure Boot", [3, 3, 1, 1], "")],
+                       note="3=能挡。本机 SecureBoot disabled：这条信任链是断的。")
+
+
+def chart_tpm_ability():
+    return strip_chart("TPM 能做什么、不能做什么（本机 TPM 2.0）",
+                       ["密钥不出芯片", "度量启动", "判断系统安全", "替代磁盘加密"],
+                       [("TPM 2.0", [3, 3, 1, 1], "")],
+                       note="3=能。它只管启动阶段；系统跑起来之后硬件帮不上忙。")
+
+
+def chart_side_channel():
+    return strip_chart("四类侧信道：要多近才能观测",
+                       ["需要本地代码", "可跨进程", "远程可行"],
+                       [("时间", [2, 3, 2], ""),
+                        ("缓存", [3, 3, 1], ""),
+                        ("功耗", [3, 1, 1], ""),
+                        ("电磁", [3, 1, 1], "")],
+                       note="3=强。缓存类最危险：云上多租户共享物理核，跨租户也能观测。")
+
+
+def chart_firmware_layers():
+    return strip_chart("三层固件：谁更新、要不要重启",
+                       ["随内核更新", "需要重启", "本机可查"],
+                       [("CPU 微码", [3, 3, 3], ""),
+                        ("主板 UEFI", [1, 3, 1], ""),
+                        ("设备固件", [1, 2, 2], "")],
+                       note="3=是。微码随内核包走，所以升级内核就等于升微码。")
+
+
+def chart_mitigation_tax():
+    return col_chart("三项缓解的代价上限（公开经验区间）",
+                     ["PTI", "SMT 关闭", "IBRS/STIBP"],
+                     [("性能损失 %", [30, 30, 5], WARN)], "%",
+                     note="取区间上限。PTI 与系统调用频率成正比；SMT 关闭伤的是多线程吞吐",
+                     yticks=[0, 10, 20, 30])
+
+
+def chart_trust_chain():
+    return strip_chart("信任链五环，本机断在哪（三处断）",
+                       ["本机状态", "能否替代加密"],
+                       [("CPU 微码", [3, 1], ""),
+                        ("UEFI", [3, 1], ""),
+                        ("Secure Boot", [1, 1], ""),
+                        ("TPM 度量", [1, 1], ""),
+                        ("磁盘加密", [1, 3], "")],
+                       note="3=已建立/能替代。物理接触者可以改引导、读明文磁盘：先加密最划算。")
+
+
 CHARTS = {
     "growth": chart_growth,
     "sort": chart_sort,
@@ -1109,6 +1228,20 @@ CHARTS = {
     "sec_tradeoff": chart_sec_tradeoff,
     "injection": chart_injection,
     "log_leak": chart_log_leak,
+    "host_grade": chart_host_grade,
+    "kernel_params": chart_kernel_params,
+    "exposure_trim": chart_exposure_trim,
+    "perm_baseline": chart_perm_baseline,
+    "audit_sources": chart_audit_sources,
+    "patch_window": chart_patch_window,
+    "privesc_surface": chart_privesc_surface,
+    "iommu_groups": chart_iommu_groups,
+    "secureboot": chart_secureboot,
+    "tpm_ability": chart_tpm_ability,
+    "side_channel": chart_side_channel,
+    "firmware_layers": chart_firmware_layers,
+    "mitigation_tax": chart_mitigation_tax,
+    "trust_chain": chart_trust_chain,
     "host_surface": chart_host_surface,
     "hw_status": chart_hw_status,
     "mc_error": chart_mc_error,

@@ -63,6 +63,33 @@ sudo cryptsetup luksDump /dev/sda3 | grep -i tpm2
 
 **"绑 TPM 的 LUKS"** 才是它最常见的实用价值：开机自动解锁，但换盘/改引导就解不开。
 
+<!-- kb-chart:tpm_ability -->
+
+<figure class="kb-figure">
+<svg viewBox="0 0 720 340" role="img" aria-label="3=能。它只管启动阶段；系统跑起来之后硬件帮不上忙。" xmlns="http://www.w3.org/2000/svg">
+<rect x="0" y="0" width="720" height="340" fill="none"/>
+<text x="0.0" y="14.0" font-size="13" text-anchor="start" fill="currentColor" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">TPM 能做什么、不能做什么（本机 TPM 2.0）</text>
+<text x="716.0" y="332.0" font-size="11" text-anchor="end" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif"></text>
+<text x="10.0" y="22.0" font-size="11" text-anchor="start" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif"></text>
+<text x="209.2" y="46.0" font-size="11" text-anchor="middle" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">密钥不出芯片</text>
+<text x="327.8" y="46.0" font-size="11" text-anchor="middle" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">度量启动</text>
+<text x="446.2" y="46.0" font-size="11" text-anchor="middle" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">判断系统安全</text>
+<text x="564.8" y="46.0" font-size="11" text-anchor="middle" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">替代磁盘加密</text>
+<text x="140.0" y="76.0" font-size="12" text-anchor="end" fill="currentColor" font-weight="600" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">TPM 2.0</text>
+<rect x="156.0" y="60" width="106.5" height="22" rx="4" fill="var(--kb-accent)" opacity="0.9"/>
+<text x="209.2" y="75.0" font-size="10" text-anchor="middle" fill="var(--kb-paper)" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">好</text>
+<rect x="274.5" y="60" width="106.5" height="22" rx="4" fill="var(--kb-accent)" opacity="0.9"/>
+<text x="327.8" y="75.0" font-size="10" text-anchor="middle" fill="var(--kb-paper)" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">好</text>
+<rect x="393.0" y="60" width="106.5" height="22" rx="4" fill="var(--kb-line)" opacity="0.6"/>
+<text x="446.2" y="75.0" font-size="10" text-anchor="middle" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">差</text>
+<rect x="511.5" y="60" width="106.5" height="22" rx="4" fill="var(--kb-line)" opacity="0.6"/>
+<text x="564.8" y="75.0" font-size="10" text-anchor="middle" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">差</text>
+<text x="62.0" y="332.0" font-size="11" text-anchor="start" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">3=能。它只管启动阶段；系统跑起来之后硬件帮不上忙。</text>
+</svg>
+<figcaption>3=能。它只管启动阶段；系统跑起来之后硬件帮不上忙。</figcaption>
+</figure>
+
+
 ## 数字与阈值（本机实测）
 
 ```text

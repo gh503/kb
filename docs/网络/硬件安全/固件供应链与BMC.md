@@ -2,7 +2,10 @@
 
 > **深度** 实操 ｜ **类型** 实测 ｜ **链** 硬件还有哪些管不到
 
-<div class="kb-chain"><span class="kb-chain__label">本链四页</span><span class="kb-chain__sep">/</span><a href="内存加密与机密计算.md">内存加密与机密计算</a><span class="kb-chain__sep">·</span><span class="kb-chain__now">固件供应链与 BMC</span><span class="kb-chain__sep">·</span><a href="物理攻击与冷启动.md">物理攻击与冷启动</a><span class="kb-chain__sep">·</span><a href="设备认证与8021X.md">设备认证与 802.1X</a></div>
+<div class="kb-chain" markdown>
+<span class="kb-chain__label">本链四页</span> [内存加密与机密计算](内存加密与机密计算.md) · <span class="kb-chain__now">固件供应链与 BMC</span> · [物理攻击与冷启动](物理攻击与冷启动.md) · [设备认证与 802.1X](设备认证与8021X.md)
+</div>
+
 
 ## 结论
 

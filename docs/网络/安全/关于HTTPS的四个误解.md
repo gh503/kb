@@ -2,7 +2,10 @@
 
 > **深度** 取舍 ｜ **类型** 边界 ｜ **链** HTTPS 保护了什么
 
-<div class="kb-chain"><span class="kb-chain__label">本链四页</span><span class="kb-chain__sep">/</span><a href="证书链怎么验.md">证书链怎么验</a><span class="kb-chain__sep">·</span><a href="中间人怎么发生的.md">中间人怎么发生的</a><span class="kb-chain__sep">·</span><a href="HSTS解决什么.md">HSTS 解决什么</a><span class="kb-chain__sep">·</span><span class="kb-chain__now">关于 HTTPS 的四个误解</span></div>
+<div class="kb-chain" markdown>
+<span class="kb-chain__label">本链四页</span> [证书链怎么验](证书链怎么验.md) · [中间人怎么发生的](中间人怎么发生的.md) · [HSTS 解决什么](HSTS解决什么.md) · <span class="kb-chain__now">关于 HTTPS 的四个误解</span>
+</div>
+
 
 
 

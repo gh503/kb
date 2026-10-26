@@ -2,7 +2,10 @@
 
 > **深度** 入门 ｜ **类型** 实测 ｜ **链** 资源到底被谁吃了
 
-<div class="kb-chain"><span class="kb-chain__label">本链四页</span><span class="kb-chain__now">nice 到底有多大用</span><span class="kb-chain__sep">·</span><a href="绑核为什么有时没用.md">绑核为什么有时没用</a><span class="kb-chain__sep">·</span><a href="文件描述符耗尽怎么查.md">文件描述符耗尽怎么查</a><span class="kb-chain__sep">·</span><a href="cgroup限额怎么算.md">cgroup 限额怎么算</a></div>
+<div class="kb-chain" markdown>
+<span class="kb-chain__label">本链四页</span> <span class="kb-chain__now">nice 到底有多大用</span> · [绑核为什么有时没用](绑核为什么有时没用.md) · [文件描述符耗尽怎么查](文件描述符耗尽怎么查.md) · [cgroup 限额怎么算](cgroup限额怎么算.md)
+</div>
+
 
 ## 结论
 

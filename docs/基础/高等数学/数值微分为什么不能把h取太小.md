@@ -2,7 +2,10 @@
 
 > **深度** 实操 ｜ **类型** 实测 ｜ **链** 变化率怎么算
 
-<div class="kb-chain"><span class="kb-chain__label">本链四页</span><span class="kb-chain__sep">/</span><a href="导数在算什么.md">导数在算什么</a><span class="kb-chain__sep">·</span><span class="kb-chain__now">数值微分为什么不能把h取太小</span><span class="kb-chain__sep">·</span><a href="泰勒展开能信几项.md">泰勒展开能信几项</a><span class="kb-chain__sep">·</span><a href="浮点误差从哪来.md">浮点误差从哪来</a></div>
+<div class="kb-chain" markdown>
+<span class="kb-chain__label">本链四页</span> [导数在算什么](导数在算什么.md) · <span class="kb-chain__now">数值微分为什么不能把h取太小</span> · [泰勒展开能信几项](泰勒展开能信几项.md) · [浮点误差从哪来](浮点误差从哪来.md)
+</div>
+
 
 ## 结论
 

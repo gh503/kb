@@ -2,7 +2,10 @@
 
 > **深度** 实操 ｜ **类型** 实测 ｜ **链** 相关不等于因果之后
 
-<div class="kb-chain"><span class="kb-chain__label">本链四页</span><span class="kb-chain__sep">/</span><a href="独立与条件概率.md">独立与条件概率</a><span class="kb-chain__sep">·</span><a href="辛普森悖论.md">辛普森悖论</a><span class="kb-chain__sep">·</span><span class="kb-chain__now">p值到底在说什么</span><span class="kb-chain__sep">·</span><a href="置信区间怎么读.md">置信区间怎么读</a></div>
+<div class="kb-chain" markdown>
+<span class="kb-chain__label">本链四页</span> [独立与条件概率](独立与条件概率.md) · [辛普森悖论](辛普森悖论.md) · <span class="kb-chain__now">p值到底在说什么</span> · [置信区间怎么读](置信区间怎么读.md)
+</div>
+
 
 ## 结论
 

@@ -2,7 +2,10 @@
 
 > **深度** 入门 ｜ **类型** 实测 ｜ **链** 分解能回答什么
 
-<div class="kb-chain"><span class="kb-chain__label">本链四页</span><span class="kb-chain__now">SVD 为什么比特征分解更通用</span><span class="kb-chain__sep">·</span><a href="稀疏矩阵怎么存怎么乘.md">稀疏矩阵怎么存怎么乘</a><span class="kb-chain__sep">·</span><a href="正交化的数值稳定性.md">正交化的数值稳定性</a><span class="kb-chain__sep">·</span><a href="PCA的实际取舍.md">PCA 的实际取舍</a></div>
+<div class="kb-chain" markdown>
+<span class="kb-chain__label">本链四页</span> <span class="kb-chain__now">SVD为什么比特征分解更通用</span> · [稀疏矩阵怎么存怎么乘](稀疏矩阵怎么存怎么乘.md) · [正交化的数值稳定性](正交化的数值稳定性.md) · [PCA的实际取舍](PCA的实际取舍.md)
+</div>
+
 
 ## 结论
 

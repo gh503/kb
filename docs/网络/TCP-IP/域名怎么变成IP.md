@@ -2,7 +2,10 @@
 
 > **深度** 入门 ｜ **类型** 方法 ｜ **链** 一次请求经过了什么
 
-<div class="kb-chain"><span class="kb-chain__label">本链四页</span><span class="kb-chain__sep">/</span><span class="kb-chain__now">域名怎么变成 IP</span><span class="kb-chain__sep">·</span><a href="TCP握手到底几次.md">TCP 握手到底几次</a><span class="kb-chain__sep">·</span><a href="TLS在握手里做什么.md">TLS 在握手里做什么</a><span class="kb-chain__sep">·</span><a href="HTTP在连接上怎么走.md">HTTP 在连接上怎么走</a></div>
+<div class="kb-chain" markdown>
+<span class="kb-chain__label">本链四页</span> <span class="kb-chain__now">域名怎么变成 IP</span> · [TCP 握手到底几次](TCP握手到底几次.md) · [TLS 在握手里做什么](TLS在握手里做什么.md) · [HTTP 在连接上怎么走](HTTP在连接上怎么走.md)
+</div>
+
 
 
 

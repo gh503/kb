@@ -2,7 +2,10 @@
 
 > **深度** 实操 ｜ **类型** 实测 ｜ **链** 把不确定性算成数
 
-<div class="kb-chain"><span class="kb-chain__label">本链四页</span><span class="kb-chain__sep">/</span><a href="贝叶斯更新怎么做才算得清.md">贝叶斯更新怎么做才算得清</a><span class="kb-chain__sep">·</span><span class="kb-chain__now">A/B 实验的样本量与最小可检测效应</span><span class="kb-chain__sep">·</span><a href="重尾分布为什么让均值失去意义.md">重尾分布为什么让均值失去意义</a><span class="kb-chain__sep">·</span><a href="相关性检验怎么选.md">相关性检验怎么选</a></div>
+<div class="kb-chain" markdown>
+<span class="kb-chain__label">本链四页</span> [贝叶斯更新怎么做才算得清](贝叶斯更新怎么做才算得清.md) · <span class="kb-chain__now">A-B实验的样本量与最小可检测效应</span> · [重尾分布为什么让均值失去意义](重尾分布为什么让均值失去意义.md) · [相关性检验怎么选](相关性检验怎么选.md)
+</div>
+
 
 ## 结论
 

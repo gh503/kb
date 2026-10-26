@@ -11,7 +11,7 @@ import re
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 DOCS = ROOT / "docs"
 DOMAINS = ["工程", "网络", "智能", "基础"]
-MARK = '<div class="kb-chain">'
+MARK = '<div class="kb-chain" markdown>'
 LABEL = '<span class="kb-chain__label">本链四页</span>'
 
 
@@ -44,8 +44,8 @@ def build(names, current: str) -> str:
         if target == current:
             parts.append(f'<span class="kb-chain__now">{label}</span>')
         else:
-            parts.append(f'<a href="{target}">{label}</a>')
-    return MARK + LABEL + '<span class="kb-chain__sep">/</span>' + '<span class="kb-chain__sep">·</span>'.join(parts) + "</div>"
+            parts.append(f"[{label}]({target})")   # 必须是 Markdown 链接：原始 <a href> 不会被 MkDocs 重写，构建后 404
+    return (MARK + "\n" + LABEL + " " + " · ".join(parts) + "\n</div>")
 
 
 def clean(text: str) -> str:
@@ -56,7 +56,7 @@ def clean(text: str) -> str:
     text = re.sub(r"(?m)^>\s*\n(?=\n## )", "", text)
     text = re.sub(r"(?m)^>\s*\n(?=\n*$)", "", text)
     text = re.sub(r"(?ms)^>\s*\n(?=<div class=\"kb-chain\">)", "", text)
-    text = re.sub(r"(?s)<div class=\"kb-chain\">.*?</div>\n?", "", text)
+    text = re.sub(r"(?s)<div class=\"kb-chain\"[^>]*>.*?</div>\n?", "", text)
     return text
 
 

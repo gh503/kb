@@ -2,7 +2,10 @@
 
 > **深度** 取舍 ｜ **类型** 实测 ｜ **链** 资源到底被谁吃了
 
-<div class="kb-chain"><span class="kb-chain__label">本链四页</span><span class="kb-chain__sep">/</span><a href="nice到底有多大用.md">nice 到底有多大用</a><span class="kb-chain__sep">·</span><a href="绑核为什么有时没用.md">绑核为什么有时没用</a><span class="kb-chain__sep">·</span><a href="文件描述符耗尽怎么查.md">文件描述符耗尽怎么查</a><span class="kb-chain__sep">·</span><span class="kb-chain__now">cgroup 限额怎么算</span></div>
+<div class="kb-chain" markdown>
+<span class="kb-chain__label">本链四页</span> [nice 到底有多大用](nice到底有多大用.md) · [绑核为什么有时没用](绑核为什么有时没用.md) · [文件描述符耗尽怎么查](文件描述符耗尽怎么查.md) · <span class="kb-chain__now">cgroup 限额怎么算</span>
+</div>
+
 
 ## 结论
 

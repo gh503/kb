@@ -2,7 +2,10 @@
 
 > **深度** 入门 ｜ **类型** 实测 ｜ **链** 慢在数据不在 SQL
 
-<div class="kb-chain"><span class="kb-chain__label">本链四页</span><span class="kb-chain__sep">/</span><span class="kb-chain__now">JOIN为什么慢</span><span class="kb-chain__sep">·</span><a href="分页越翻越慢.md">分页越翻越慢</a><span class="kb-chain__sep">·</span><a href="事务批处理为什么快一千倍.md">事务批处理为什么快一千倍</a><span class="kb-chain__sep">·</span><a href="WAL是什么它解决了什么没解决什么.md">WAL是什么它解决了什么没解决什么</a></div>
+<div class="kb-chain" markdown>
+<span class="kb-chain__label">本链四页</span> <span class="kb-chain__now">JOIN 为什么慢</span> · [分页越翻越慢](分页越翻越慢.md) · [事务批处理为什么快一千倍](事务批处理为什么快一千倍.md) · [WAL 是什么它解决了什么没解决什么](WAL是什么它解决了什么没解决什么.md)
+</div>
+
 
 ## 结论
 

@@ -2,7 +2,10 @@
 
 > **深度** 实操 ｜ **类型** 方法 ｜ **链** 机器人怎么知道自己在哪
 
-<div class="kb-chain"><span class="kb-chain__label">本链四页</span><span class="kb-chain__sep">/</span><a href="里程计为什么会漂.md">里程计为什么会漂</a><span class="kb-chain__sep">·</span><a href="传感器融合在融合什么.md">传感器融合在融合什么</a><span class="kb-chain__sep">·</span><span class="kb-chain__now">SLAM在解决什么问题</span><span class="kb-chain__sep">·</span><a href="误差为什么越走越大.md">误差为什么越走越大</a></div>
+<div class="kb-chain" markdown>
+<span class="kb-chain__label">本链四页</span> [里程计为什么会漂](里程计为什么会漂.md) · [传感器融合在融合什么](传感器融合在融合什么.md) · <span class="kb-chain__now">SLAM在解决什么问题</span> · [误差为什么越走越大](误差为什么越走越大.md)
+</div>
+
 
 
 

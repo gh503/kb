@@ -37,6 +37,19 @@ def check_links():
     return total, bad
 
 
+def check_raw_anchors():
+    """原始 HTML 里的 .md 锚点不会被 MkDocs 重写，构建后必 404。"""
+    bad = []
+    for f in DOCS.rglob("*.md"):
+        txt = f.read_text(encoding="utf-8")
+        for m in re.finditer(r'<a\s+href="([^"]+\.md)(?:#[^"]*)?"', txt):
+            bad.append((str(f.relative_to(ROOT)), m.group(1)))
+        # 链表块必须带 markdown 属性，否则里面的链接同样不会被重写
+        for m in re.finditer(r'<div class="kb-chain"(?![^>]*markdown)', txt):
+            bad.append((str(f.relative_to(ROOT)), "kb-chain 缺少 markdown 属性"))
+    return bad
+
+
 def entries(subject_dir: pathlib.Path):
     return sorted(p for p in subject_dir.glob("*.md") if p.name != "index.md")
 
@@ -75,6 +88,9 @@ def main():
     print(f"内部链接 {total} 条，断链 {len(bad)} 条")
     for f, t in bad:
         problems.append(f"断链: {f} -> {t}")
+
+    for f, t in check_raw_anchors():
+        problems.append(f"原始 HTML 锚点指向 .md（构建后 404）: {f} -> {t}")
 
     missing_nav = check_nav()
     print(f"nav 未收录的 index: {len(missing_nav)} 个")

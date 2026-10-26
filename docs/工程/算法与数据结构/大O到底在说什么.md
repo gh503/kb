@@ -2,7 +2,10 @@
 
 > **深度** 入门 ｜ **类型** 公式 ｜ **链** 复杂度怎么估
 
-<div class="kb-chain"><span class="kb-chain__label">本链四页</span><span class="kb-chain__sep">/</span><span class="kb-chain__now">大O到底在说什么</span><span class="kb-chain__sep">·</span><a href="怎么从代码看出复杂度.md">怎么从代码看出复杂度</a><span class="kb-chain__sep">·</span><a href="常数因子什么时候更重要.md">常数因子什么时候更重要</a><span class="kb-chain__sep">·</span><a href="平均与最坏差多远.md">平均与最坏差多远</a></div>
+<div class="kb-chain" markdown>
+<span class="kb-chain__label">本链四页</span> <span class="kb-chain__now">大O到底在说什么</span> · [怎么从代码看出复杂度](怎么从代码看出复杂度.md) · [常数因子什么时候更重要](常数因子什么时候更重要.md) · [平均与最坏差多远](平均与最坏差多远.md)
+</div>
+
 
 
 

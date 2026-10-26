@@ -2,7 +2,10 @@
 
 > **深度** 实操 ｜ **类型** 实测 ｜ **链** 机器之外的那层
 
-<div class="kb-chain"><span class="kb-chain__label">本链四页</span><span class="kb-chain__sep">/</span><a href="SecureBoot挡住了什么.md">SecureBoot挡住了什么</a><span class="kb-chain__sep">·</span><a href="TPM能做什么不能做什么.md">TPM能做什么不能做什么</a><span class="kb-chain__sep">·</span><span class="kb-chain__now">IOMMU与DMA</span><span class="kb-chain__sep">·</span><a href="硬件信任根到哪为止.md">硬件信任根到哪为止</a></div>
+<div class="kb-chain" markdown>
+<span class="kb-chain__label">本链四页</span> [Secure Boot 挡住了什么](SecureBoot挡住了什么.md) · [TPM 能做什么不能做什么](TPM能做什么不能做什么.md) · <span class="kb-chain__now">IOMMU 与 DMA</span> · [硬件信任根到哪为止](硬件信任根到哪为止.md)
+</div>
+
 
 ## 结论
 

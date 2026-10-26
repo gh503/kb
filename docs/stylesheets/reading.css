@@ -288,6 +288,10 @@ body {
   margin: 0.2rem 0 1.6rem;
 }
 
+.kb-chain p {
+  margin: 0;
+}
+
 .kb-chain__label {
   font-weight: 700;
   color: var(--kb-ink-soft);

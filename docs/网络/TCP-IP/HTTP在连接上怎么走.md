@@ -74,6 +74,8 @@ curl -o /dev/null -w 'dns=%{time_namelookup} tcp=%{time_connect} tls=%{time_appc
 curl -o /dev/null -w '%{remote_ip}:%{remote_port}\n' https://example.com/
 ```
 
+<!-- kb-chart:tcp_timeline -->
+
 <figure class="kb-figure">
 <svg viewBox="0 0 720 340" role="img" aria-label="首屏之前的四个往返：DNS、TCP、TLS、HTTP 各一次" xmlns="http://www.w3.org/2000/svg">
 <rect x="0" y="0" width="720" height="340" fill="none"/>

@@ -64,11 +64,13 @@ write+fdatasync  2000×4KB 14820.18 ms  (   0.6 MB/s)
 
 **判断标准是"丢了这条，业务上能不能重算"**，能重算就别每条 sync。
 
+<!-- kb-chart:fsync -->
+
 <figure class="kb-figure">
 <svg viewBox="0 0 720 340" role="img" aria-label="同一份 8 MB 数据，三种写法差三个数量级（本机实测）" xmlns="http://www.w3.org/2000/svg">
 <rect x="0" y="0" width="720" height="340" fill="none"/>
 <text x="0.0" y="14.0" font-size="13" text-anchor="start" fill="currentColor" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">同一份 8 MB 数据，三种写法差三个数量级（本机实测）</text>
-<text x="632.0" y="332.0" font-size="11" text-anchor="start" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">ms</text>
+<text x="716.0" y="332.0" font-size="11" text-anchor="end" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">ms</text>
 <text x="10.0" y="22.0" font-size="11" text-anchor="start" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif"></text>
 <text x="180.0" y="69.0" font-size="12" text-anchor="end" fill="currentColor" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">O_DIRECT 写入</text>
 <rect x="190" y="54" width="179.8" height="22" rx="4" fill="var(--kb-warn)" opacity="0.85"/>
@@ -78,7 +80,7 @@ write+fdatasync  2000×4KB 14820.18 ms  (   0.6 MB/s)
 <text x="212.3" y="115.0" font-size="12" text-anchor="start" fill="currentColor" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">8.91 ms</text>
 <text x="180.0" y="161.0" font-size="12" text-anchor="end" fill="currentColor" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">每条 write 后 fdatasync</text>
 <rect x="190" y="146" width="490.0" height="22" rx="4" fill="var(--kb-warn)" opacity="0.85"/>
-<text x="688.0" y="161.0" font-size="12" text-anchor="start" fill="currentColor" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">14820.2 ms</text>
+<text x="672.0" y="161.0" font-size="12" text-anchor="end" fill="var(--kb-paper)" font-weight="700" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">14820.2 ms</text>
 <text x="190.0" y="200.0" font-size="11" text-anchor="start" fill="var(--kb-ink-mute)" font-weight="400" opacity="1" font-family="system-ui, -apple-system, PingFang SC, Noto Sans CJK SC, sans-serif">对数刻度。中间那条最快，是因为它只写了内存；最慢那条每次都在等磁盘确认。</text>
 </svg>
 <figcaption>同一份 8 MB 数据，三种写法差三个数量级（本机实测）</figcaption>

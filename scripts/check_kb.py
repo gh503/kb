@@ -41,7 +41,7 @@ def check_raw_anchors():
     """原始 HTML 里的 .md 锚点不会被 MkDocs 重写，构建后必 404。"""
     bad = []
     for f in DOCS.rglob("*.md"):
-        txt = f.read_text(encoding="utf-8")
+        txt = strip_code(f.read_text(encoding="utf-8"))   # 代码块里的示例不算
         for m in re.finditer(r'<a\s+href="([^"]+\.md)(?:#[^"]*)?"', txt):
             bad.append((str(f.relative_to(ROOT)), m.group(1)))
         # 链表块必须带 markdown 属性，否则里面的链接同样不会被重写
